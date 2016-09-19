@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import deepEqual from 'deep-equal';
 import {Hooks} from 'PluginSDK';
 import mixin from 'reactjs-mixin';
-import {Modal, Tooltip} from 'reactjs-components';
+import {Confirm, Modal, Tooltip} from 'reactjs-components';
 import React from 'react';
 import {StoreMixin} from 'mesosphere-shared-reactjs';
 
@@ -25,7 +25,10 @@ import ErrorPaths from '../../constants/ErrorPaths';
 
 const METHODS_TO_BIND = [
   'getTriggerSubmit',
+  'getConfirmModal',
   'handleCancel',
+  'handleConfirmModalCancel',
+  'handleConfirmModalConfirm',
   'handleClearError',
   'handleJSONChange',
   'handleJSONToggle',
@@ -122,6 +125,7 @@ class ServiceFormModal extends mixin(StoreMixin) {
       errorMessage: null,
       jsonMode: false,
       model,
+      openConfirm: false,
       pendingRequest: false,
       service: ServiceUtil.createServiceFromFormModel(model, ServiceSchema)
     };
@@ -335,7 +339,16 @@ class ServiceFormModal extends mixin(StoreMixin) {
   }
 
   handleCancel() {
-    this.props.onClose();
+    this.setState({openConfirm: true});
+    // this.props.onClose();
+  }
+
+  handleConfirmModalCancel() {
+    this.setState({openConfirm: false});
+  }
+
+  handleConfirmModalConfirm() {
+    this.setState({openConfirm: false});
   }
 
   handleSubmit() {
@@ -379,6 +392,23 @@ class ServiceFormModal extends mixin(StoreMixin) {
         this.state.force
       );
     }
+  }
+
+  getConfirmModal() {
+    return (
+      <Confirm
+        leftButtonCallback={this.handleConfirmModalCancel}
+        leftButtonText="Stay here"
+        rightButtonCallback={this.handleConfirmModalConfirm}
+        rightButtonText="Continue to leave"
+        open={this.state.openConfirm}
+        onClose={this.handleConfirmModalCancel}>
+        <div className="container-pod">
+          <p>Are you sure you want to leave?<br />
+          Any configuration you have entered or changed will be lost.</p>
+        </div>
+      </Confirm>
+    );
   }
 
   getTriggerSubmit(triggerSubmit) {
@@ -483,6 +513,7 @@ class ServiceFormModal extends mixin(StoreMixin) {
           onClick={this.handleSubmit}>
           {this.getSubmitText()}
         </button>
+        {this.getConfirmModal()}
       </div>
     );
   }
