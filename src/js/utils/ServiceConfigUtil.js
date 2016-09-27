@@ -61,6 +61,28 @@ var ServiceConfigUtil = {
         headline
       };
     });
+  },
+
+  getEndpointGroups(id, endpoints, createLink = defaultCreateLink) {
+    return endpoints.map(function (endpoint, index) {
+      let hash = Object.assign({}, endpoint);
+      let headline = `Endpoint ${index + 1}`;
+
+      if (endpoint.name) {
+        headline += ` (${endpoint.name})`;
+      }
+
+      // Check if this port is load balanced
+      if (hasVIPLabel(endpoint.labels)) {
+        let link = buildHostName(id, endpoint.hostPort);
+        hash[serviceAddressKey] = createLink(link, link);
+      }
+
+      return {
+        hash,
+        headline
+      };
+    });
   }
 
 };

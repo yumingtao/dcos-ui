@@ -134,7 +134,8 @@ class PodSpecView extends React.Component {
         <PodContainerSpecView
           key={i}
           className="nested-description-list"
-          container={container} />
+          container={container}
+          pod_id={spec.getId()} />
       );
     });
   }

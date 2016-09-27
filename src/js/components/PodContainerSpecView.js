@@ -94,8 +94,8 @@ class PodContainerSpecView extends React.Component {
       return null;
     }
 
-    let portConfigurations = ServiceConfigUtil.getPortDefinitionGroups(
-        id, endpoints, function (content, linkTo) {
+    let portConfigurations = ServiceConfigUtil.getEndpointGroups(
+        pod_id, endpoints, function (content, linkTo) {
           return <a href={linkTo} target="_blank">{content}</a>;
         }
       ).map(function ({hash, headline}, index) {
@@ -166,7 +166,8 @@ class PodContainerSpecView extends React.Component {
 };
 
 PodContainerSpecView.propTypes = {
-  container: React.PropTypes.object.isRequired
+  container: React.PropTypes.object.isRequired,
+  pod_id: React.PropTypes.string.isRequired
 };
 
 module.exports = PodContainerSpecView;
