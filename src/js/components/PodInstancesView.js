@@ -1,6 +1,8 @@
 import React from 'react';
 
+import EventTypes from '../constants/EventTypes';
 import FilterHeadline from './FilterHeadline';
+import MesosStateStore from '../stores/MesosStateStore';
 import Pod from '../structs/Pod';
 import PodInstancesTable from './PodInstancesTable';
 import PodInstanceStatus from '../constants/PodInstanceStatus';
@@ -9,7 +11,8 @@ import PodViewFilter from './PodViewFilter';
 
 const METHODS_TO_BIND = [
   'handleFilterChange',
-  'handleFilterReset'
+  'handleFilterReset',
+  'handleMesosStateChange'
 ];
 
 class PodInstancesView extends React.Component {
@@ -47,6 +50,20 @@ class PodInstancesView extends React.Component {
     }
   }
 
+  componentWillMount() {
+    MesosStateStore.addChangeListener(
+      EventTypes.MESOS_STATE_CHANGE,
+      this.handleMesosStateChange
+    );
+  }
+
+  componentWillUnmount() {
+    MesosStateStore.removeChangeListener(
+      EventTypes.MESOS_STATE_CHANGE,
+      this.handleMesosStateChange
+    );
+  }
+
   handleFilterChange(filter) {
     this.setState({filter});
   }
@@ -60,10 +77,16 @@ class PodInstancesView extends React.Component {
     });
   }
 
+  handleMesosStateChange() {
+    this.forceUpdate();
+  }
+
   render() {
     var {pod} = this.props;
     var {filter} = this.state;
-    let allItems = pod.getInstanceList();
+    let historicalInstances = MesosStateStore.getPodHistoricalInstances(pod);
+    let allItems = PodUtil.mergeHistoricalInstanceList(
+      pod.getInstanceList(), historicalInstances);
     let filteredTextItems = allItems;
     let filteredItems = allItems;
 
