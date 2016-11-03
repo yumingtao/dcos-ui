@@ -27,7 +27,6 @@ let nodesRoutes = {
   type: Route,
   path: 'nodes',
   component: NodesPage,
-  category: 'resources',
   isInSidebar: true,
   buildBreadCrumb() {
     return {

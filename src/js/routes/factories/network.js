@@ -173,7 +173,6 @@ let RouteFactory = {
         type: Route,
         path: 'network',
         component: NetworkPage,
-        category: 'resources',
         isInSidebar: true,
         children: routes
       }

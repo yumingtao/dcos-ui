@@ -14,7 +14,6 @@ let componentsRoutes = {
   type: Route,
   path: 'components',
   component: ComponentsPage,
-  category: 'system',
   isInSidebar: true,
   buildBreadCrumb() {
     return {

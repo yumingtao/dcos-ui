@@ -7,7 +7,6 @@ let clusterRoutes = {
   type: Route,
   path: 'cluster',
   component: ClusterPage,
-  category: 'system',
   isInSidebar: true,
   children: [
     {

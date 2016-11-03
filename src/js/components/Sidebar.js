@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import GeminiScrollbar from 'react-gemini-scrollbar';
-import {routerShape, Link} from 'react-router';
+import {routerShape, Link, isActive} from 'react-router';
 import React from 'react';
 import {Tooltip} from 'reactjs-components';
 import PluginSDK from 'PluginSDK';
@@ -93,26 +93,24 @@ var Sidebar = React.createClass({
         return route.id === 'index';
       });
 
-    return this.getMenuGroupsFromChildren(indexRoute.childRoutes)
-      .map((group, index) => {
-        let heading = null;
+    return indexRoute.childRoutes.map((group, index) => {
+      let heading = null;
 
-        if (group.category !== 'root') {
-          heading = (
-            <h6 className="sidebar-section-header">
-              {group.category}
-            </h6>
-          );
-        }
-
-        return (
-          <div className="sidebar-section pod pod-shorter flush-top flush-left flush-right"
-            key={index}>
-            {heading}
-            {this.getNavigationGroup(group, this.props.location.pathname)}
-          </div>
+      if (group.label) {
+        heading = (
+          <h6 className="sidebar-section-header">
+            {group.label}
+          </h6>
         );
-      });
+      }
+      return (
+        <div className="sidebar-section pod pod-shorter flush-top flush-left flush-right"
+          key={index}>
+          {heading}
+          {this.getNavigationGroup(group, this.props.location.pathname)}
+        </div>
+      );
+    });
   },
 
   getGroupSubmenu({path, childRoutes = []}, {currentPath, isParentActive}) {
@@ -182,7 +180,9 @@ var Sidebar = React.createClass({
   },
 
   getNavigationGroup(group, currentPath) {
-    let groupMenuItems = group.routes.map((route, index) => {
+    let groupMenuItems = group.childRoutes.filter((route) => route.isInSidebar);
+
+    groupMenuItems = groupMenuItems.map((route, index) => {
       let icon = React.cloneElement(
         route.component.routeConfig.icon,
         {className: 'sidebar-menu-item-icon icon icon-small'}
@@ -219,7 +219,7 @@ var Sidebar = React.createClass({
 
       return (
         <li className={itemClassSet} key={index}>
-          <Link to={route.path}>{icon}{sidebarText}</Link>
+          <Link to={`${group.path}/${route.path}`}>{icon}{sidebarText}</Link>
           {submenu}
         </li>
       );

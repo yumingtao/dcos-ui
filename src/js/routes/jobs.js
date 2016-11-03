@@ -35,7 +35,6 @@ let jobsRoutes = {
   type: Route,
   component: JobsPage,
   path: 'jobs',
-  category: 'root',
   isInSidebar: true,
   buildBreadCrumb() {
     return {

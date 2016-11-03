@@ -39,7 +39,6 @@ let serviceRoutes = [
     type: Route,
     component: ServicesPage,
     path: 'services',
-    category: 'root',
     isInSidebar: true,
     children: [
       {

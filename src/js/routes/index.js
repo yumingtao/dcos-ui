@@ -1,3 +1,4 @@
+import React from 'react';
 import {Route, Redirect} from 'react-router';
 import {Hooks} from 'PluginSDK';
 
@@ -15,26 +16,46 @@ import services from '../../../plugins/services/src/js/routes/services';
 import jobs from './jobs';
 import universe from './universe';
 
-// Modules that produce routes
-let routeFactories = [Organization, Network];
+const SidebarGroup = ({children}) => children;
 
 function getApplicationRoutes() {
   // Statically defined routes
   let routes = [].concat(
-    dashboard,
-    services,
-    jobs,
-    nodes,
-    universe,
-    cluster,
-    components,
-    settings,
-    styles
+    {
+      path: '/',
+      type: Route,
+      component: SidebarGroup,
+      children: [].concat(
+        dashboard,
+        services,
+        jobs,
+        universe,
+        styles
+      )
+    },
+    {
+      path: '/resources',
+      label: 'resources',
+      type: Route,
+      component: SidebarGroup,
+      children: [].concat(
+        nodes,
+        Network.getRoutes()
+      )
+    },
+    {
+      path: '/system',
+      label: 'system',
+      type: Route,
+      component: SidebarGroup,
+      children: [].concat(
+        cluster,
+        components,
+        Organization.getRoutes(),
+        settings
+      )
+    }
   );
-
-  routeFactories.forEach(function (routeFactory) {
-    routes = routes.concat(routeFactory.getRoutes());
-  });
 
   routes = [
     {

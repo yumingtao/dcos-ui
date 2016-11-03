@@ -49,7 +49,6 @@ let RouteFactory = {
         type: Route,
         path: 'organization',
         component: OrganizationPage,
-        category: 'system',
         isInSidebar: true,
         children: routes,
         buildBreadCrumb() {

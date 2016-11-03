@@ -15,7 +15,6 @@ let universeRoutes = [
     type: Route,
     path: 'universe',
     component: UniversePage,
-    category: 'root',
     isInSidebar: true,
     children: [
       {

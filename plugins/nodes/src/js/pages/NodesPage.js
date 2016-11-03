@@ -16,7 +16,7 @@ class NodesPage extends React.Component {
 NodesPage.routeConfig = {
   label: 'Nodes',
   icon: <Icon id="servers-inverse" size="small" family="small" />,
-  matches: /^\/nodes/
+  matches: /^\/resources\/nodes/
 };
 
 module.exports = NodesPage;

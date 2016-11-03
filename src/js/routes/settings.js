@@ -13,7 +13,6 @@ let settingsRoutes = [
     type: Route,
     path: 'settings',
     component: SettingsPage,
-    category: 'system',
     isInSidebar: true,
     children: [
       {
