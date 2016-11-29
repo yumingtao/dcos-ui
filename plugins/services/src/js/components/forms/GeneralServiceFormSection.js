@@ -18,47 +18,59 @@ import VolumeConstants from '../../constants/VolumeConstants';
 
 const {MESOS, DOCKER} = VolumeConstants.type;
 
-const containerRuntimes = {
-  [MESOS]: {
-    label: <span>Universal Container Runtime</span>,
-    helpText: 'Native container engine in Mesos using standard Linux features. Supports multiple containers (Pods) and GPU resources.'
-  },
-  [DOCKER]: {
+const CONTAINER_RUNTIMES = {
+  docker: {
     label: <span>Docker Engine <em>(recommended)</em></span>,
-    helpText: 'Docker’s container runtime. No support for multiple containers (Pods) or GPU resources.'
+    helpText: 'Docker’s container runtime. No support for multiple containers (Pods) or GPU resources.',
+    type: DOCKER
+  },
+  mesos: {
+    label: <span>Mesos</span>,
+    helpText: 'Supports multiple containers (Pods) and GPU resources.',
+    type: MESOS
+  },
+  universal: {
+    label: <span>Universal Container Runtime <em>(experimental)</em></span>,
+    helpText: 'Native container engine in Mesos using standard Linux features. Supports multiple containers (Pods) and GPU resources.',
+    type: MESOS
   }
 };
 
 class GeneralServiceFormSection extends Component {
 
+  isChecked(runtime, data) {
+
+  }
+
   getRuntimeSelections(data = {}) {
     let {container = {}, cmd, gpus} = data;
     let isDisabled = {};
+    let isChecked = {};
     let disabledTooltipContent;
-    let type = container.type || MESOS;
+    let type = container.type || DOCKER;
     let image = findNestedPropertyInObject(container, 'docker.image');
     // Single container with command and no image, disable 'DOCKER'
     if (cmd && !image) {
-      isDisabled[DOCKER] = true;
+      isDisabled['docker'] = true;
       disabledTooltipContent = 'If you want to use Docker Engine you have to enter a container image, otherwise please select Universal Container Runtime.';
     }
 
     // TODO: Handle GPUs
     if (gpus != null) {
-      isDisabled[DOCKER] = true;
+      isDisabled['docker'] = true;
       disabledTooltipContent = 'Docker Engine does not support GPU resources, please select Universal Container Runtime if you want to use GPU resources.';
     }
 
-    return Object.keys(containerRuntimes).map((runtimeName, index) => {
-      let {helpText, label} = containerRuntimes[runtimeName];
+    return Object.keys(CONTAINER_RUNTIMES).map((runtimeName, index) => {
+      let {helpText, label, type: containerType} = CONTAINER_RUNTIMES[runtimeName];
       let field = (
         <FieldLabel className="text-align-left" key={index}>
           <FieldInput
-            checked={Boolean(type === runtimeName)}
+            checked={isChecked(runtimeName, data)}
             disabled={isDisabled[runtimeName]}
             name="container.type"
             type="radio"
-            value={runtimeName} />
+            value={containerType} />
             {label}
           <FieldHelp>{helpText}</FieldHelp>
         </FieldLabel>

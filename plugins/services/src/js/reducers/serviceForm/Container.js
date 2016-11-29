@@ -1,18 +1,24 @@
 import {SET} from '../../../../../../src/js/constants/TransactionTypes';
 import VolumeConstants from '../../constants/VolumeConstants';
 
-let {MESOS} = VolumeConstants.type;
+const {MESOS, DOCKER} = VolumeConstants.type;
+
+const CONTAINER_TYPES_MAP = {
+  docker: DOCKER,
+  mesos: MESOS,
+  universal: MESOS
+};
 
 function container(state = {}, {type, path, value}) {
   let joinedPath = path && path.join('.');
   let newState = Object.assign({}, state);
   if (!newState.type) {
-    newState.type = MESOS;
+    newState.type = 'mesos';
   }
 
   if (type === SET && joinedPath === 'container.type') {
     // Update stored container type
-    newState.type = value;
+    newState.type = CONTAINER_TYPES_MAP[value];
   }
 
   if (type === SET && joinedPath === 'container.docker.privileged') {
