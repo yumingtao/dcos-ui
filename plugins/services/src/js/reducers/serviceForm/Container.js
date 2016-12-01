@@ -28,7 +28,7 @@ const containerJSONReducer = combineReducers({
 
     const joinedPath = path.join('.');
 
-    if (joinedPath === 'container.docker.image') {
+    if (type === SET && joinedPath === 'container.docker.image') {
       this.hasImage = !ValidatorUtil.isEmpty(value);
     }
 
@@ -46,6 +46,7 @@ const containerJSONReducer = combineReducers({
 
     if (type === SET && joinedPath === 'container.type' && value !== NONE) {
       this.noState = false;
+
       return value;
     }
 
@@ -79,6 +80,7 @@ const containerJSONReducer = combineReducers({
           delete newState[key];
         }
       });
+
       return newState;
     }
   },
@@ -113,51 +115,12 @@ const containerReducer = combineReducers({
           delete newState[key];
         }
       });
+
       return newState;
     }
   },
   volumes
 });
-
-function container(_, ...args) {
-  if (this.localVolumes === null) {
-    this.localVolumes = [];
-  }
-
-  if (this.internalState == null) {
-    this.internalState = {};
-  }
-
-  let newState = Object.assign(
-    {}, containerReducer.apply(this, [this.internalState, ...args])
-  );
-
-  this.internalState = newState;
-
-  if (ValidatorUtil.isEmpty(newState)) {
-    return null;
-  }
-
-  if (ValidatorUtil.isEmpty(newState.docker)) {
-    delete newState.docker;
-  } else if (ValidatorUtil.isEmpty(newState.docker.image)) {
-    delete newState.docker;
-  }
-
-  if (ValidatorUtil.isEmpty(newState.volumes)) {
-    delete newState.volumes;
-  }
-
-  if (ValidatorUtil.isEmpty(newState.type)) {
-    delete newState.type;
-  }
-
-  if (ValidatorUtil.isEmpty(newState)) {
-    return null;
-  }
-
-  return newState;
-};
 
 module.exports = {
   JSONReducer(_, ...args) {
@@ -170,10 +133,6 @@ module.exports = {
     );
 
     this.internalState = newState;
-
-    if (ValidatorUtil.isEmpty(newState)) {
-      return null;
-    }
 
     if (ValidatorUtil.isEmpty(newState.docker)) {
       delete newState.docker;
@@ -195,5 +154,35 @@ module.exports = {
 
     return newState;
   },
-  FormReducer: container
+  FormReducer(_, ...args) {
+    if (this.internalState == null) {
+      this.internalState = {};
+    }
+
+    let newState = Object.assign(
+      {}, containerReducer.apply(this, [this.internalState, ...args])
+    );
+
+    this.internalState = newState;
+
+    if (ValidatorUtil.isEmpty(newState.docker)) {
+      delete newState.docker;
+    } else if (ValidatorUtil.isEmpty(newState.docker.image)) {
+      delete newState.docker;
+    }
+
+    if (ValidatorUtil.isEmpty(newState.volumes)) {
+      delete newState.volumes;
+    }
+
+    if (ValidatorUtil.isEmpty(newState.type)) {
+      delete newState.type;
+    }
+
+    if (ValidatorUtil.isEmpty(newState)) {
+      return null;
+    }
+
+    return newState;
+  }
 };
