@@ -8,63 +8,83 @@ import networkingReducer from './Networking';
 
 const {BRIDGE, HOST} = Networking.type;
 
-module.exports = {
-  /**
-   * Creates portDefinitions for the JSON Editor
-   * @param {Object[]} state Initial state to apply action on
-   * @param {Object} action
-   * @param {(ADD_ITEM|REMOVE_ITEM|SET)} action.type - action to perform
-   * @param {String[]} action.path - location of value
-   * @param {*} action.value - value to perform action with
-   * @return {Object[]} new portDefinitions with action performed on it
-   */
-  JSONReducer(state = [], action) {
-    let {path, value} = action;
-    if (!this.appState) {
-      this.appState = {
-        id: '',
-        networkType: HOST
-      };
-    }
+/**
+ * Creates portDefinitions for the JSON Editor
+ * @param {Object[]} state Initial state to apply action on
+ * @param {Object} action
+ * @param {(ADD_ITEM|REMOVE_ITEM|SET)} action.type - action to perform
+ * @param {String[]} action.path - location of value
+ * @param {*} action.value - value to perform action with
+ * @return {Object[]} new portDefinitions with action performed on it
+ */
+function JSONReducer(state = [], action) {
+  let {path, value} = action;
+  if (!this.appState) {
+    this.appState = {
+      id: '',
+      networkType: HOST
+    };
+  }
 
-    let joinedPath = path.join('.');
-    if (joinedPath === 'container.docker.network' && Boolean(value)) {
-      this.appState.networkType = value;
-    }
+  let joinedPath = path.join('.');
+  if (joinedPath === 'container.docker.network' && Boolean(value)) {
+    this.appState.networkType = value;
+  }
 
-    if (joinedPath === 'id' && Boolean(value)) {
-      this.appState.id = value;
-    }
+  if (joinedPath === 'id' && Boolean(value)) {
+    this.appState.id = value;
+  }
 
-    // Apply networkingReducer to retrieve updated local state
-    // Store the change no matter what network type we have
-    this.portDefinitions = networkingReducer(this.portDefinitions, action);
+  // Apply networkingReducer to retrieve updated local state
+  // Store the change no matter what network type we have
+  this.portDefinitions = networkingReducer(this.portDefinitions, action);
 
-    // We only want portMappings for networks of type HOST or BRIDGE
-    if (this.appState.networkType !== HOST &&
+  // We only want portMappings for networks of type HOST or BRIDGE
+  if (this.appState.networkType !== HOST &&
       this.appState.networkType !== BRIDGE) {
-      return null;
+    return null;
+  }
+
+  // Create JSON port definitions from state
+  return this.portDefinitions.map((portDefinition, index) => {
+    let hostPort = Number(this.portDefinitions[index].hostPort) || 0;
+    let newPortDefinition = {
+      name: portDefinition.name,
+      port: hostPort,
+      protocol: portDefinition.protocol
+    };
+
+    // Only set labels if port mapping is load balaced
+    if (this.portDefinitions[index].loadBalanced) {
+      newPortDefinition.labels = {
+        [`VIP_${index}`]: `${this.appState.id}:${hostPort}`
+      };
     }
 
-    // Create JSON port definitions from state
-    return this.portDefinitions.map((portDefinition, index) => {
-      let hostPort = Number(this.portDefinitions[index].hostPort) || 0;
-      let newPortDefinition = {
-        name: portDefinition.name,
-        port: hostPort,
-        protocol: portDefinition.protocol
-      };
+    return newPortDefinition;
+  });
+}
 
-      // Only set labels if port mapping is load balaced
-      if (this.portDefinitions[index].loadBalanced) {
-        newPortDefinition.labels = {
-          [`VIP_${index}`]: `${this.appState.id}:${hostPort}`
-        };
-      }
+module.exports = {
+  PortDefinitionsJSONReducer(_, {type, path, value}) {
+    if (this.networkType == null) {
+      this.networkType = HOST;
+    }
 
-      return newPortDefinition;
-    });
+    const joinedPath = path.join('.');
+
+    if (joinedPath === 'container.docker.network' && type === SET) {
+      this.networkType = value;
+    }
+
+    if (this.networkType === HOST) {
+      return JSONReducer.apply(this, arguments);
+    }
+
+    return null;
   },
+
+  JSONReducer,
 
   /**
    * Parses a configuration and produces necessary Transactions for a Batch

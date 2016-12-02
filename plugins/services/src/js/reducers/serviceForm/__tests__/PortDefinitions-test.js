@@ -5,6 +5,37 @@ const {ADD_ITEM, SET} = require('../../../../../../../src/js/constants/Transacti
 const {type: {BRIDGE, HOST, USER}} = require('../../../../../../../src/js/constants/Networking');
 
 describe('PortDefinitions', function () {
+  describe('#PortDefinitionsJSONReducer', function () {
+    it('should return normal config if networkType is  HOST', function () {
+      let batch = new Batch();
+      batch = batch.add(new Transaction(['portDefinitions'], 0, ADD_ITEM));
+
+      expect(batch.reduce(PortDefinitions.PortDefinitionsJSONReducer.bind({}),
+          {}))
+      .toEqual([{name: null, port: 0, protocol: 'tcp'}]);
+    });
+
+    it('Should return null if networkType is not HOST', function () {
+      let batch = new Batch();
+      batch = batch.add(new Transaction(['container.docker.network'], BRIDGE));
+      batch = batch.add(new Transaction(['portDefinitions'], 0, ADD_ITEM));
+
+      expect(batch.reduce(PortDefinitions.PortDefinitionsJSONReducer.bind({}),
+          {}))
+      .toEqual(null);
+    });
+
+    it('Should return null if networkType is not USER', function () {
+      let batch = new Batch();
+      batch = batch.add(new Transaction(['container.docker.network'], USER));
+      batch = batch.add(new Transaction(['portDefinitions'], 0, ADD_ITEM));
+
+      expect(batch.reduce(PortDefinitions.PortDefinitionsJSONReducer.bind({}),
+          {}))
+      .toEqual(null);
+    });
+  });
+
   describe('#JSONReducer', function () {
     it('should create default portDefinition configurations', function () {
       let batch = new Batch();
