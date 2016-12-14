@@ -86,7 +86,7 @@ class NewServiceFormModal extends Component {
     }
   }
 
-  handleGoBack() {
+  handleGoBack({tabViewID}) {
     let {
       serviceFormActive,
       serviceJsonActive,
@@ -98,7 +98,8 @@ class NewServiceFormModal extends Component {
       // Just hide review screen. Form or JSON mode will be
       // activated automaticaly depending on their last state
       this.setState({
-        serviceReviewActive: false
+        serviceReviewActive: false,
+        activeTab: tabViewID
       });
       return;
     }
@@ -130,7 +131,7 @@ class NewServiceFormModal extends Component {
 
   handleClose() {
     this.props.onClose();
-    this.setState(this.getResetState());
+    this.replaceState(this.getResetState());
   }
 
   handleJSONToggle() {
@@ -274,6 +275,7 @@ class NewServiceFormModal extends Component {
         <div className="flex-item-grow-1">
           <div className="container">
             <ServiceConfigDisplay
+              handleEditClick={this.handleGoBack}
               appConfig={this.state.serviceConfig}
               clearError={this.props.clearError}
               errors={errorsMap} />
@@ -313,6 +315,7 @@ class NewServiceFormModal extends Component {
 
       return (
         <NewCreateServiceModalForm
+          activeTab={this.state.activeTab}
           jsonParserReducers={jsonParserReducers}
           jsonConfigReducers={jsonConfigReducers}
           inputConfigReducers={inputConfigReducers}

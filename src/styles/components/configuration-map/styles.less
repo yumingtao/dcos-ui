@@ -39,8 +39,14 @@
     }
 
     &-label,
-    &-value {
+    &-value,
+    &-action {
       padding: @base-spacing-unit * 1/4 0;
+    }
+
+    &-action {
+      text-align: right;
+      width: @base-spacing-unit * 3;
     }
 
     &-label {
@@ -96,6 +102,10 @@
         }
       }
 
+      &-action {
+        width: @base-spacing-unit-screen-small * 3;
+      }
+
       &-label {
         flex-basis: @configuration-map-label-width-screen-small;
       }
@@ -125,6 +135,10 @@
         &-primary {
           padding-bottom: @base-spacing-unit-screen-medium * 1/4;
         }
+      }
+
+      &-action {
+        width: @base-spacing-unit-screen-medium * 3;
       }
 
       &-label {
@@ -158,6 +172,10 @@
         }
       }
 
+      &-action {
+        width: @base-spacing-unit-screen-large * 3;
+      }
+
       &-label {
         flex-basis: @configuration-map-label-width-screen-large;
       }
@@ -187,6 +205,10 @@
         &-primary {
           padding-bottom: @base-spacing-unit-screen-jumbo * 1/4;
         }
+      }
+
+      &-action {
+        width: @base-spacing-unit-screen-jumbo * 3;
       }
 
       &-label {
