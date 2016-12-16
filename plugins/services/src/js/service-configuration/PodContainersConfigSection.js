@@ -5,7 +5,7 @@ import Heading from '../../../../../src/js/components/ConfigurationMapHeading';
 import PodContainerConfigSection from './PodContainerConfigSection';
 
 function renderContainers(appConfig) {
-  let {containers = []} = appConfig;
+  const {containers = []} = appConfig;
 
   return containers.map((container) => {
     return (

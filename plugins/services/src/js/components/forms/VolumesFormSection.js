@@ -214,7 +214,7 @@ class VolumesFormSection extends Component {
   }
 
   render() {
-    let {data} = this.props;
+    const {data} = this.props;
 
     return (
       <div>

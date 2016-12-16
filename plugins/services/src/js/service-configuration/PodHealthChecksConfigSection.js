@@ -91,15 +91,15 @@ class PodHealthChecksConfigSection extends React.Component {
   }
 
   render() {
-    let {containers = []} = this.props.appConfig;
-    let healthChecks = containers.reduce((memo, container) => {
-      let {healthCheck} = container;
+    const {containers = []} = this.props.appConfig;
+    const healthChecks = containers.reduce((memo, container) => {
+      const {healthCheck} = container;
 
       if (!healthCheck) {
         return memo;
       }
 
-      let spec = {
+      const spec = {
         interval: healthCheck.intervalSeconds,
         gracePeriod: healthCheck.gracePeriodSeconds,
         maxFailures: healthCheck.maxConsecutiveFailures,

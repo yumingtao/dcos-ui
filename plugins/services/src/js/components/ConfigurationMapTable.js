@@ -44,7 +44,7 @@ function columnRenderFunction(prop, row) {
  * @returns {Node} Returns a rendered React node
  */
 function defaultRenderFunction(prop, row) {
-  let value = row[prop];
+  const value = row[prop];
   if (React.isValidElement(value)) {
     return value;
   }
@@ -85,7 +85,7 @@ class ConfigurationMapTable extends React.Component {
 
     columns = columns.map((column) => {
       column = Object.assign({}, columnDefaults, column);
-      let {
+      const {
         className = '',
         heading,
         hideIfEmpty = false,

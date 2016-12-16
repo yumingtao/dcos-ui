@@ -27,7 +27,7 @@ class PodLabelsConfigSection extends React.Component {
   }
 
   render() {
-    let {labels = {}, containers = []} = this.props.appConfig;
+    const {labels = {}, containers = []} = this.props.appConfig;
 
     let combinedLabels = [];
 
@@ -44,7 +44,7 @@ class PodLabelsConfigSection extends React.Component {
     }
 
     combinedLabels = containers.reduce((memo, container) => {
-      let {labels = {}} = container;
+      const {labels = {}} = container;
 
       if (labels != null) {
         return Object.keys(labels).reduce((cvMemo, key) => {

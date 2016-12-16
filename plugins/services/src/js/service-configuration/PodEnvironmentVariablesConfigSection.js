@@ -24,7 +24,7 @@ const columns = [
 ];
 
 module.exports = ({appConfig}) => {
-  let {environment = {}, containers = []} = appConfig;
+  const {environment = {}, containers = []} = appConfig;
 
   if (!environment || !containers) {
     return <noscript />;
@@ -41,7 +41,7 @@ module.exports = ({appConfig}) => {
   }, []);
 
   combinedEnv = containers.reduce((memo, container) => {
-    let {environment = {}} = container;
+    const {environment = {}} = container;
 
     return Object.keys(environment).reduce((cvMemo, key) => {
       cvMemo.push({

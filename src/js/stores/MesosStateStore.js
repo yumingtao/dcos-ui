@@ -115,10 +115,10 @@ class MesosStateStore extends GetSetBaseStore {
   }
 
   indexTasksByID(lastMesosState) {
-    let taskIndex = {};
+    const taskIndex = {};
 
     lastMesosState.frameworks.forEach(function (service) {
-      let tasks = service.tasks.concat(service.completed_tasks);
+      const tasks = service.tasks.concat(service.completed_tasks);
       tasks.forEach(function (task) {
         taskIndex[task.id] = task;
       });
@@ -140,7 +140,7 @@ class MesosStateStore extends GetSetBaseStore {
   }
 
   getServiceFromName(name) {
-    let services = this.get('lastMesosState').frameworks;
+    const services = this.get('lastMesosState').frameworks;
 
     if (services) {
       return services.find(function (service) {
@@ -152,7 +152,7 @@ class MesosStateStore extends GetSetBaseStore {
   }
 
   getNodeFromID(id) {
-    let nodes = this.get('lastMesosState').slaves;
+    const nodes = this.get('lastMesosState').slaves;
 
     if (nodes) {
       return nodes.find(function (node) {
@@ -164,7 +164,7 @@ class MesosStateStore extends GetSetBaseStore {
   }
 
   getNodeFromHostname(hostname) {
-    let nodes = this.get('lastMesosState').slaves;
+    const nodes = this.get('lastMesosState').slaves;
 
     if (nodes) {
       return nodes.find(function (node) {
@@ -176,8 +176,8 @@ class MesosStateStore extends GetSetBaseStore {
   }
 
   getTasksFromNodeID(nodeID) {
-    let services = this.get('lastMesosState').frameworks || [];
-    let memberTasks = {};
+    const services = this.get('lastMesosState').frameworks || [];
+    const memberTasks = {};
 
     services.forEach(function (service) {
       service.tasks.forEach(function (task) {
@@ -196,8 +196,8 @@ class MesosStateStore extends GetSetBaseStore {
   }
 
   getTaskFromTaskID(taskID) {
-    let taskCache = this.get('taskCache');
-    let foundTask = taskCache[taskID];
+    const taskCache = this.get('taskCache');
+    const foundTask = taskCache[taskID];
     if (foundTask == null) {
       return null;
     }
@@ -205,13 +205,13 @@ class MesosStateStore extends GetSetBaseStore {
   }
 
   getSchedulerTaskFromServiceName(serviceName) {
-    let frameworks = this.get('lastMesosState').frameworks;
+    const frameworks = this.get('lastMesosState').frameworks;
 
     if (!frameworks) {
       return null;
     }
 
-    let framework = frameworks.find(function (framework) {
+    const framework = frameworks.find(function (framework) {
       return framework.name.toLowerCase() === 'marathon';
     });
 
@@ -219,14 +219,14 @@ class MesosStateStore extends GetSetBaseStore {
       return null;
     }
 
-    let result = framework.tasks.find(function (task) {
-      let labels = task.labels;
+    const result = framework.tasks.find(function (task) {
+      const labels = task.labels;
 
       if (!labels) {
         return false;
       }
 
-      let frameworkName = labels.find(function (label) {
+      const frameworkName = labels.find(function (label) {
         return label.key === 'DCOS_PACKAGE_FRAMEWORK_NAME';
       });
 
@@ -237,19 +237,19 @@ class MesosStateStore extends GetSetBaseStore {
   }
 
   getTasksFromServiceName(serviceName) {
-    let frameworks = this.get('lastMesosState').frameworks;
+    const frameworks = this.get('lastMesosState').frameworks;
 
     if (!frameworks) {
       return null;
     }
 
-    let framework = frameworks.find(function (framework) {
+    const framework = frameworks.find(function (framework) {
       return framework.name === serviceName;
     });
 
     if (framework) {
-      let activeTasks = framework.tasks || [];
-      let completedTasks = framework.completed_tasks || [];
+      const activeTasks = framework.tasks || [];
+      const completedTasks = framework.completed_tasks || [];
 
       return activeTasks.concat(completedTasks);
     }
@@ -258,11 +258,11 @@ class MesosStateStore extends GetSetBaseStore {
   }
 
   getTasksByService(service) {
-    let frameworks = this.get('lastMesosState').frameworks;
-    let serviceName = service.getName();
+    const frameworks = this.get('lastMesosState').frameworks;
+    const serviceName = service.getName();
 
     // Convert serviceId to Mesos task name
-    let mesosTaskName = service.getMesosId();
+    const mesosTaskName = service.getMesosId();
 
     if (!serviceName || !mesosTaskName || !frameworks) {
       return [];
@@ -272,7 +272,7 @@ class MesosStateStore extends GetSetBaseStore {
     // Marathon tasks. This will give you a list of framework tasks including
     // the scheduler tasks or a list of Marathon application tasks.
     return frameworks.reduce(function (serviceTasks, framework) {
-      let {tasks = [], completed_tasks = {}, name} = framework;
+      const {tasks = [], completed_tasks = {}, name} = framework;
       // Include tasks from framework match, if service is a Framework
       if (service instanceof Framework && name === serviceName) {
         return serviceTasks.concat(tasks, completed_tasks);
@@ -299,7 +299,7 @@ class MesosStateStore extends GetSetBaseStore {
 
   processStateSuccess(lastMesosState) {
     CompositeState.addState(lastMesosState);
-    let taskCache = this.indexTasksByID(lastMesosState);
+    const taskCache = this.indexTasksByID(lastMesosState);
     this.set({lastMesosState, taskCache});
     this.emit(MESOS_STATE_CHANGE);
   }

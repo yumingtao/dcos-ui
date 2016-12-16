@@ -26,7 +26,7 @@ function getCommand(containerConfig) {
 }
 
 module.exports = ({containerConfig, appConfig}) => {
-  let fields = {
+  const fields = {
     command: getCommand(containerConfig),
     resources: appConfig.resources || {},
     user: containerConfig.user || appConfig.user
