@@ -128,9 +128,9 @@ class ServiceConfiguration extends mixin(StoreMixin) {
     const {service} = this.props;
     const versions = service.getVersions();
 
-    let versionItems = [];
+    const versionItems = [];
     for (const version of versions.keys()) {
-      let localeVersion = new Date(version).toLocaleString();
+      const localeVersion = new Date(version).toLocaleString();
       let itemCaption = localeVersion;
       if (version === service.getVersion()) {
         itemCaption = (
