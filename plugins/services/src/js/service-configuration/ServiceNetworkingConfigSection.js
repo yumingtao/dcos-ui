@@ -66,20 +66,11 @@ class ServiceNetworkingConfigSection extends ServiceConfigBaseSectionDisplay {
         {
           key: 'portDefinitions',
           render(portDefinitions, appDefinition) {
-            const keys = {
-              name: 'name',
-              port: 'port',
-              protocol: 'protocol',
-              labels: 'labels'
-            };
-
             const containerPortMappings = findNestedPropertyInObject(
               appDefinition, 'container.docker.portMappings'
-            );
-            if ((portDefinitions == null || portDefinitions.length === 0) &&
-              containerPortMappings != null && containerPortMappings.length !== 0) {
+            ) || [];
+            if (containerPortMappings.length !== 0) {
               portDefinitions = containerPortMappings;
-              keys.port = 'containerPort';
             }
 
             // Make sure to have something to render, even if there is no data
@@ -90,7 +81,7 @@ class ServiceNetworkingConfigSection extends ServiceConfigBaseSectionDisplay {
             const columns = [
               {
                 heading: getColumnHeadingFn('Name'),
-                prop: keys.name,
+                prop: 'name',
                 render(prop, row) {
                   return getDisplayValue(row[prop]);
                 },
@@ -99,7 +90,7 @@ class ServiceNetworkingConfigSection extends ServiceConfigBaseSectionDisplay {
               },
               {
                 heading: getColumnHeadingFn('Protocol'),
-                prop: keys.protocol,
+                prop: 'protocol',
                 className: getColumnClassNameFn(),
                 render(prop, row) {
                   let protocol = row[prop] || '';
@@ -110,11 +101,19 @@ class ServiceNetworkingConfigSection extends ServiceConfigBaseSectionDisplay {
                 sortable: true
               },
               {
-                heading: getColumnHeadingFn('Port'),
-                prop: keys.port,
+                heading: getColumnHeadingFn('Host Port'),
+                prop: 'port',
                 className: getColumnClassNameFn(),
                 render(prop, row) {
-                  // TODO: Figure out how to determine static or dynamic port.
+                  return getDisplayValue(row['port'] || row['hostPort']);
+                },
+                sortable: true
+              },
+              {
+                heading: getColumnHeadingFn('Container Port'),
+                prop: 'containerPort',
+                className: getColumnClassNameFn(),
+                render(prop, row) {
                   return getDisplayValue(row[prop]);
                 },
                 sortable: true
@@ -124,12 +123,14 @@ class ServiceNetworkingConfigSection extends ServiceConfigBaseSectionDisplay {
                 prop: '',
                 className: getColumnClassNameFn(),
                 render(prop, row) {
-                  const {port, labels} = row;
+                  const {port, containerPort, labels} = row;
+                  // For the HOST network we pick port (hostPort) and for USER/BRIDGE - containerPort
+                  const lbPort = port || containerPort;
 
                   if (labels && ServiceConfigUtil.hasVIPLabel(labels)) {
                     return ServiceConfigUtil.buildHostName(
                       appDefinition.id,
-                      port
+                      lbPort
                     );
                   }
 
