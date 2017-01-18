@@ -52,7 +52,8 @@ const APP_ERROR_VALIDATORS = [
   AppValidators.App,
   MarathonAppValidators.containsCmdArgsOrContainer,
   MarathonAppValidators.complyWithResidencyRules,
-  MarathonAppValidators.complyWithIpAddressRules
+  MarathonAppValidators.complyWithIpAddressRules,
+  MarathonAppValidators.containerVolmesPath
 ];
 
 const POD_ERROR_VALIDATORS = [
