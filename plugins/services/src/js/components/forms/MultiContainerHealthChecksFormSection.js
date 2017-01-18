@@ -13,6 +13,7 @@ import FormGroup from '../../../../../../src/js/components/form/FormGroup';
 import FormGroupContainer from '../../../../../../src/js/components/form/FormGroupContainer';
 import FormRow from '../../../../../../src/js/components/form/FormRow';
 import {HTTP, TCP, COMMAND} from '../../constants/HealthCheckProtocols';
+import Icon from '../../../../../../src/js/components/Icon';
 
 class MultiContainerHealthChecksFormSection extends Component {
   getAdvancedSettings(healthCheck, path, errorsLens) {
@@ -234,13 +235,10 @@ class MultiContainerHealthChecksFormSection extends Component {
       return (
         <div key={container.name}>
           <div className="form-row-element">
-            <h2 className="form-header flush-top short-bottom">
-              Health Checks {container.name}
-            </h2>
-            <p>
-              Health checks may be specified per application to be run against
-              the application{'\''}s tasks.
-            </p>
+            <h3 className="form-header short-bottom">
+              <Icon id="container" size="medium" color="purple" />
+              {` ${container.name}`}
+            </h3>
           </div>
 
           {this.getHealthChecksBody(container, index)}
@@ -258,7 +256,7 @@ class MultiContainerHealthChecksFormSection extends Component {
           <h2 className="form-header flush-top short-bottom">
             Health Checks
           </h2>
-          <p>
+          <p className="flush-bottom">
             Please <a onClick={handleTabChange.bind(null, 'services')} className="clickable">add a container</a> before configuring health checks.
           </p>
         </div>
@@ -267,6 +265,13 @@ class MultiContainerHealthChecksFormSection extends Component {
 
     return (
       <div className="form flush-bottom">
+        <h2 className="form-header flush-top short-bottom">
+          Health Checks
+        </h2>
+        <p>
+          Health checks may be specified per application to be run against
+          the application{'\''}s tasks.
+        </p>
         {this.getContainerHealthChecks(data.containers)}
       </div>
     );
