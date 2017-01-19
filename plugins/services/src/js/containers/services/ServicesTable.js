@@ -246,14 +246,11 @@ class ServicesTable extends React.Component {
   }
 
   renderStats(prop, service) {
-    const instancesCount = service.getInstancesCount();
     const resource = service.getResources()[prop];
-
-    const value = resource * instancesCount;
 
     return (
       <span>
-        {Units.formatResource(prop, value)}
+        {Units.formatResource(prop, resource)}
       </span>
     );
   }
