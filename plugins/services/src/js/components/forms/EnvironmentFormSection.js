@@ -27,7 +27,7 @@ class EnvironmentFormSection extends Component {
       return (
         <FormRow key={key}>
           <FormGroup
-            className="column-4"
+            className="column-6"
             required={false}>
             {keyLabel}
             <FieldInput
@@ -37,7 +37,7 @@ class EnvironmentFormSection extends Component {
             <span className="emphasis form-colon">:</span>
           </FormGroup>
           <FormGroup
-            className="column-4"
+            className="column-6"
             required={false}
             showError={Boolean(errors[env.key])}>
             {valueLabel}
@@ -47,7 +47,7 @@ class EnvironmentFormSection extends Component {
               value={env.value}/>
             <FieldError>{errors[env.key]}</FieldError>
           </FormGroup>
-          <FormGroup className="flex flex-item-align-end column-2 flush-left">
+          <FormGroup className="flex flex-item-align-end column-auto flush-left">
             <DeleteRowButton
               onClick={this.props.onRemoveItem.bind(this, {value: key, path: 'env'})}/>
           </FormGroup>
@@ -70,7 +70,7 @@ class EnvironmentFormSection extends Component {
       return (
         <FormRow key={key}>
           <FormGroup
-            className="column-4">
+            className="column-6">
             {keyLabel}
             <FieldInput
               name={`labels.${key}.key`}
@@ -79,7 +79,7 @@ class EnvironmentFormSection extends Component {
             <span className="emphasis form-colon">:</span>
           </FormGroup>
           <FormGroup
-            className="column-4"
+            className="column-6"
             required={false}
             showError={Boolean(errors[label.key])}>
             {valueLabel}
@@ -89,7 +89,7 @@ class EnvironmentFormSection extends Component {
               value={label.value}/>
             <FieldError>{errors[label.key]}</FieldError>
           </FormGroup>
-          <FormGroup className="flex flex-item-align-end column-2 flush-left">
+          <FormGroup className="flex flex-item-align-end column-auto flush-left">
             <DeleteRowButton
               onClick={this.props.onRemoveItem.bind(this, {value: key, path: 'labels'})}/>
           </FormGroup>
