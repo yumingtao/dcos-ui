@@ -457,7 +457,7 @@ class ContainerServiceFormSection extends Component {
             <FieldInput
               min="0.001"
               name="cpus"
-              step="0.1"
+              step="any"
               type="number"
               value={findNestedPropertyInObject(data, cpusPath)} />
             <FieldError>{cpusErrors}</FieldError>
