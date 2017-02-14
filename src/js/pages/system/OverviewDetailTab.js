@@ -27,9 +27,9 @@ const METHODS_TO_BIND = [
   'handleClusterConfigModalOpen'
 ];
 
-const ClusterDetailsBreadcrumbs = () => {
+const SystemOverviewBreadcrumbs = () => {
   const crumbs = [
-    <Link to="/cluster" key={-1}>Cluster</Link>
+    <Link to="/system-overview" key={-1}>System Overview</Link>
   ];
 
   return <Page.Header.Breadcrumbs iconID="cluster" breadcrumbs={crumbs} />;
@@ -190,7 +190,7 @@ class OverviewDetailTab extends mixin(StoreMixin) {
     return (
       <Page>
         <Page.Header actions={this.getPageHeaderActions()}
-          breadcrumbs={<ClusterDetailsBreadcrumbs />} />
+          breadcrumbs={<SystemOverviewBreadcrumbs />} />
         <div className="container">
           <ConfigurationMap>
             <ConfigurationMapHeading className="flush-top">
@@ -213,7 +213,7 @@ class OverviewDetailTab extends mixin(StoreMixin) {
 
 OverviewDetailTab.routeConfig = {
   label: 'Overview',
-  matches: /^\/cluster\/details/
+  matches: /^\/system-overview\/details/
 };
 
 module.exports = OverviewDetailTab;
