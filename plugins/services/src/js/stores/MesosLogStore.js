@@ -57,7 +57,7 @@ class MesosLogStore extends GetSetBaseStore {
           this.processLogEntry(action.slaveID, action.path, action.data);
           break;
         case REQUEST_MESOS_LOG_ERROR:
-          this.processLogError(action.slaveID, action.path);
+          this.processLogError(action.slaveID, action.path, action.xhr);
           break;
         case REQUEST_PREVIOUS_MESOS_LOG_SUCCESS:
           this.processLogPrepend(action.slaveID, action.path, action.data);
@@ -192,7 +192,7 @@ class MesosLogStore extends GetSetBaseStore {
     this.emit(MESOS_LOG_CHANGE, path, 'prepend');
   }
 
-  processLogError(slaveID, path) {
+  processLogError(slaveID, path, xhr) {
     const logBuffer = this.get(path);
     if (!logBuffer) {
       // Stop tailing immediately if listener decided to call stopTailing
@@ -205,7 +205,7 @@ class MesosLogStore extends GetSetBaseStore {
         .fetchLog(slaveID, path, logBuffer.getEnd(), MAX_FILE_SIZE);
     }, Config.tailRefresh);
 
-    this.emit(MESOS_LOG_REQUEST_ERROR, path);
+    this.emit(MESOS_LOG_REQUEST_ERROR, path, xhr);
   }
 
   processLogPrependError(slaveID, path) {

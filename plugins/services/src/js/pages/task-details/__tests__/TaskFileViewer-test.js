@@ -1,6 +1,6 @@
 jest.dontMock('../../../../../../../src/js/components/Icon');
 jest.dontMock('../../../components/MesosLogView');
-jest.dontMock('../../../../../../../src/js/components/RequestErrorMsg');
+jest.dontMock('../../../../../../../src/js/components/ContextualXHRError');
 jest.dontMock('../TaskFileViewer');
 jest.dontMock('../../../../../../../src/js/components/FilterBar');
 

@@ -4,11 +4,11 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import ReactDOM from 'react-dom';
 import {StoreMixin} from 'mesosphere-shared-reactjs';
 
+import ContextualXHRError from '../../../../../src/js/components/ContextualXHRError';
 import DOMUtils from '../../../../../src/js/utils/DOMUtils';
 import Highlight from './Highlight';
 import Loader from '../../../../../src/js/components/Loader';
 import MesosLogStore from '../stores/MesosLogStore';
-import RequestErrorMsg from '../../../../../src/js/components/RequestErrorMsg';
 import TaskDirectoryStore from '../stores/TaskDirectoryStore';
 import Util from '../../../../../src/js/utils/Util';
 
@@ -26,7 +26,7 @@ class MesosLogView extends mixin(StoreMixin) {
 
     this.state = {
       fullLog: null,
-      hasLoadingError: 0,
+      mesosLogXHRError: null,
       isAtBottom: true
     };
 
@@ -115,8 +115,8 @@ class MesosLogView extends mixin(StoreMixin) {
       (props.logName !== nextProps.logName) ||
       // Check task (slave_id is the only property being used)
       (props.task.slave_id !== nextProps.task.slave_id) ||
-      // Check hasLoadingError
-      (state.hasLoadingError !== nextState.hasLoadingError) ||
+      // Check mesosLogXHRError
+      (state.mesosLogXHRError !== nextState.mesosLogXHRError) ||
       // Check fullLog
       (state.fullLog !== nextState.fullLog) ||
       // Check isAtBottom
@@ -157,14 +157,14 @@ class MesosLogView extends mixin(StoreMixin) {
     this.checkIfAwayFromBottom(this.refs.logContainer);
   }
 
-  onMesosLogStoreError(path) {
+  onMesosLogStoreError(path, xhr) {
     // Check the filePath before we reload
     if (path !== this.props.filePath) {
       // This event is not for our filePath
       return;
     }
 
-    this.setState({hasLoadingError: this.state.hasLoadingError + 1});
+    this.setState({mesosLogXHRError: xhr});
   }
 
   onMesosLogStoreSuccess(path, direction) {
@@ -185,7 +185,7 @@ class MesosLogView extends mixin(StoreMixin) {
     }
 
     const fullLog = MesosLogStore.get(filePath).getFullLog();
-    this.setState({fullLog}, () => {
+    this.setState({mesosLogXHRError: null, fullLog}, () => {
       // This allows the user to stay at the place of the log they were at
       // before the prepend.
       if (direction === 'prepend' && previousScrollHeight) {
@@ -273,7 +273,7 @@ class MesosLogView extends mixin(StoreMixin) {
   }
 
   getErrorScreen() {
-    return <RequestErrorMsg />;
+    return <ContextualXHRError xhr={this.state.mesosLogXHRError} />;
   }
 
   getLog() {
@@ -348,8 +348,8 @@ class MesosLogView extends mixin(StoreMixin) {
   render() {
     const {props, state} = this;
 
-    if (state.hasLoadingError >= 3) {
-      return this.getErrorScreen();
+    if (state.mesosLogXHRError) {
+      this.getErrorScreen();
     }
 
     if (props.filePath && props.logName && state.fullLog == null) {
