@@ -21,6 +21,7 @@ const METHODS_TO_BIND = [
   'handleItemSelection'
 ];
 
+// Server send events doesn't bubble an appropriate event so we use this
 const EVENT_STREAM_ERROR = {status: 400, message: 'EventStream Error'};
 
 // Number of lines (entries) we asses to be a page

@@ -304,7 +304,7 @@ class TaskDetail extends mixin(InternalStorageMixin, TabsMixin, StoreMixin) {
   getSubView() {
     const {directory, selectedLogFile, taskDirectoryXHRError} = this.state;
 
-     if (taskDirectoryXHRError) {
+    if (taskDirectoryXHRError) {
       return this.getErrorScreen();
     }
 
