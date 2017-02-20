@@ -19,6 +19,7 @@ const TestUtils = require('react-addons-test-utils');
 /* eslint-disable no-unused-vars */
 const MesosSummaryStore = require('../../../../../../../src/js/stores/MesosSummaryStore');
 /* eslint-enable no-unused-vars */
+const DCOSStore = require('foundation-ui').DCOSStore;
 const MesosStateStore = require('../../../../../../../src/js/stores/MesosStateStore');
 const Task = require('../../../structs/Task');
 const TaskDirectory = require('../../../structs/TaskDirectory');
@@ -26,6 +27,10 @@ const TaskDirectoryStore = require('../../../stores/TaskDirectoryStore');
 const TaskDetail = require('../TaskDetail');
 
 describe('TaskDetail', function () {
+  DCOSStore.serviceTree = {
+    findItemById: jest.fn()
+  };
+
   beforeEach(function () {
     this.container = global.document.createElement('div');
     this.params = {
