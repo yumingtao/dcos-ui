@@ -16,4 +16,8 @@ function EmptyLogScreen({logName}) {
   );
 };
 
+EmptyLogScreen.propTypes = {
+  logName: React.PropTypes.string
+};
+
 module.exports = EmptyLogScreen;
