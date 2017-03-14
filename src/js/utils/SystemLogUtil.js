@@ -67,6 +67,46 @@ const SystemLogUtil = {
     }, []);
 
     return `${Config.logsAPIPrefix}/${nodeID}/logs/v1/${base}/${idArray.join('/')}${endpoint}?${paramsArray.join('&')}`;
+  },
+
+  accumulatedThrottle(callback, wait, useAccumulation = true) {
+    let timeoutID;
+    let accumulatedData = [];
+
+    function callFunction(context, args) {
+      if (useAccumulation) {
+        // Provide both accumulatedData instead of regular arguments
+        callback.call(context, accumulatedData);
+        // Clear the accumulated data array
+        accumulatedData = [];
+      } else {
+        callback.apply(context, args);
+      }
+    }
+
+    return function () {
+      const args = arguments;
+      // Gather data for each call
+      if (useAccumulation) {
+        accumulatedData.push(args);
+      }
+
+      if (!timeoutID) {
+        const context = this;
+
+        // Call callback immediately
+        callFunction(context, args);
+
+        timeoutID = setTimeout(function () {
+          // Call callback after wait
+          callFunction(context, args);
+
+          // Clean up our timeoutID
+          clearTimeout(timeoutID);
+          timeoutID = undefined;
+        }, wait);
+      }
+    };
   }
 };
 
