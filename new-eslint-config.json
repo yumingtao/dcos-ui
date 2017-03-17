@@ -1,0 +1,1777 @@
+{
+  "globals": {
+    "__dirname": false,
+    "__filename": false,
+    "arguments": false,
+    "Buffer": false,
+    "clearImmediate": false,
+    "clearInterval": false,
+    "clearTimeout": false,
+    "console": false,
+    "exports": true,
+    "GLOBAL": false,
+    "global": false,
+    "Intl": false,
+    "module": false,
+    "process": false,
+    "require": false,
+    "root": false,
+    "setImmediate": false,
+    "setInterval": false,
+    "setTimeout": false,
+    "Array": false,
+    "ArrayBuffer": false,
+    "Boolean": false,
+    "constructor": false,
+    "DataView": false,
+    "Date": false,
+    "decodeURI": false,
+    "decodeURIComponent": false,
+    "encodeURI": false,
+    "encodeURIComponent": false,
+    "Error": false,
+    "escape": false,
+    "eval": false,
+    "EvalError": false,
+    "Float32Array": false,
+    "Float64Array": false,
+    "Function": false,
+    "hasOwnProperty": false,
+    "Infinity": false,
+    "Int16Array": false,
+    "Int32Array": false,
+    "Int8Array": false,
+    "isFinite": false,
+    "isNaN": false,
+    "isPrototypeOf": false,
+    "JSON": false,
+    "Map": false,
+    "Math": false,
+    "NaN": false,
+    "Number": false,
+    "Object": false,
+    "parseFloat": false,
+    "parseInt": false,
+    "Promise": false,
+    "propertyIsEnumerable": false,
+    "Proxy": false,
+    "RangeError": false,
+    "ReferenceError": false,
+    "Reflect": false,
+    "RegExp": false,
+    "Set": false,
+    "String": false,
+    "Symbol": false,
+    "SyntaxError": false,
+    "System": false,
+    "toLocaleString": false,
+    "toString": false,
+    "TypeError": false,
+    "Uint16Array": false,
+    "Uint32Array": false,
+    "Uint8Array": false,
+    "Uint8ClampedArray": false,
+    "undefined": false,
+    "unescape": false,
+    "URIError": false,
+    "valueOf": false,
+    "WeakMap": false,
+    "WeakSet": false,
+    "SVGTSpanElement": false,
+    "menubar": false,
+    "SVGTransformable": false,
+    "SVGPatternElement": false,
+    "ImageBitmap": false,
+    "frames": false,
+    "MediaKeyEvent": false,
+    "FileError": false,
+    "SVGPathSegCurvetoCubicAbs": false,
+    "SVGPathSegLinetoHorizontalRel": false,
+    "PerformanceResourceTiming": false,
+    "PushSubscription": false,
+    "IDBOpenDBRequest": false,
+    "SVGAnimatedRect": false,
+    "SVGPathSegLinetoHorizontalAbs": false,
+    "XMLHttpRequestEventTarget": false,
+    "Cache": false,
+    "SVGElementInstanceList": false,
+    "MimeType": false,
+    "AnimationPlaybackEvent": false,
+    "SVGStyleElement": false,
+    "AnimationEffectReadOnly": false,
+    "AudioContext": false,
+    "TextDecoder": false,
+    "MIDIAccess": false,
+    "SVGAnimatedPathData": false,
+    "Comment": false,
+    "InputMethodContext": false,
+    "ProcessingInstruction": false,
+    "document": false,
+    "SVGViewSpec": false,
+    "close": false,
+    "SVGAnimatedLengthList": false,
+    "HTMLMenuElement": false,
+    "DeviceMotionEvent": false,
+    "scrollTo": false,
+    "ClientRectList": false,
+    "SiteBoundCredential": false,
+    "WebGLShader": false,
+    "SVGScriptElement": false,
+    "HTMLButtonElement": false,
+    "SVGFontElement": false,
+    "location": false,
+    "HTMLInputElement": false,
+    "outerWidth": false,
+    "IDBEnvironment": false,
+    "SVGFEFuncRElement": false,
+    "SecurityPolicyViolationEvent": false,
+    "indexedDB": false,
+    "SVGFEMorphologyElement": false,
+    "IDBVersionChangeEvent": false,
+    "SVGFEImageElement": false,
+    "HTMLParagraphElement": false,
+    "HTMLTableRowElement": false,
+    "SVGFEDistantLightElement": false,
+    "confirm": false,
+    "ScriptProcessorNode": false,
+    "TextTrackCue": false,
+    "SVGAnimateTransformElement": false,
+    "MediaElementAudioSourceNode": false,
+    "opera": false,
+    "HTMLBaseElement": false,
+    "HTMLTableCaptionElement": false,
+    "AnalyserNode": false,
+    "HTMLModElement": false,
+    "IDBTransaction": false,
+    "SVGTextContentElement": false,
+    "VTTCue": false,
+    "SVGFitToViewBox": false,
+    "HTMLFrameElement": false,
+    "SVGCursorElement": false,
+    "HTMLSpanElement": false,
+    "MediaEncryptedEvent": false,
+    "ClipboardEvent": false,
+    "PerformanceMeasure": false,
+    "HTMLUListElement": false,
+    "IDBFactory": false,
+    "SVGFontFaceElement": false,
+    "SVGFEDisplacementMapElement": false,
+    "AutocompleteErrorEvent": false,
+    "SVGGradientElement": false,
+    "WebGLTexture": false,
+    "HTMLMeterElement": false,
+    "SVGAnimatedTransformList": false,
+    "SVGGraphicsElement": false,
+    "history": false,
+    "PageTransitionEvent": false,
+    "MIDIOutputMap": false,
+    "SVGEvent": false,
+    "MediaStreamAudioDestinationNode": false,
+    "CSS": false,
+    "resizeBy": false,
+    "AudioBuffer": false,
+    "CSSFontFaceRule": false,
+    "HTMLLinkElement": false,
+    "MediaStreamEvent": false,
+    "SVGCSSRule": false,
+    "XMLHttpRequest": false,
+    "HTMLMapElement": false,
+    "opener": false,
+    "stop": false,
+    "SpeechSynthesisEvent": false,
+    "WebGLContextEvent": false,
+    "Plugin": false,
+    "SVGMaskElement": false,
+    "SVGAElement": false,
+    "SVGFEPointLightElement": false,
+    "CSSStyleRule": false,
+    "DOMStringList": false,
+    "SVGUnitTypes": false,
+    "HTMLHeadElement": false,
+    "onblur": true,
+    "DOMTokenList": false,
+    "DocumentTimeline": false,
+    "CSSKeyframesRule": false,
+    "SVGColorProfileElement": false,
+    "SVGZoomEvent": false,
+    "BeforeUnloadEvent": false,
+    "HTMLLegendElement": false,
+    "pageXOffset": false,
+    "SVGFEMergeNodeElement": false,
+    "SVGFEDiffuseLightingElement": false,
+    "clientInformation": false,
+    "AnimationTimeline": false,
+    "Attr": false,
+    "DataTransfer": false,
+    "PromiseRejectionEvent": false,
+    "devicePixelRatio": false,
+    "SVGPointList": false,
+    "SVGAnimatedEnumeration": false,
+    "window": false,
+    "MediaQueryListEvent": false,
+    "HTMLFieldSetElement": false,
+    "MIDIConnectionEvent": false,
+    "SVGMPathElement": false,
+    "HTMLLabelElement": false,
+    "defaultstatus": false,
+    "addEventListener": false,
+    "SVGTRefElement": false,
+    "History": false,
+    "Debug": false,
+    "SVGHKernElement": false,
+    "MediaSource": false,
+    "TextEncoder": false,
+    "NodeFilter": false,
+    "SVGGeometryElement": false,
+    "SVGTextPositioningElement": false,
+    "SVGFEFuncGElement": false,
+    "WebGLFramebuffer": false,
+    "Blob": false,
+    "NodeIterator": false,
+    "MutationRecord": false,
+    "SVGICCColor": false,
+    "screen": false,
+    "HTMLDetailsElement": false,
+    "PeriodicWave": false,
+    "requestIdleCallback": false,
+    "statusbar": false,
+    "HTMLOptGroupElement": false,
+    "AnimationEffectTimingReadOnly": false,
+    "SVGAnimatedInteger": false,
+    "self": false,
+    "HTMLFormControlsCollection": false,
+    "RadioNodeList": false,
+    "AudioDestinationNode": false,
+    "DataTransferItemList": false,
+    "scroll": false,
+    "Screen": false,
+    "SVGFilterPrimitiveStandardAttributes": false,
+    "HTMLParamElement": false,
+    "SharedKeyframeList": false,
+    "HTMLLayerElement": false,
+    "scrollbars": false,
+    "DOMImplementation": false,
+    "CryptoKey": false,
+    "HTMLLIElement": false,
+    "onresize": true,
+    "SVGFilterElement": false,
+    "HTMLCanvasElement": false,
+    "HTMLContentElement": false,
+    "SVGTransformList": false,
+    "WebGLRenderbuffer": false,
+    "EventTarget": false,
+    "open": false,
+    "CSSImportRule": false,
+    "ShadowRoot": false,
+    "SVGRect": false,
+    "SVGTextPathElement": false,
+    "MimeTypeArray": false,
+    "CharacterData": false,
+    "defaultStatus": false,
+    "HTMLObjectElement": false,
+    "focus": false,
+    "CSSUnknownRule": false,
+    "pageYOffset": false,
+    "WebGLRenderingContext": false,
+    "SVGFontFaceSrcElement": false,
+    "matchMedia": false,
+    "MediaError": false,
+    "CredentialsContainer": false,
+    "SVGAnimatedPreserveAspectRatio": false,
+    "ServiceWorker": false,
+    "CSSMediaRule": false,
+    "top": false,
+    "SVGPolylineElement": false,
+    "GamepadButton": false,
+    "BiquadFilterNode": false,
+    "ChannelMergerNode": false,
+    "KeyframeEffectReadOnly": false,
+    "SVGPathSegLinetoVerticalRel": false,
+    "Worker": false,
+    "CSSRuleList": false,
+    "FileList": false,
+    "MediaStream": false,
+    "CSSKeyframeRule": false,
+    "SVGSymbolElement": false,
+    "TextTrackList": false,
+    "SVGStylable": false,
+    "Gamepad": false,
+    "SVGAnimateColorElement": false,
+    "SVGFontFaceNameElement": false,
+    "SVGFEFuncBElement": false,
+    "SVGRadialGradientElement": false,
+    "innerWidth": false,
+    "scrollY": false,
+    "cancelAnimationFrame": false,
+    "FormData": false,
+    "SVGAnimatedNumber": false,
+    "XPathNamespace": false,
+    "HTMLMarqueeElement": false,
+    "SVGRectElement": false,
+    "resizeTo": false,
+    "UIEvent": false,
+    "DocumentType": false,
+    "requestAnimationFrame": false,
+    "Option": false,
+    "SVGLength": false,
+    "SVGTitleElement": false,
+    "HTMLSourceElement": false,
+    "SVGFEComponentTransferElement": false,
+    "SVGFEMergeElement": false,
+    "WheelEvent": false,
+    "caches": false,
+    "name": false,
+    "SVGFEGaussianBlurElement": false,
+    "SVGViewElement": false,
+    "HTMLQuoteElement": false,
+    "onunload": true,
+    "MediaStreamAudioSourceNode": false,
+    "onbeforeunload": true,
+    "BatteryManager": false,
+    "RTCIceCandidate": false,
+    "PushManager": false,
+    "SVGSetElement": false,
+    "HTMLFrameSetElement": false,
+    "Path2D": false,
+    "SVGLinearGradientElement": false,
+    "SVGZoomAndPan": false,
+    "SVGVKernElement": false,
+    "SubtleCrypto": false,
+    "HTMLPreElement": false,
+    "Audio": false,
+    "Text": false,
+    "IDBCursorWithValue": false,
+    "File": false,
+    "HTMLTableColElement": false,
+    "SVGPathSegClosePath": false,
+    "length": false,
+    "FocusEvent": false,
+    "onfocus": true,
+    "Request": false,
+    "HTMLBRElement": false,
+    "HTMLEmbedElement": false,
+    "screenTop": false,
+    "DocumentFragment": false,
+    "Event": false,
+    "SVGPathSegCurvetoQuadraticAbs": false,
+    "IDBIndex": false,
+    "Location": false,
+    "MediaKeys": false,
+    "SVGForeignObjectElement": false,
+    "SVGDiscardElement": false,
+    "CSSStyleDeclaration": false,
+    "DOMException": false,
+    "ConvolverNode": false,
+    "TextMetrics": false,
+    "SVGFEBlendElement": false,
+    "styleMedia": false,
+    "HTMLIsIndexElement": false,
+    "screenX": false,
+    "fetch": false,
+    "IDBObjectStore": false,
+    "HTMLDataListElement": false,
+    "SVGDocument": false,
+    "AudioParam": false,
+    "performance": false,
+    "localStorage": false,
+    "DOMSettableTokenList": false,
+    "HTMLBlockquoteElement": false,
+    "SVGGElement": false,
+    "CustomEvent": false,
+    "CanvasGradient": false,
+    "getComputedStyle": false,
+    "HTMLOptionsCollection": false,
+    "RTCSessionDescription": false,
+    "MediaKeyMessageEvent": false,
+    "SVGComponentTransferFunctionElement": false,
+    "CDATASection": false,
+    "RTCPeerConnection": false,
+    "AudioNode": false,
+    "innerHeight": false,
+    "toolbar": false,
+    "XPathEvaluator": false,
+    "ServiceWorkerContainer": false,
+    "CompositionEvent": false,
+    "IDBKeyRange": false,
+    "StorageEvent": false,
+    "HTMLAppletElement": false,
+    "SVGTextElement": false,
+    "DelayNode": false,
+    "MessagePort": false,
+    "TouchList": false,
+    "HTMLVideoElement": false,
+    "HTMLMediaElement": false,
+    "Range": false,
+    "SVGFETileElement": false,
+    "ClientRect": false,
+    "blur": false,
+    "SVGAnimatedNumberList": false,
+    "HTMLTitleElement": false,
+    "removeEventListener": false,
+    "SVGPreserveAspectRatio": false,
+    "CanvasRenderingContext2D": false,
+    "SVGFEColorMatrixElement": false,
+    "openDatabase": false,
+    "DragEvent": false,
+    "Document": false,
+    "HTMLOptionElement": false,
+    "SVGFETurbulenceElement": false,
+    "SVGPathSegCurvetoCubicSmoothRel": false,
+    "AudioListener": false,
+    "SVGMarkerElement": false,
+    "WaveShaperNode": false,
+    "crypto": false,
+    "DOMStringMap": false,
+    "OfflineAudioContext": false,
+    "ValidityState": false,
+    "SVGStringList": false,
+    "PerformanceNavigation": false,
+    "MessageEvent": false,
+    "SVGFESpotLightElement": false,
+    "KeyboardEvent": false,
+    "SVGUseElement": false,
+    "Credential": false,
+    "HTMLFontElement": false,
+    "SVGFESpecularLightingElement": false,
+    "XPathException": false,
+    "SVGPathSegLinetoRel": false,
+    "PerformanceEntry": false,
+    "CacheStorage": false,
+    "HTMLMetaElement": false,
+    "locationbar": false,
+    "XPathExpression": false,
+    "print": false,
+    "SVGSVGElement": false,
+    "SVGPathSegCurvetoQuadraticSmoothAbs": false,
+    "Touch": false,
+    "scrollBy": false,
+    "SVGAnimatedString": false,
+    "HTMLUnknownElement": false,
+    "CSSViewportRule": false,
+    "HTMLOutputElement": false,
+    "GamepadEvent": false,
+    "SVGAnimatedPoints": false,
+    "SVGPathSegList": false,
+    "FileReader": false,
+    "StyleSheet": false,
+    "Element": false,
+    "SVGElementInstance": false,
+    "HTMLImageElement": false,
+    "TouchEvent": false,
+    "SVGColor": false,
+    "CSSRule": false,
+    "SVGCircleElement": false,
+    "btoa": false,
+    "HTMLDListElement": false,
+    "ErrorEvent": false,
+    "MediaKeyStatusMap": false,
+    "IDBCursor": false,
+    "SVGAnimatedAngle": false,
+    "IntersectionObserverEntry": false,
+    "XMLHttpRequestProgressEvent": false,
+    "KeyframeEffect": false,
+    "SVGPoint": false,
+    "SVGPathSegCurvetoCubicRel": false,
+    "dispatchEvent": false,
+    "CSSSupportsRule": false,
+    "alert": false,
+    "WebGLShaderPrecisionFormat": false,
+    "HTMLAudioElement": false,
+    "HTMLOListElement": false,
+    "SVGPathSegLinetoVerticalAbs": false,
+    "SVGMissingGlyphElement": false,
+    "SVGAltGlyphDefElement": false,
+    "MouseEvent": false,
+    "WebGLActiveInfo": false,
+    "SVGPathSegCurvetoQuadraticRel": false,
+    "SVGFECompositeElement": false,
+    "IntersectionObserver": false,
+    "SVGPathSeg": false,
+    "SVGSwitchElement": false,
+    "TimeRanges": false,
+    "HashChangeEvent": false,
+    "SVGFontFaceFormatElement": false,
+    "URL": false,
+    "MutationEvent": false,
+    "atob": false,
+    "outerHeight": false,
+    "MessageChannel": false,
+    "PasswordCredential": false,
+    "SVGDescElement": false,
+    "HTMLStyleElement": false,
+    "XDomainRequest": false,
+    "SVGPathSegCurvetoCubicSmoothAbs": false,
+    "MediaStreamTrack": false,
+    "WebGLUniformLocation": false,
+    "SVGImageElement": false,
+    "GainNode": false,
+    "SharedWorker": false,
+    "SVGPathSegMovetoAbs": false,
+    "HTMLTemplateElement": false,
+    "MIDIInput": false,
+    "DeviceOrientationEvent": false,
+    "OscillatorNode": false,
+    "SVGLineElement": false,
+    "SVGEllipseElement": false,
+    "IDBDatabase": false,
+    "postMessage": false,
+    "HTMLTableSectionElement": false,
+    "HTMLProgressElement": false,
+    "HTMLAllCollection": false,
+    "TransitionEvent": false,
+    "WebGLProgram": false,
+    "NodeList": false,
+    "DataTransferItem": false,
+    "URLSearchParams": false,
+    "Notification": false,
+    "HTMLShadowElement": false,
+    "DOMError": false,
+    "Response": false,
+    "HTMLPictureElement": false,
+    "SVGAnimateElement": false,
+    "MIDIInputMap": false,
+    "moveTo": false,
+    "SpeechSynthesisUtterance": false,
+    "WebSocket": false,
+    "ApplicationCache": false,
+    "SVGFEConvolveMatrixElement": false,
+    "SVGAnimatedLength": false,
+    "Performance": false,
+    "ReadableByteStream": false,
+    "HTMLAreaElement": false,
+    "HTMLCollection": false,
+    "Animation": false,
+    "XPathNSResolver": false,
+    "MediaKeyError": false,
+    "Headers": false,
+    "CSSTransition": false,
+    "PluginArray": false,
+    "MediaList": false,
+    "AnimationEvent": false,
+    "HTMLKeygenElement": false,
+    "AudioProcessingEvent": false,
+    "status": false,
+    "AudioBufferSourceNode": false,
+    "SVGTests": false,
+    "SVGAnimateMotionElement": false,
+    "SVGAnimationElement": false,
+    "OfflineAudioCompletionEvent": false,
+    "FontFace": false,
+    "CloseEvent": false,
+    "TimeEvent": false,
+    "SVGAltGlyphItemElement": false,
+    "parent": false,
+    "SVGFEOffsetElement": false,
+    "DOMParser": false,
+    "Permissions": false,
+    "Navigator": false,
+    "XSLTProcessor": false,
+    "XMLDocument": false,
+    "moveBy": false,
+    "HTMLDialogElement": false,
+    "SVGPolygonElement": false,
+    "SVGFEFloodElement": false,
+    "CanvasPattern": false,
+    "HTMLHeadingElement": false,
+    "getSelection": false,
+    "PerformanceMark": false,
+    "HTMLScriptElement": false,
+    "external": false,
+    "HTMLTableCellElement": false,
+    "MIDIMessageEvent": false,
+    "SVGFEDropShadowElement": false,
+    "SVGURIReference": false,
+    "SVGFEFuncAElement": false,
+    "DynamicsCompressorNode": false,
+    "SVGClipPathElement": false,
+    "MutationObserver": false,
+    "HTMLSelectElement": false,
+    "ReadableStream": false,
+    "SVGPaint": false,
+    "find": false,
+    "SVGPathSegArcAbs": false,
+    "SVGMatrix": false,
+    "HTMLAnchorElement": false,
+    "onload": true,
+    "MediaQueryList": false,
+    "speechSynthesis": false,
+    "HTMLIFrameElement": false,
+    "screenLeft": false,
+    "closed": false,
+    "Node": false,
+    "PopStateEvent": false,
+    "TextTrackCueList": false,
+    "SVGNumberList": false,
+    "XMLSerializer": false,
+    "BarProp": false,
+    "navigator": false,
+    "HTMLBodyElement": false,
+    "HTMLHtmlElement": false,
+    "SVGColorProfileRule": false,
+    "personalbar": false,
+    "NamedNodeMap": false,
+    "XPathResult": false,
+    "prompt": false,
+    "PerformanceTiming": false,
+    "PermissionStatus": false,
+    "ServiceWorkerRegistration": false,
+    "AnimationEffectTiming": false,
+    "FederatedCredential": false,
+    "CSSAnimation": false,
+    "HTMLDocument": false,
+    "SVGLocatable": false,
+    "sessionStorage": false,
+    "Storage": false,
+    "Selection": false,
+    "TextTrack": false,
+    "WebGLBuffer": false,
+    "ApplicationCacheErrorEvent": false,
+    "InputEvent": false,
+    "TextEvent": false,
+    "MediaKeySession": false,
+    "CSSStyleSheet": false,
+    "MIDIPort": false,
+    "EventSource": false,
+    "HTMLHRElement": false,
+    "SVGPathSegArcRel": false,
+    "HTMLDirectoryElement": false,
+    "SVGLangSpace": false,
+    "SVGNumber": false,
+    "Image": false,
+    "SVGAltGlyphElement": false,
+    "applicationCache": false,
+    "HTMLTableElement": false,
+    "ElementTimeControl": false,
+    "MIDIOutput": false,
+    "SVGRenderingIntent": false,
+    "MediaKeySystemAccess": false,
+    "HTMLTrackElement": false,
+    "ScreenOrientation": false,
+    "SVGFontFaceUriElement": false,
+    "TreeWalker": false,
+    "SVGStopElement": false,
+    "ProgressEvent": false,
+    "CSSPageRule": false,
+    "HTMLFormElement": false,
+    "SVGPathSegMovetoRel": false,
+    "screenY": false,
+    "SVGAngle": false,
+    "SVGGlyphElement": false,
+    "SVGPathSegLinetoAbs": false,
+    "SVGPathSegCurvetoQuadraticSmoothRel": false,
+    "TrackEvent": false,
+    "SVGExternalResourcesRequired": false,
+    "SVGMetadataElement": false,
+    "onerror": true,
+    "SVGPathElement": false,
+    "XMLHttpRequestUpload": false,
+    "SVGDefsElement": false,
+    "frameElement": false,
+    "showModalDialog": false,
+    "event": false,
+    "ChannelSplitterNode": false,
+    "Window": false,
+    "scrollX": false,
+    "HTMLTextAreaElement": false,
+    "SVGAnimatedBoolean": false,
+    "IDBRequest": false,
+    "StyleSheetList": false,
+    "offscreenBuffering": false,
+    "customElements": false,
+    "ImageData": false,
+    "SVGTransform": false,
+    "SVGGlyphRefElement": false,
+    "HTMLDivElement": false,
+    "SVGElement": false,
+    "HTMLElement": false,
+    "Crypto": false,
+    "SVGLengthList": false,
+    "afterAll": false,
+    "afterEach": false,
+    "beforeAll": false,
+    "beforeEach": false,
+    "describe": false,
+    "expect": true,
+    "fail": false,
+    "fdescribe": false,
+    "fit": false,
+    "it": true,
+    "jasmine": false,
+    "pending": false,
+    "runs": false,
+    "spyOn": false,
+    "waits": false,
+    "waitsFor": false,
+    "xdescribe": false,
+    "xit": true,
+    "cy": true,
+    "Cypress": true,
+    "context": true,
+    "xcontext": true,
+    "jest": true,
+    "ActiveXObject": true,
+    "Dygraph": true,
+    "d3": true
+  },
+  "env": {
+    "node": true,
+    "es6": true,
+    "browser": true,
+    "jasmine": true
+  },
+  "rules": {
+    "accessor-pairs": "off",
+    "array-callback-return": "off",
+    "block-scoped-var": "error",
+    "complexity": [
+      "off",
+      11
+    ],
+    "consistent-return": "off",
+    "curly": [
+      "error",
+      "multi-line"
+    ],
+    "default-case": [
+      "off",
+      {
+        "commentPattern": "^no default$"
+      }
+    ],
+    "dot-notation": [
+      "off",
+      {
+        "allowKeywords": true
+      }
+    ],
+    "dot-location": [
+      "off",
+      "property"
+    ],
+    "eqeqeq": [
+      "error",
+      "smart"
+    ],
+    "guard-for-in": "error",
+    "no-alert": "warn",
+    "no-caller": "error",
+    "no-case-declarations": "off",
+    "no-div-regex": "off",
+    "no-else-return": "off",
+    "no-empty-function": [
+      "error",
+      {
+        "allow": [
+          "arrowFunctions",
+          "functions",
+          "methods"
+        ]
+      }
+    ],
+    "no-empty-pattern": "error",
+    "no-eq-null": "off",
+    "no-eval": "error",
+    "no-extend-native": "error",
+    "no-extra-bind": "error",
+    "no-extra-label": "off",
+    "no-fallthrough": "error",
+    "no-floating-decimal": "off",
+    "no-global-assign": [
+      "error",
+      {
+        "exceptions": []
+      }
+    ],
+    "no-implicit-coercion": [
+      "off",
+      {
+        "boolean": false,
+        "number": true,
+        "string": true,
+        "allow": []
+      }
+    ],
+    "no-implicit-globals": "off",
+    "no-implied-eval": "error",
+    "no-invalid-this": "off",
+    "no-iterator": "error",
+    "no-labels": [
+      "off",
+      {
+        "allowLoop": false,
+        "allowSwitch": false
+      }
+    ],
+    "no-lone-blocks": "error",
+    "no-loop-func": "error",
+    "no-magic-numbers": [
+      "off",
+      {
+        "ignore": [],
+        "ignoreArrayIndexes": true,
+        "enforceConst": true,
+        "detectObjects": false
+      }
+    ],
+    "no-multi-spaces": "off",
+    "no-multi-str": "error",
+    "no-native-reassign": "off",
+    "no-new": "off",
+    "no-new-func": "error",
+    "no-new-wrappers": "off",
+    "no-octal": "error",
+    "no-octal-escape": "error",
+    "no-param-reassign": [
+      "off",
+      {
+        "props": true
+      }
+    ],
+    "no-proto": "error",
+    "no-redeclare": "error",
+    "no-return-assign": "off",
+    "no-script-url": "error",
+    "no-self-assign": "error",
+    "no-self-compare": "error",
+    "no-sequences": "error",
+    "no-throw-literal": "off",
+    "no-unmodified-loop-condition": "off",
+    "no-unused-expressions": [
+      "error",
+      {
+        "allowShortCircuit": false,
+        "allowTernary": false
+      }
+    ],
+    "no-unused-labels": "error",
+    "no-useless-call": "off",
+    "no-useless-concat": "error",
+    "no-useless-escape": "error",
+    "no-void": "off",
+    "no-warning-comments": [
+      "off",
+      {
+        "terms": [
+          "todo",
+          "fixme",
+          "xxx"
+        ],
+        "location": "start"
+      }
+    ],
+    "no-with": "error",
+    "radix": "off",
+    "vars-on-top": "off",
+    "wrap-iife": [
+      "off",
+      "outside"
+    ],
+    "yoda": "off",
+    "comma-dangle": [
+      "error",
+      "never"
+    ],
+    "no-cond-assign": [
+      "error",
+      "always"
+    ],
+    "no-console": "off",
+    "no-constant-condition": "warn",
+    "no-control-regex": "error",
+    "no-debugger": "error",
+    "no-dupe-args": "error",
+    "no-dupe-keys": "off",
+    "no-duplicate-case": "error",
+    "no-empty": "off",
+    "no-empty-character-class": "error",
+    "no-ex-assign": "error",
+    "no-extra-boolean-cast": "off",
+    "no-extra-parens": [
+      "off",
+      "all",
+      {
+        "conditionalAssign": true,
+        "nestedBinaryExpressions": false,
+        "returnAssign": false
+      }
+    ],
+    "no-extra-semi": "off",
+    "no-func-assign": "error",
+    "no-inner-declarations": "off",
+    "no-invalid-regexp": "error",
+    "no-irregular-whitespace": "error",
+    "no-negated-in-lhs": "off",
+    "no-obj-calls": "error",
+    "no-prototype-builtins": "error",
+    "no-regex-spaces": "error",
+    "no-sparse-arrays": "error",
+    "no-template-curly-in-string": "off",
+    "no-unexpected-multiline": "error",
+    "no-unreachable": "off",
+    "no-unsafe-finally": "error",
+    "no-unsafe-negation": "error",
+    "use-isnan": "error",
+    "valid-jsdoc": [
+      "error",
+      {
+        "requireReturn": false,
+        "requireParamDescription": false
+      }
+    ],
+    "valid-typeof": "error",
+    "callback-return": "off",
+    "global-require": "off",
+    "handle-callback-err": "off",
+    "no-mixed-requires": [
+      "off",
+      false
+    ],
+    "no-new-require": "error",
+    "no-path-concat": "error",
+    "no-process-env": "off",
+    "no-process-exit": "off",
+    "no-restricted-modules": "off",
+    "no-sync": "off",
+    "array-bracket-spacing": [
+      "off",
+      "never"
+    ],
+    "block-spacing": [
+      "off",
+      "always"
+    ],
+    "brace-style": [
+      "off",
+      "1tbs",
+      {
+        "allowSingleLine": true
+      }
+    ],
+    "camelcase": [
+      "off",
+      {
+        "properties": "never"
+      }
+    ],
+    "comma-spacing": [
+      "off",
+      {
+        "before": false,
+        "after": true
+      }
+    ],
+    "comma-style": [
+      "off",
+      "last"
+    ],
+    "computed-property-spacing": [
+      "off",
+      "never"
+    ],
+    "consistent-this": "off",
+    "eol-last": "off",
+    "func-call-spacing": [
+      "off",
+      "never"
+    ],
+    "func-names": "off",
+    "func-style": "off",
+    "id-blacklist": "off",
+    "id-length": "off",
+    "id-match": "off",
+    "indent": [
+      "off",
+      2,
+      {
+        "SwitchCase": 1,
+        "VariableDeclarator": 1,
+        "outerIIFEBody": 1
+      }
+    ],
+    "jsx-quotes": [
+      "off",
+      "prefer-double"
+    ],
+    "key-spacing": [
+      "off",
+      {
+        "beforeColon": false,
+        "afterColon": true
+      }
+    ],
+    "keyword-spacing": [
+      "error",
+      {
+        "before": true,
+        "after": true,
+        "overrides": {
+          "return": {
+            "after": true
+          },
+          "throw": {
+            "after": true
+          },
+          "case": {
+            "after": true
+          }
+        }
+      }
+    ],
+    "linebreak-style": [
+      "error",
+      "unix"
+    ],
+    "lines-around-comment": "off",
+    "max-depth": [
+      "off",
+      4
+    ],
+    "max-len": [
+      "off",
+      100,
+      2,
+      {
+        "ignoreUrls": true,
+        "ignoreComments": false
+      }
+    ],
+    "max-lines": [
+      "off",
+      {
+        "max": 300,
+        "skipBlankLines": true,
+        "skipComments": true
+      }
+    ],
+    "max-nested-callbacks": "off",
+    "max-params": [
+      "off",
+      3
+    ],
+    "max-statements": [
+      "off",
+      10
+    ],
+    "max-statements-per-line": [
+      "off",
+      {
+        "max": 1
+      }
+    ],
+    "multiline-ternary": "off",
+    "new-cap": [
+      "off",
+      {
+        "newIsCap": true
+      }
+    ],
+    "new-parens": "off",
+    "newline-after-var": "off",
+    "newline-before-return": "error",
+    "newline-per-chained-call": [
+      "off",
+      {
+        "ignoreChainWithDepth": 4
+      }
+    ],
+    "no-array-constructor": "error",
+    "no-bitwise": "off",
+    "no-continue": "error",
+    "no-inline-comments": "off",
+    "no-lonely-if": "error",
+    "no-mixed-operators": [
+      2,
+      {
+        "groups": [
+          [
+            "+",
+            "-",
+            "*",
+            "/",
+            "%",
+            "**"
+          ],
+          [
+            "&",
+            "|",
+            "^",
+            "~",
+            "<<",
+            ">>",
+            ">>>"
+          ],
+          [
+            "==",
+            "!=",
+            "===",
+            "!==",
+            ">",
+            ">=",
+            "<",
+            "<="
+          ],
+          [
+            "&&",
+            "||"
+          ],
+          [
+            "in",
+            "instanceof"
+          ]
+        ],
+        "allowSamePrecedence": true
+      }
+    ],
+    "no-mixed-spaces-and-tabs": "error",
+    "no-multiple-empty-lines": [
+      "off",
+      {
+        "max": 2,
+        "maxEOF": 1
+      }
+    ],
+    "no-negated-condition": "off",
+    "no-nested-ternary": [
+      "error"
+    ],
+    "no-new-object": "error",
+    "no-plusplus": "off",
+    "no-restricted-syntax": [
+      "off",
+      "DebuggerStatement",
+      "ForInStatement",
+      "LabeledStatement",
+      "WithStatement"
+    ],
+    "no-spaced-func": "off",
+    "no-tabs": "off",
+    "no-ternary": "off",
+    "no-trailing-spaces": [
+      "error",
+      {
+        "skipBlankLines": false
+      }
+    ],
+    "no-underscore-dangle": [
+      "off",
+      {
+        "allowAfterThis": false
+      }
+    ],
+    "no-unneeded-ternary": [
+      "error",
+      {
+        "defaultAssignment": false
+      }
+    ],
+    "no-whitespace-before-property": "off",
+    "object-curly-spacing": [
+      "off",
+      "always"
+    ],
+    "object-curly-newline": [
+      "off",
+      {
+        "ObjectExpression": {
+          "minProperties": 0,
+          "multiline": true
+        },
+        "ObjectPattern": {
+          "minProperties": 0,
+          "multiline": true
+        }
+      }
+    ],
+    "object-property-newline": [
+      "off",
+      {
+        "allowMultiplePropertiesPerLine": true
+      }
+    ],
+    "one-var": [
+      "off",
+      "never"
+    ],
+    "one-var-declaration-per-line": [
+      "off",
+      "always"
+    ],
+    "operator-assignment": [
+      "off",
+      "always"
+    ],
+    "operator-linebreak": "off",
+    "padded-blocks": [
+      "off",
+      "never"
+    ],
+    "quote-props": [
+      "off",
+      "as-needed",
+      {
+        "keywords": false,
+        "unnecessary": true,
+        "numbers": false
+      }
+    ],
+    "quotes": [
+      0,
+      "single",
+      {
+        "avoidEscape": true
+      }
+    ],
+    "require-jsdoc": "off",
+    "semi": [
+      "error",
+      "always"
+    ],
+    "semi-spacing": [
+      "off",
+      {
+        "before": false,
+        "after": true
+      }
+    ],
+    "sort-keys": [
+      "off",
+      "asc",
+      {
+        "caseSensitive": false,
+        "natural": true
+      }
+    ],
+    "sort-vars": "off",
+    "space-before-blocks": [
+      "error",
+      "always"
+    ],
+    "space-before-function-paren": [
+      "off",
+      {
+        "anonymous": "always",
+        "named": "never"
+      }
+    ],
+    "space-in-parens": [
+      "off",
+      "never"
+    ],
+    "space-infix-ops": "off",
+    "space-unary-ops": [
+      "off",
+      {
+        "words": true,
+        "nonwords": false,
+        "overrides": {}
+      }
+    ],
+    "spaced-comment": [
+      "error",
+      "always"
+    ],
+    "unicode-bom": [
+      "off",
+      "never"
+    ],
+    "wrap-regex": "off",
+    "init-declarations": "off",
+    "no-catch-shadow": "off",
+    "no-delete-var": "error",
+    "no-label-var": "error",
+    "no-restricted-globals": "off",
+    "no-shadow": "off",
+    "no-shadow-restricted-names": "error",
+    "no-undef": "error",
+    "no-undef-init": "error",
+    "no-undefined": "off",
+    "no-unused-vars": [
+      "error",
+      {
+        "args": "after-used",
+        "argsIgnorePattern": "PluginSDK|^_",
+        "varsIgnorePattern": "^_"
+      }
+    ],
+    "no-use-before-define": "off",
+    "arrow-body-style": [
+      "off",
+      "as-needed"
+    ],
+    "arrow-parens": "off",
+    "arrow-spacing": [
+      "off",
+      {
+        "before": true,
+        "after": true
+      }
+    ],
+    "constructor-super": "error",
+    "generator-star-spacing": [
+      "off",
+      {
+        "before": false,
+        "after": true
+      }
+    ],
+    "no-class-assign": "error",
+    "no-confusing-arrow": [
+      0,
+      {
+        "allowParens": true
+      }
+    ],
+    "no-const-assign": "error",
+    "no-dupe-class-members": "off",
+    "no-duplicate-imports": "error",
+    "no-new-symbol": "error",
+    "no-restricted-imports": "off",
+    "no-this-before-super": "error",
+    "no-useless-computed-key": "error",
+    "no-useless-constructor": "off",
+    "no-useless-rename": [
+      "error",
+      {
+        "ignoreDestructuring": false,
+        "ignoreImport": false,
+        "ignoreExport": false
+      }
+    ],
+    "no-var": "off",
+    "object-shorthand": [
+      "error",
+      "always",
+      {
+        "ignoreConstructors": false,
+        "avoidQuotes": true
+      }
+    ],
+    "prefer-arrow-callback": [
+      "off",
+      {
+        "allowNamedFunctions": false,
+        "allowUnboundThis": true
+      }
+    ],
+    "prefer-const": [
+      "error",
+      {
+        "destructuring": "all",
+        "ignoreReadBeforeAssign": false
+      }
+    ],
+    "prefer-reflect": "off",
+    "prefer-rest-params": "off",
+    "prefer-spread": "off",
+    "prefer-template": "off",
+    "require-yield": "error",
+    "rest-spread-spacing": [
+      "off",
+      "never"
+    ],
+    "sort-imports": [
+      "off",
+      {
+        "ignoreCase": false,
+        "ignoreMemberSort": false,
+        "memberSyntaxSortOrder": [
+          "none",
+          "all",
+          "multiple",
+          "single"
+        ]
+      }
+    ],
+    "template-curly-spacing": "off",
+    "yield-star-spacing": [
+      "off",
+      "after"
+    ],
+    "import/no-unresolved": [
+      "off",
+      {
+        "commonjs": true
+      }
+    ],
+    "import/named": "off",
+    "import/default": "off",
+    "import/namespace": "off",
+    "import/export": "error",
+    "import/no-named-as-default": "error",
+    "import/no-named-as-default-member": "error",
+    "import/no-deprecated": "off",
+    "import/no-extraneous-dependencies": [
+      "off",
+      {
+        "devDependencies": false,
+        "optionalDependencies": false
+      }
+    ],
+    "import/no-mutable-exports": "error",
+    "import/no-commonjs": "off",
+    "import/no-amd": "error",
+    "import/no-nodejs-modules": "off",
+    "import/imports-first": [
+      "error",
+      "absolute-first"
+    ],
+    "import/no-duplicates": "error",
+    "import/no-namespace": "off",
+    "import/extensions": [
+      "off",
+      "never"
+    ],
+    "import/order": [
+      "off",
+      {
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          "parent",
+          "sibling",
+          "index"
+        ],
+        "newlines-between": "never"
+      }
+    ],
+    "import/newline-after-import": "error",
+    "import/prefer-default-export": "error",
+    "import/no-restricted-paths": "off",
+    "strict": [
+      "error",
+      "never"
+    ],
+    "react/display-name": [
+      0,
+      {
+        "ignoreTranspilerName": false
+      }
+    ],
+    "react/forbid-prop-types": [
+      0,
+      {
+        "forbid": [
+          "any",
+          "array",
+          "object"
+        ]
+      }
+    ],
+    "react/jsx-boolean-value": [
+      "off",
+      "never"
+    ],
+    "react/jsx-closing-bracket-location": [
+      "off",
+      "line-aligned"
+    ],
+    "react/jsx-curly-spacing": [
+      "off",
+      "never",
+      {
+        "allowMultiline": true
+      }
+    ],
+    "react/jsx-handler-names": [
+      0,
+      {
+        "eventHandlerPrefix": "handle",
+        "eventHandlerPropPrefix": "on"
+      }
+    ],
+    "react/jsx-indent-props": [
+      "off",
+      2
+    ],
+    "react/jsx-key": 0,
+    "react/jsx-max-props-per-line": [
+      "off",
+      {
+        "maximum": 1
+      }
+    ],
+    "react/jsx-no-bind": [
+      "off",
+      {
+        "ignoreRefs": true,
+        "allowArrowFunctions": true,
+        "allowBind": false
+      }
+    ],
+    "react/jsx-no-duplicate-props": [
+      0,
+      {
+        "ignoreCase": false
+      }
+    ],
+    "react/jsx-no-literals": 0,
+    "react/jsx-no-undef": "error",
+    "react/jsx-pascal-case": [
+      2,
+      {
+        "allowAllCaps": true,
+        "ignore": []
+      }
+    ],
+    "react/sort-prop-types": [
+      0,
+      {
+        "ignoreCase": false,
+        "callbacksLast": false,
+        "requiredFirst": false
+      }
+    ],
+    "react/jsx-sort-prop-types": [
+      "off",
+      {
+        "ignoreCase": true
+      }
+    ],
+    "react/jsx-sort-props": [
+      "off",
+      {
+        "ignoreCase": false,
+        "callbacksLast": false,
+        "shorthandFirst": false,
+        "shorthandLast": false
+      }
+    ],
+    "react/jsx-uses-react": [
+      2
+    ],
+    "react/jsx-uses-vars": "error",
+    "react/no-danger": 0,
+    "react/no-deprecated": [
+      2
+    ],
+    "react/no-did-mount-set-state": [
+      "error"
+    ],
+    "react/no-did-update-set-state": [
+      "error"
+    ],
+    "react/no-direct-mutation-state": 0,
+    "react/no-is-mounted": "off",
+    "react/no-multi-comp": [
+      "error",
+      {
+        "ignoreStateless": true
+      }
+    ],
+    "react/no-set-state": 0,
+    "react/no-string-refs": "off",
+    "react/no-unknown-property": "off",
+    "react/prefer-es6-class": [
+      "off",
+      "always"
+    ],
+    "react/prefer-stateless-function": "off",
+    "react/prop-types": [
+      "off",
+      {
+        "ignore": [],
+        "customValidators": []
+      }
+    ],
+    "react/react-in-jsx-scope": "error",
+    "react/require-extension": [
+      "off",
+      {
+        "extensions": [
+          ".jsx",
+          ".js"
+        ]
+      }
+    ],
+    "react/require-render-return": 2,
+    "react/self-closing-comp": "off",
+    "react/jsx-space-before-closing": [
+      "off",
+      "always"
+    ],
+    "react/sort-comp": [
+      "off",
+      {
+        "order": [
+          "static-methods",
+          "lifecycle",
+          "/^on.+$/",
+          "/^(get|set)(?!(InitialState$|DefaultProps$|ChildContext$)).+$/",
+          "everything-else",
+          "/^render.+$/",
+          "render"
+        ]
+      }
+    ],
+    "react/jsx-wrap-multilines": [
+      "off",
+      {
+        "declaration": true,
+        "assignment": true,
+        "return": true
+      }
+    ],
+    "react/wrap-multilines": "off",
+    "react/jsx-first-prop-new-line": [
+      "off",
+      "multiline"
+    ],
+    "react/jsx-equals-spacing": [
+      "off",
+      "never"
+    ],
+    "react/jsx-indent": [
+      "off",
+      2
+    ],
+    "react/jsx-no-target-blank": "off",
+    "react/jsx-filename-extension": [
+      "off",
+      {
+        "extensions": [
+          ".jsx"
+        ]
+      }
+    ],
+    "react/jsx-no-comment-textnodes": 2,
+    "react/no-comment-textnodes": 0,
+    "react/no-render-return-value": "off",
+    "react/require-optimization": [
+      0,
+      {
+        "allowDecorators": []
+      }
+    ],
+    "react/no-find-dom-node": "off",
+    "jsx-a11y/anchor-has-content": [
+      0,
+      [
+        ""
+      ]
+    ],
+    "jsx-a11y/aria-role": 2,
+    "jsx-a11y/aria-props": 2,
+    "jsx-a11y/aria-proptypes": 2,
+    "jsx-a11y/aria-unsupported-elements": 2,
+    "jsx-a11y/href-no-hash": [
+      2,
+      [
+        "a"
+      ]
+    ],
+    "jsx-a11y/img-has-alt": "off",
+    "jsx-a11y/img-redundant-alt": 2,
+    "jsx-a11y/label-has-for": [
+      "off",
+      [
+        "label"
+      ]
+    ],
+    "jsx-a11y/mouse-events-have-key-events": 0,
+    "jsx-a11y/no-access-key": 2,
+    "jsx-a11y/no-onchange": 0,
+    "jsx-a11y/onclick-has-focus": 0,
+    "jsx-a11y/onclick-has-role": 0,
+    "jsx-a11y/role-has-required-aria-props": 2,
+    "jsx-a11y/role-supports-aria-props": 2,
+    "jsx-a11y/tabindex-no-positive": 0,
+    "jsx-a11y/heading-has-content": [
+      2,
+      [
+        ""
+      ]
+    ],
+    "jsx-a11y/html-has-lang": 2,
+    "jsx-a11y/lang": 2,
+    "jsx-a11y/no-marquee": 2,
+    "jsx-a11y/scope": 2,
+    "destructuring/no-rename": "off",
+    "destructuring/in-params": "off",
+    "destructuring/in-methods-params": "error",
+    "generator-star": "off",
+    "no-arrow-condition": "off",
+    "no-comma-dangle": "off",
+    "no-reserved-keys": "off",
+    "no-space-before-semi": "off",
+    "no-wrap-func": "off",
+    "nonblock-statement-body-position": "off",
+    "space-after-function-name": "off",
+    "space-after-keywords": "off",
+    "space-before-function-parentheses": "off",
+    "space-before-keywords": "off",
+    "space-in-brackets": "off",
+    "space-return-throw-case": "off",
+    "space-unary-word-ops": "off",
+    "template-tag-spacing": "off",
+    "react/jsx-tag-spacing": "off",
+    "prettier/prettier": "warn",
+    "compat/compat": "error",
+    "jsx-max-len/jsx-max-len": [
+      "error",
+      {
+        "lineMaxLength": 80,
+        "tabWidth": 2,
+        "maxAttributesPerLine": 1
+      }
+    ],
+    "react/jsx-quotes": "off"
+  },
+  "parserOptions": {
+    "ecmaFeatures": {
+      "globalReturn": true,
+      "generators": false,
+      "objectLiteralDuplicateProperties": false,
+      "jsx": true
+    },
+    "ecmaVersion": 7,
+    "sourceType": "module"
+  },
+  "plugins": [
+    "import",
+    "react",
+    "jsx-a11y",
+    "jsx-max-len",
+    "compat",
+    "destructuring",
+    "prettier"
+  ],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".json"
+        ]
+      }
+    },
+    "import/extensions": [
+      ".js",
+      ".jsx"
+    ],
+    "import/core-modules": [],
+    "import/ignore": [
+      "node_modules",
+      "\\.(coffee|scss|css|less|hbs|svg|json)$"
+    ],
+    "react": {
+      "pragma": "React",
+      "version": "0.14"
+    }
+  },
+  "extends": [
+    "dcos",
+    "plugin:destructuring/recommended",
+    "prettier",
+    "prettier/react",
+    "/Users/dmitriy/workspace/dcos-ui/node_modules/eslint-config-airbnb-base/rules/variables.js",
+    "/Users/dmitriy/workspace/dcos-ui/node_modules/eslint-config-airbnb-base/rules/es6.js",
+    "/Users/dmitriy/workspace/dcos-ui/node_modules/eslint-config-airbnb-base/rules/imports.js"
+  ],
+  "ecmaFeatures": {
+    "jsx": true,
+    "modules": true,
+    "sourceType": "module"
+  }
+}

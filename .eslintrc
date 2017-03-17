@@ -12,22 +12,6 @@
     "es6": true
   },
 
-  "parserOptions": {
-    "sourceType": "module",
-    "ecmaFeatures": {
-      "jsx": true,
-      "experimentalObjectRestSpread": true
-    }
-  },
-
-  "plugins": [
-    "jsx-max-len",
-    "react",
-    "compat",
-    "destructuring",
-    "prettier"
-  ],
-
   "globals": {
     "cy": true,
     "Cypress": true,
@@ -43,10 +27,7 @@
   },
 
   "extends": [
-    "airbnb",
-    "plugin:destructuring/recommended",
-    "prettier",
-    "prettier/react"
+    "dcos",
   ],
 
   "rules": {
@@ -61,6 +42,16 @@
     "comma-dangle": ["error", "never"],
     "strict": ["error", "never"], // <-- fix
     "newline-before-return": "error",
+    "no-mixed-operators": [2, {
+      "groups": [
+        ["+", "-", "*", "/", "%", "**"],
+        ["&", "|", "^", "~", "<<", ">>", ">>>"],
+        ["==", "!=", "===", "!==", ">", ">=", "<", "<="],
+        ["&&", "||"],
+        ["in", "instanceof"]
+      ],
+      "allowSamePrecedence": true
+    }],
     "no-mixed-spaces-and-tabs": "error",
     "no-new": "off",
     "no-trailing-spaces": ["error", { "skipBlankLines": false }],
