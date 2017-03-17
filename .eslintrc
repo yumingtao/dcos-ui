@@ -31,27 +31,11 @@
   ],
 
   "rules": {
-    "prettier/prettier": "warn",
-
-    "destructuring/no-rename": "off",
-    "destructuring/in-params": "off",
-    "compat/compat": "error",
     "eqeqeq": ["error", "smart"],
-    "camelcase": ["off", {"properties": "never"}],
-    // "camelcase": ["error", {"properties": "always"}], This causes errors with mixin properties
+    "camelcase": ["off", {"properties": "never"}], // This causes errors with mixin properties
     "comma-dangle": ["error", "never"],
     "strict": ["error", "never"], // <-- fix
     "newline-before-return": "error",
-    "no-mixed-operators": [2, {
-      "groups": [
-        ["+", "-", "*", "/", "%", "**"],
-        ["&", "|", "^", "~", "<<", ">>", ">>>"],
-        ["==", "!=", "===", "!==", ">", ">=", "<", "<="],
-        ["&&", "||"],
-        ["in", "instanceof"]
-      ],
-      "allowSamePrecedence": true
-    }],
     "no-mixed-spaces-and-tabs": "error",
     "no-new": "off",
     "no-trailing-spaces": ["error", { "skipBlankLines": false }],
@@ -62,17 +46,11 @@
       "varsIgnorePattern": "^_"
     }],
     "no-use-before-define": "off",
-    // Ternary
-    "no-nested-ternary": ["error"],
-    "no-unneeded-ternary": ["error"],
-    "multiline-ternary": "off", // allow both multiline and single line
     "react/jsx-filename-extension": "off",
     "keyword-spacing": ["error"],
     "semi": ["error"],
     "space-before-blocks": ["error", "always"],
     "spaced-comment": ["error", "always"],
-    // "max-len": ["error", 80, 4], TODO: DCOS-914
-    "jsx-max-len/jsx-max-len": ["error", {"lineMaxLength": 80, "tabWidth": 2, "maxAttributesPerLine": 1}],
     "valid-jsdoc": ["error", {
       "requireReturn": false,
       "requireParamDescription": false
@@ -167,8 +145,7 @@
     "react/no-did-mount-set-state": "error",
     "react/no-did-update-set-state": "error",
     "react/no-multi-comp": "error",
-    "react/prop-types": "off",
-    // "react/prop-types": "error", This causes errors with many
+    "react/prop-types": "off", // This causes errors with many
     "react/react-in-jsx-scope": "error"
   }
 }
