@@ -1,3 +1,94 @@
+## Pull Requests
+
+<!--
+Pull Request for new features, bugs and minor improvements are appreciated. 
+However please follow the guidelines below to save as much time as possible for the maintainers.
+
+We'd love to review any changes you submit, so please check out the source, pick
+a bug or feature, and get coding. 
+
+Please provide enough information for others to best review your code. 
+
+Prefer **small pull requests**. These are much easier to review and more likely 
+to get merged. Make sure the PR does only one thing, otherwise please split it. 
+-->
+
+### Title 
+
+Every PR  should be named using the following pattern: 
+
+```
+<issue>: <subject>
+```
+
+### Scope
+
+<!--
+* A bug fix PR should **only** contain the bug fix it self and no other changes.
+-->
+
+### Description
+
+<!-- 
+* Steps to reproduce
+* Thorough description of consectutive (dependent) PRs
+* Describe what changed (and how the affects the behavior/visuals)
+* Resons for refactor
+	* why is this bad?
+	* what part of app does this affect?
+
+Description of motivation for making this change, what does it solve and how to reprocuce  
+ 
+* Did you add a JIRA issue in a commit message or as part of the branch name?
+* Did you add new unit tests?
+* Did you add new integration tests?
+* If this is a regression, did you write a test to catch this in the future?
+
+__Prepend your branch with (bug/feature)__ When creating a new branch prepend `bug` or `feature` in front of it e.g `bug/some-wording` based on the work needed, if there is Jira ticket make sure to include e.g `bug/DCOS-1111-some-wording`.
+__Make your commit message as descriptive as possible.__ Include as much information as you can. Explain anything that the file diffs themselves won’t make apparent, link to the relevant Jira (if applicable).
+__Consolidate multiple commits into a single commit when you rebase.__ If you’ve got several commits in your local repository/branch that all have to do with a single change, you can squash multiple commits into a single.
+ 
+If your PR contains multiple parts (PRs) make clear on your commit heading e.g `[1 of 3]: Fixes user log out button`.
+-->
+
+### Process & Review
+<!--
+* Two owner/maintainer need to approve (assigner and reviewer label) a PR before it gets merged
+* If at least 2 of the PRs breaks master a feaure branch should be created
+-->
+
+ 
+## Branches
+
+Every branch should be named using the following pattern: 
+
+
+```
+<username>/<type>/<issue>-<subject>
+```
+
+<!-- 
+  TODO: describe username and issues 
+    * username = github user name
+    * issue = jira issue or nothing
+-->
+
+### Type
+
+The following commit types are allowed:
+
+* **feat** - 
+  use this type for commits that introduce a new features or capabilities
+* **fix** - use this one for bug fixes
+* **perf** - use this type for performance improvements
+* **docs** - use this one to indicate documentation adjustments and improvements 
+* **chore** - use this type for _maintainance_ commits e.g. removing old files 
+* **style** - use this one for commits that fix formatting and linting errors
+* **refactor** - 
+  use this type for adjustments to improve maintainability or performance
+* **test** - use this one for commits that add new tests
+
+
 ## Commits
 
 Please commit your changes frequently in small logical chunks that are 
