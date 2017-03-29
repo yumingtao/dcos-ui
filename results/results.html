@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<title>DC/OS System Integration :: Results</title>
+		<meta charset="UTF-8"/>
+		<style type="text/css">body {
+  font-family: sans-serif;
+  font-size: 16px;
+}
+
+.collapsible-checkbox {
+  visibility: hidden;
+  position: absolute;
+}
+
+.collapsible-header {
+  display: block;
+  text-indent: 1em;
+  position: relative;
+  cursor: pointer;
+}
+.collapsible-checkbox:checked + .collapsible-header {
+}
+
+.collapsible-header:before {
+  font-size: 0.8em;
+  content: "▶";
+  position: absolute;
+  left: -1em;
+  top: calc(50% - 0.5em);
+}
+.collapsible-checkbox:checked + .collapsible-header:before {
+  content: "▼";
+}
+
+.collapsible-body {
+  height: 0;
+  overflow: hidden;
+  padding-left: 1em;
+}
+.collapsible-checkbox:checked + .collapsible-header + .collapsible-body {
+  height: auto;
+}
+
+.test-title {
+  font-size: 1em;
+  margin: 0;
+}
+
+.test-quick {
+  display: inline-block;
+}
+
+.test-header {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  margin: 0 0 5px;
+  border-radius: 6px;
+}
+
+.test-header .test-quick .test-quick-clear {
+  clear: both;
+}
+
+.test-quick {
+  font-size: 0.8em;
+}
+
+.header-status-ok {
+}
+.header-status-error {
+  background-color: #ff9800;
+  color: #fff;
+}
+.header-status-failure {
+  background-color: #f44336;
+  color: #fff;
+}
+
+.test-status-ok {
+}
+.test-status-error {
+  color: #FF9800;
+}
+.test-status-failure {
+  color: #C00;
+}
+.test-status-skipped {
+  color: #9C27B0;
+}
+
+.test-empty {
+  font-style: italic;
+  color: #999;
+}
+
+.test-details {
+  border-radius: 6px;
+  padding: 6px;
+  margin: 6px;
+}
+
+.test-details pre {
+  font-size: 0.8em;
+  overflow: auto;
+}
+
+.test-details h4 {
+}
+
+.test-details.test-details-error {
+  background-color: #FFD;
+}
+.test-details.test-details-failure {
+  background-color: #FDD;
+}
+.test-details.test-details-console {
+  background-color: #000;
+  color: #fff;
+}
+.test-details.test-details-console.test-std-system-err {
+  color: #F99;
+}
+
+.test-props {
+  font-size: 0.8em;
+  padding: 5px;
+  background: #CCC;
+  border-radius: 0 0 10px 10px;
+  margin: 0 10px 5px;
+}
+</style>
+	</head>
+	<body>
+		<div class="collapsible">
+			<input class="collapsible-checkbox" id="78b0e57ad09341f188694918c5004408" type="checkbox"/>
+			<label class="collapsible-header" for="78b0e57ad09341f188694918c5004408">
+				<div class="test-header header-status-ok">
+					<span class="test-title">DC/OS System Integration</span>
+				</div>
+			</label>
+			<div class="collapsible-body">
+				<div class="test-body"></div>
+			</div>
+		</div>
+	</body>
+</html>
