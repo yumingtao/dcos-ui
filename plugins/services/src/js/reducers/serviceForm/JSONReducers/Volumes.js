@@ -63,15 +63,17 @@ function reduceVolumes(state, { type, path, value }) {
     if (joinedPath === "externalVolumes") {
       switch (type) {
         case ADD_ITEM:
-          this.externalVolumes.push({
-            containerPath: null,
-            external: {
-              name: null,
-              provider: "dvdi",
-              options: { "dvdi/driver": "rexray" }
-            },
-            mode: "RW"
-          });
+          this.externalVolumes.push(
+            value || {
+              containerPath: null,
+              external: {
+                name: null,
+                provider: "dvdi",
+                options: { "dvdi/driver": "rexray" }
+              },
+              mode: "RW"
+            }
+          );
           break;
         case REMOVE_ITEM:
           this.externalVolumes = this.externalVolumes.filter((item, index) => {
@@ -128,11 +130,13 @@ function reduceVolumes(state, { type, path, value }) {
     if (joinedPath === "localVolumes") {
       switch (type) {
         case ADD_ITEM:
-          this.localVolumes.push({
-            containerPath: null,
-            persistent: { size: null },
-            mode: "RW"
-          });
+          this.localVolumes.push(
+            value || {
+              containerPath: null,
+              persistent: { size: null },
+              mode: "RW"
+            }
+          );
           break;
         case REMOVE_ITEM:
           this.localVolumes = this.localVolumes.filter((item, index) => {
