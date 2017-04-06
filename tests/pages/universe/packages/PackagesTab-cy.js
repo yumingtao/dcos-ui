@@ -107,9 +107,9 @@ describe('Packages Tab', function () {
       cy.get('.panel').as('panels');
     });
 
-    it('should have the first package as selected', function () {
+    it('should have the first 9 packages as selected', function () {
       cy.get('@panels').should(function ($panels) {
-        expect($panels.length).to.equal(1);
+        expect($panels.length).to.equal(9);
       });
     });
   });
@@ -117,11 +117,10 @@ describe('Packages Tab', function () {
   context('package panels', function () {
     beforeEach(function () {
       cy.visitUrl({url: '/universe', logIn: true});
-      cy.get('.panel').as('panels');
     });
 
     it('should open the modal when the panel button is clicked', function () {
-      cy.get('.panel .button').click();
+      cy.get('.panel:first .button').click();
 
       cy.get('.modal').should(function ($modal) {
         expect($modal.length).to.equal(1);
@@ -129,10 +128,24 @@ describe('Packages Tab', function () {
     });
 
     it('shouldn\'t open the modal when the panel is clicked', function () {
-      cy.get('.panel').click();
+      cy.get('.panel:first').click();
 
       cy.get('.modal').should(function ($modal) {
         expect($modal.length).to.equal(0);
+      });
+    });
+
+  });
+
+  context('package table', function () {
+    beforeEach(function () {
+      cy.visitUrl({url: '/universe', logIn: true});
+    });
+
+    it('should show the very last item in the table', function () {
+      cy.get('table').get('.page-body').then(function ($pageBody) {
+        $pageBody.get(0).scrollTop = $pageBody.get(0).scrollHeight;
+        cy.get('table').contains('zeppelin');
       });
     });
 
