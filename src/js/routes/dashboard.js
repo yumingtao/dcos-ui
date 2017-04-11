@@ -1,12 +1,14 @@
 import {Route} from 'react-router';
 
-import DashboardPage from '../pages/DashboardPage';
-
 const dashboardRoutes = {
   category: 'root',
   type: Route,
   path: 'dashboard',
-  component: DashboardPage,
+  getComponent(nextState, cb) {
+    require.ensure([], (require) => {
+      cb(null, require('../pages/DashboardPage'));
+    });
+  },
   isInSidebar: true
 };
 

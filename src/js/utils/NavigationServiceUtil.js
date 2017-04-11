@@ -30,15 +30,18 @@ const NavigationServiceUtil = {
 
         NavigationService.registerCategory(category);
 
-        const icon = React.cloneElement(
-          route.component.routeConfig.icon,
-          {className: 'sidebar-menu-item-icon icon icon-small'}
-        );
+        // const icon = React.cloneElement(
+        //   route.component.routeConfig.icon,
+        //   {className: 'sidebar-menu-item-icon icon icon-small'}
+        // );
 
         NavigationService.registerPrimary(
           primaryPath,
-          route.component.routeConfig.label,
-          { category, icon }
+          'route.component.routeConfig.label',
+          {
+            category
+            // , icon
+          }
         );
 
         childRoutes
@@ -47,7 +50,7 @@ const NavigationServiceUtil = {
             NavigationService.registerSecondary(
               primaryPath,
               childRoute.path,
-              childRoute.component.routeConfig.label
+              'childRoute.component.routeConfig.label'
             );
           });
       });

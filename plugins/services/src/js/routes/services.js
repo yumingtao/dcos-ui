@@ -4,7 +4,7 @@ import React from 'react';
 /* eslint-enable no-unused-vars */
 
 import DeploymentsTab from '../pages/services/DeploymentsTab';
-import ServicesContainer from '../containers/services/ServicesContainer';
+// import ServicesContainer from '../containers/services/ServicesContainer';
 import NewCreateServiceModal from '../components/modals/NewCreateServiceModal';
 import ServicesPage from '../pages/ServicesPage';
 import ServiceTaskDetailPage from '../pages/task-details/ServiceTaskDetailPage';
@@ -48,7 +48,12 @@ const serviceRoutes = [
     children: [
       {
         type: Route,
-        component: ServicesContainer,
+        // component: ServicesContainer,
+        getComponent(nextState, cb) {
+          require.ensure([], (require) => {
+            cb(null, require('../containers/services/ServicesContainer'));
+          });
+        },
         path: 'overview',
         isInSidebar: true,
         buildBreadCrumb() {
