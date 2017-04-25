@@ -44,14 +44,15 @@ module.exports = {
           memo.push(
             new Transaction(["localVolumes", index, "type"], "HOST", SET)
           );
-
-          memo.push(
-            new Transaction(
-              ["localVolumes", index, "hostPath"],
-              item.hostPath,
-              SET
-            )
-          );
+          if (item.hostPath) {
+            memo.push(
+              new Transaction(
+                ["localVolumes", index, "hostPath"],
+                item.hostPath,
+                SET
+              )
+            );
+          }
         }
 
         if (item.containerPath != null) {

@@ -150,16 +150,16 @@ function reduceVolumes(state, { type, path, value }) {
       this.localVolumes[index].persistent.size = parseIntValue(value);
     }
     if (type === SET && `localVolumes.${index}.type` === joinedPath) {
-      this.localVolumes[index].type = String(value);
+      this.localVolumes[index].type = value;
     }
     if (type === SET && `localVolumes.${index}.mode` === joinedPath) {
-      this.localVolumes[index].mode = String(value);
+      this.localVolumes[index].mode = value;
     }
     if (type === SET && `localVolumes.${index}.hostPath` === joinedPath) {
-      this.localVolumes[index].hostPath = String(value);
+      this.localVolumes[index].hostPath = value;
     }
     if (type === SET && `localVolumes.${index}.containerPath` === joinedPath) {
-      this.localVolumes[index].containerPath = String(value);
+      this.localVolumes[index].containerPath = value;
     }
   }
 
