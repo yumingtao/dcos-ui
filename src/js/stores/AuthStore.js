@@ -79,21 +79,15 @@ class AuthStore extends GetSetBaseStore {
   }
 
   isLoggedIn() {
-    return !!CookieUtils.getUserMetadata();
+    return !!global.localStorage.getItem('token');
   }
 
   getUser() {
-    const userCode = CookieUtils.getUserMetadata();
-
-    if (userCode == null) {
-      return null;
-    }
-
-    try {
-      return JSON.parse(atob(userCode));
-    } catch (err) {
-      return null;
-    }
+    return {
+      'description': 'bootstrapuser',
+      'uid': 'bootstrapuser',
+      'is_remote': false
+    };
   }
 
   processLoginSuccess() {

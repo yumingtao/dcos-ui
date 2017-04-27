@@ -1,4 +1,5 @@
 /* eslint no-redeclare: 0 */
+import qs from 'query-string';
 import ConfigDev from './Config.dev.js';
 import ConfigTest from './Config.test.js';
 
@@ -24,7 +25,7 @@ var Config = {
   productHomepageURI: 'https://dcos.io',
   setInactiveAfter: 30000,
   testHistoryInterval: 10000,
-  rootUrl: '',
+  rootUrl: qs.parse(global.location.search).cluster_address || '',
   slackChannel: 'https://dcos-community.slack.com/messages/general/',
   stateRefresh: 2000,
   supportEmail: 'help@dcos.io',

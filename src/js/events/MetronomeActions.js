@@ -27,7 +27,7 @@ import Config from '../config/Config';
 const MetronomeActions = {
   createJob(data) {
     RequestUtil.json({
-      url: `${Config.metronomeAPI}/v0/scheduled-jobs`,
+      url: `${Config.rootUrl}${Config.metronomeAPI}/v0/scheduled-jobs`,
       method: 'POST',
       data,
       success() {
@@ -50,7 +50,7 @@ const MetronomeActions = {
     function (resolve, reject) {
       return function () {
         RequestUtil.json({
-          url: `${Config.metronomeAPI}/v1/jobs`,
+          url: `${Config.rootUrl}${Config.metronomeAPI}/v1/jobs`,
           data: [
             {name: 'embed', value: 'activeRuns'},
             {name: 'embed', value: 'schedules'},
@@ -93,7 +93,7 @@ const MetronomeActions = {
 
   fetchJobDetail(jobID) {
     RequestUtil.json({
-      url: `${Config.metronomeAPI}/v1/jobs/${jobID}`,
+      url: `${Config.rootUrl}${Config.metronomeAPI}/v1/jobs/${jobID}`,
       data: [
         {name: 'embed', value: 'activeRuns'},
         {name: 'embed', value: 'history'},
@@ -125,7 +125,7 @@ const MetronomeActions = {
 
   deleteJob(jobID, stopCurrentJobRuns = false) {
     RequestUtil.json({
-      url: `${Config.metronomeAPI}/v1/jobs/${jobID}` +
+      url: `${Config.rootUrl}${Config.metronomeAPI}/v1/jobs/${jobID}` +
         `?stopCurrentJobRuns=${stopCurrentJobRuns}`,
       method: 'DELETE',
       success() {
@@ -147,7 +147,7 @@ const MetronomeActions = {
 
   updateJob(jobID, data) {
     RequestUtil.json({
-      url: `${Config.metronomeAPI}/v0/scheduled-jobs/${jobID}`,
+      url: `${Config.rootUrl}${Config.metronomeAPI}/v0/scheduled-jobs/${jobID}`,
       method: 'PUT',
       data,
       success() {
@@ -167,7 +167,7 @@ const MetronomeActions = {
 
   runJob(jobID) {
     RequestUtil.json({
-      url: `${Config.metronomeAPI}/v1/jobs/${jobID}/runs`,
+      url: `${Config.rootUrl}${Config.metronomeAPI}/v1/jobs/${jobID}/runs`,
       method: 'POST',
       data: {},
       success() {
@@ -186,7 +186,7 @@ const MetronomeActions = {
   },
 
   stopJobRun(jobID, jobRunID) {
-    const url = `${Config.metronomeAPI}/v1/jobs/${jobID}` +
+    const url = `${Config.rootUrl}${Config.metronomeAPI}/v1/jobs/${jobID}` +
       `/runs/${jobRunID}/actions/stop`;
 
     RequestUtil.json({
@@ -210,7 +210,7 @@ const MetronomeActions = {
 
   updateSchedule(jobID, data) {
     RequestUtil.json({
-      url: `${Config.metronomeAPI}/v1/jobs/${jobID}/schedules/${data.id}`,
+      url: `${Config.rootUrl}${Config.metronomeAPI}/v1/jobs/${jobID}/schedules/${data.id}`,
       method: 'PUT',
       data,
       success() {

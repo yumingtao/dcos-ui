@@ -43,7 +43,7 @@
     "lodash.throttle": "4.1.1",
     "md5": "2.1.0",
     "mesosphere-react-typeahead": "0.8.3",
-    "mesosphere-shared-reactjs": "0.0.24",
+    "mesosphere-shared-reactjs": "git@github.com:dcos/mesosphere-shared-reactjs.git#weblancaster/feat/dcos-ui-service",
     "moment": "2.13.0",
     "objektiv": "0.3.0",
     "prettycron": "0.10.0",

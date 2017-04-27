@@ -20,7 +20,9 @@ const AuthActions = {
       url: `${Config.rootUrl}${Config.acsAPIPrefix}/auth/login${query}`,
       method: 'POST',
       data: credentials,
-      success() {
+      success(response) {
+        global.localStorage.setItem('token', response.token);
+
         AppDispatcher.handleServerAction({
           type: REQUEST_LOGIN_SUCCESS
         });
@@ -39,6 +41,8 @@ const AuthActions = {
     RequestUtil.json({
       url: `${Config.rootUrl}${Config.acsAPIPrefix}/auth/logout`,
       success() {
+        global.localStorage.removeItem('token');
+
         AppDispatcher.handleServerAction({
           type: REQUEST_LOGOUT_SUCCESS
         });

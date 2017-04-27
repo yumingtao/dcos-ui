@@ -1,15 +1,13 @@
-import cookie from 'cookie';
-
-import {userCookieKey} from '../constants/AuthConstants';
-
 const Utils = {
   getUserMetadata() {
-    return cookie.parse(global.document.cookie)[userCookieKey];
+    return {
+      'description': 'bootstrapuser',
+      'uid': 'bootstrapuser',
+      'is_remote': false
+    };
   },
-  emptyCookieWithExpiry(date) {
-    return cookie.serialize(
-      userCookieKey, '', {expires: date}
-    );
+  emptyCookieWithExpiry() {
+    return;
   }
 };
 
