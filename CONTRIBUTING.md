@@ -10,6 +10,7 @@
   - [Referencing Issues](#referencing-issues)
   - [Breaking Changes](#breaking-changes)
   - [Examples](#examples)
+- [Tests](#test)
 - [ReactJS Components](#reactjs-components)
 - [i18n](#i18n)
   - [Translation IDs](#translation-ids)
@@ -155,6 +156,196 @@ We have a fixShrinkwrap script wich runs when you run `npm run shrinkwrap`, whic
 For more info https://github.com/npm/npm/issues/2679
 
 3. Commit to repository
+
+## Tests
+
+When submitting code to dcos-ui, please make sure that all needed tests are included. 
+
+#### Example 1
+When testing a simple Counter Component, you should test that the counter increases a *given number*, not that after initiating and increasing once the *value equals 1*. 
+
+```
+class Counter {
+  constructor() {
+  	this.count = 0
+  }
+  tick() {
+  	return this.count++
+  }
+  get() {
+  	return this.count
+  }
+}
+```
+
+To test it, your could write tests like these
+
+```
+// make sure after inialising, the counter is 0
+var counter = new Counter(), count = counter.get();
+expectEqual(count, 0);
+
+// make sure after ticking, the counter is increased:
+var counter = new Counter(), count = counter.get();
+counter.tick()
+expectEqual(counter.get(), count+1);
+```
+
+Now image you need to extend your counter that it is able to start at every given number, you will change your constructor like so:
+
+```
+constructor(count = 0) {
+  this.count = count
+}
+```
+
+Now the first test above has to be changed completely, because it was assuming your counter starts at 0. 
+The second one is still valid because it didnt assume, that after ticking, the counter equals 1.
+Your could change your first test like so:
+
+```
+// make sure after inialising with given number, the counter is correct
+var number = 0; counter = new Counter(0);
+expectEqual(counter.get(), number);
+```
+Using TDD currectly you are able to find these caveats before even writing a single line of code. when writing your tests, image what could possibly change on your component and how it would affect your tests and component. 
+
+#### Example 2
+Speaking of TDD, some BDD techniques can also be applied to Unit tests.
+You can imagine your Unit as a Feature and your Methods can be tested via Scenarios. 
+
+Imagine you are asked to write the Counter Component mentioned above, but you dont have started to write your code yet. What does a counter do? What could a user want from it? Shouldnt it also be able to count down? how much more programming effort would it be to implement that? What *exactly* is a Counter and what should be archived by using it? Theses questions sound rather easy to answer, but just think about the narrative below, what do your want to be able to using a counter? simply counting numbers? (hint: no)
+
+```
+Feature: Counter Component
+  As another Component
+  I want to Count numbers up and down
+  So that I am able to ... ?
+
+Scenario: Initialisation w/o number
+  Given I have a Counter Component
+   When I initialize it w/o number
+   Then Its getter should return its default
+
+# using Scenario Outlines you are easily able to multiply your tests cases  
+ 
+Scenario Outline: Initialisation with given number
+  Given I have a Counter Component
+   When I initialise it with <number>
+   Then Its getter should return <number>
+
+  Examples:
+    | number |
+    |  0     |
+    |  1     |
+    | -1     | 
+
+# writing the following Scenario, you will realize that 1 is a declarative number, 
+# it would be better to write "by a given number" which then also imples, 
+# that your counter should also be able to increase by 2.
+
+Scenario: Increasing Counter
+  Given I have an initialised Counter
+   When I increase it
+   Then it should increase its value 1 
+
+# having this in mind, you have a new scenario
+
+Scenario Outline: Increasing Counter by given number
+  Given I have an initialised Counter
+   When I increase it by <number>
+   Then it should have its value by <number>
+   
+  Examples:
+    | number |
+    |  0     |
+    |  1     |
+    | -1     |
+    |  4     |
+   
+# now you most likely already know that you need a increaseBy(4) method, 
+# but you already have written your 'Increase Counter' Scenario and you probably 
+# also want an increase() method, so its completely okay to keep both, lets write the same for decreasing
+
+Scenario: Decreasing Number
+  Given I have an initialised Counter
+   When I decrease it
+   Then it should decrease its value by 1
+   
+Scenario Outline: Decreasing Counter by given number
+  Given I have an initialised Counter
+   When I decrease it by <number>
+   Then it should have its value by <number>
+   
+  Examples:
+    | number |
+    |  0     |
+    |  1     |
+    | -1     |
+    |  4     |
+
+Scenario: resetting Counter to start value
+  Given I have an initialized Counter
+   When I reset it to start
+   Then it should have its start value
+   
+# now the last thing to do is to test getter & setters, in order 
+# to have a good documentation, it would be reasonable to write them down one
+# but it should also be okay to group them
+
+Scenario: testing getter and setter
+  Given I have a Counter Component
+   When I get/set values
+   Then they should be get/set
+```
+
+After writing these Scenarios, it should be extremely easy to write your Code, your Counter Component could look like this:
+
+```
+class Counter {
+  constructor(number) {
+    this._start = number
+    this._count = number
+  }
+  get start ()       { return this._start }
+  get start (number) { this._start = number }
+  get count ()       { return this._count }
+  set count (number) { this._count = number }
+  
+  static defaultCounter() {
+    return new Counter(0)
+  }
+  
+  increaseBy(inc = 1) {
+    this._count += inc;
+  }
+  increase() {
+    this.increaseBy(1)
+  }
+  tick() {
+    this.increaseBy(1)
+  }
+  
+  decreaseBy(dec = 1) {
+    this._count -= dec;
+  }
+  decrease() {
+    this.decreaseBy(1)
+  }
+  
+  reset() {
+  	this.count(this.start())
+  }
+}  
+```
+
+### Unit Tests
+
+When writing Unit Tests, make sure they test the correct *behaviour* of your code, not an *exact implementation*. 
+
+### Integration Tests
+
+Integration Tests always mock responses to ensure your have a consistent testing enviroment. Also 
 
 ## ReactJS Components
 
