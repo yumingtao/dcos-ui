@@ -1,15 +1,12 @@
-import {
-  ADD_ITEM,
-  SET
-} from '../../../../../../src/js/constants/TransactionTypes';
-import Transaction from '../../../../../../src/js/structs/Transaction';
-import Networking from '../../../../../../src/js/constants/Networking';
-import networkingReducer from './Networking';
-import {findNestedPropertyInObject} from '../../../../../../src/js/utils/Util';
-import {PROTOCOLS} from '../../constants/PortDefinitionConstants';
-import VipLabelUtil from '../../utils/VipLabelUtil';
+import { ADD_ITEM, SET } from "#SRC/js/constants/TransactionTypes";
+import Transaction from "#SRC/js/structs/Transaction";
+import Networking from "#SRC/js/constants/Networking";
+import { findNestedPropertyInObject } from "#SRC/js/utils/Util";
+import PortDefinitionsReducer from "./JSONReducers/PortDefinitionsReducer";
+import { PROTOCOLS } from "../../constants/PortDefinitionConstants";
+import VipLabelUtil from "../../utils/VipLabelUtil";
 
-const {HOST} = Networking.type;
+const { HOST } = Networking.type;
 
 module.exports = {
   /**
@@ -24,30 +21,34 @@ module.exports = {
    * @return {Object[]} new portDefinitions with action performed on it
    */
   JSONReducer(state = [], action) {
-    const {path, value} = action;
+    const { path, value } = action;
     if (path == null) {
       return state;
     }
 
     if (!this.appState) {
       this.appState = {
-        id: '',
+        id: "",
         networkType: HOST
       };
     }
 
-    const joinedPath = path.join('.');
-    if (joinedPath === 'container.docker.network' && Boolean(value)) {
+    const joinedPath = path.join(".");
+    if (joinedPath === "container.docker.network" && Boolean(value)) {
       this.appState.networkType = value;
     }
 
-    if (joinedPath === 'id' && Boolean(value)) {
+    if (joinedPath === "id" && Boolean(value)) {
       this.appState.id = value;
     }
 
-    // Apply networkingReducer to retrieve updated local state
+    if (joinedPath === "portsAutoAssign" && value != null) {
+      this.appState.portsAutoAssign = value;
+    }
+
+    // Apply PortDefinitionsReducer to retrieve updated local state
     // Store the change no matter what network type we have
-    this.portDefinitions = networkingReducer(this.portDefinitions, action);
+    this.portDefinitions = PortDefinitionsReducer(this.portDefinitions, action);
 
     // We only want portDefinitions for networks of type HOST
     if (this.appState.networkType !== HOST) {
@@ -56,12 +57,14 @@ module.exports = {
 
     // Create JSON port definitions from state
     return this.portDefinitions.map((portDefinition, index) => {
-      const {name} = portDefinition;
+      const { name } = portDefinition;
       const vipLabel = `VIP_${index}`;
-      const hostPort = Number(portDefinition.hostPort) || 0;
-      const protocol = PROTOCOLS.filter(function (protocol) {
+      const hostPort = this.appState.portsAutoAssign
+        ? 0
+        : Number(portDefinition.hostPort);
+      const protocol = PROTOCOLS.filter(function(protocol) {
         return portDefinition.protocol[protocol];
-      }).join(',');
+      }).join(",");
 
       const labels = VipLabelUtil.generateVipLabel(
         this.appState.id,
@@ -92,100 +95,59 @@ module.exports = {
     }
 
     // Look at portDefinitions and add accepted fields
-    return state.portDefinitions.reduce(function (memo, item, index) {
-      memo.push(new Transaction(['portDefinitions'], index, ADD_ITEM));
+    return state.portDefinitions.reduce(function(memo, item, index) {
+      memo.push(new Transaction(["portDefinitions"], index, ADD_ITEM));
 
       if (item.name != null) {
-        memo.push(new Transaction([
-          'portDefinitions',
-          index,
-          'name'
-        ], item.name, SET));
+        memo.push(
+          new Transaction(["portDefinitions", index, "name"], item.name, SET)
+        );
       }
 
       const port = Number(item.port);
-      // If port is a number but not zero, we set automaticPort to false
-      // so we can set the port
-      if (!isNaN(port) && port !== 0) {
-        memo.push(new Transaction([
-          'portDefinitions',
-          index,
-          'automaticPort'
-        ], false, SET));
-
-        memo.push(new Transaction([
-          'portDefinitions',
-          index,
-          'hostPort'
-        ], port, SET));
-      }
-
-      // If port is zero, we set automaticPort to true
-      if (!isNaN(port) && port === 0) {
-        memo.push(new Transaction([
-          'portDefinitions',
-          index,
-          'automaticPort'
-        ], true, SET));
+      if (!isNaN(port)) {
+        memo.push(
+          new Transaction(["portDefinitions", index, "hostPort"], port, SET)
+        );
       }
 
       if (item.protocol != null) {
-        const protocols = item.protocol.split(',');
-        PROTOCOLS.forEach((protocol) => {
-          memo.push(new Transaction([
-            'portDefinitions',
-            index,
-            'protocol',
-            protocol
-          ], protocols.includes(protocol), SET));
+        const protocols = item.protocol.split(",");
+        PROTOCOLS.forEach(protocol => {
+          memo.push(
+            new Transaction(
+              ["portDefinitions", index, "protocol", protocol],
+              protocols.includes(protocol),
+              SET
+            )
+          );
         });
       }
 
       const vip = findNestedPropertyInObject(item, `labels.VIP_${index}`);
       if (vip != null) {
-        memo.push(new Transaction([
-          'portDefinitions',
-          index,
-          'loadBalanced'
-        ], true, SET));
+        memo.push(
+          new Transaction(["portDefinitions", index, "loadBalanced"], true, SET)
+        );
 
         if (!vip.startsWith(`${state.id}:`)) {
-          memo.push(new Transaction([
-            'portDefinitions',
-            index,
-            'vip'
-          ], vip, SET));
+          memo.push(
+            new Transaction(["portDefinitions", index, "vip"], vip, SET)
+          );
         }
       }
 
       if (item.labels != null) {
-        memo.push(new Transaction([
-          'portDefinitions',
-          index,
-          'labels'
-        ], item.labels, SET));
+        memo.push(
+          new Transaction(
+            ["portDefinitions", index, "labels"],
+            item.labels,
+            SET
+          )
+        );
       }
 
       return memo;
     }, []);
-  },
-
-  /**
-   * Creates portDefinitions for the form. This is equal to what is produced
-   * by the networkingReducer
-   * @param {Object[]} state - existing PortDefinitions
-   * @param {Object} action
-   * @param {(ADD_ITEM|REMOVE_ITEM|SET)} action.type - action to perform
-   * @param {String[]} action.path - location of value
-   * @param {*} action.value - value to perform action with
-   * @return {Object[]} new portDefinitions with action performed on it
-   */
-  FormReducer(state = [], action) {
-    // Store the state locally
-    this.portDefinitions = networkingReducer(this.portDefinitions, action);
-
-    // We want the portDefinitions as it comes from networking reducer
-    // for the form
-    return this.portDefinitions;
   }
 };
