@@ -66,17 +66,18 @@ const bootstrap = {
 };
 
 module.exports = {
-  lessLoader: {
-    lessPlugins: [colorLighten]
-  },
+  // lessLoader: {
+  //   lessPlugins: [colorLighten]
+  // },
 
   module: {
-    preLoaders: [
+    rules: [
       // Replace HTML comments
       {
         test: /\.html$/,
         exclude: /node_modules/,
-        loader: StringReplacePlugin.replace({
+        enforce: "pre",
+        use: StringReplacePlugin.replace({
           replacements: [
             {
               pattern: /<!--\[if\sBOOTSTRAP-HTML\]><!\[endif\]-->/g,
@@ -93,42 +94,76 @@ module.exports = {
         })
       },
       {
-        test: /\.js$/,
-        loader: "source-map-loader",
-        exclude: /node_modules/
-      }
-    ],
-    loaders: [
-      {
-        test: /\.html$/,
-        loader: "html?attrs=link:href"
+        test: /later\/index.js$/,
+        use: [
+          {
+            loader: "string-replace-loader",
+            options: {
+              search: "later-cov",
+              replace: "later"
+            }
+          }
+        ]
       },
       {
-        test: /\.json$/,
-        loader: "json-loader"
+        test: /\.js$/,
+        use: ["source-map-loader"],
+        exclude: /node_modules/
+      },
+      {
+        test: /\.html$/,
+        use: [
+          {
+            loader: "html-loader",
+            options: {
+              attrs: "link:href"
+            }
+          }
+        ]
       },
       {
         test: /\.jison$/,
-        loader: "jison-loader"
+        use: [
+          {
+            loader: "jison-loader"
+          }
+        ]
       },
       {
         test: /\.raml$/,
-        loader: "raml-validator-loader"
+        use: [
+          {
+            loader: "raml-validator-loader"
+          }
+        ]
       },
       {
         test: /\.(ico|icns)$/,
-        loader: "file?name=./[hash]-[name].[ext]"
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              name: "./[hash]-[name].[ext]"
+            }
+          }
+        ]
       },
       {
         test: /\.(ttf|woff)$/,
-        loader: "file?name=./fonts/source-sans-pro/[name].[ext]"
-      }
-    ],
-    postLoaders: [
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              name: "./fonts/source-sans-pro/[name].[ext]"
+            }
+          }
+        ]
+      },
       {
         test: /\.html$/,
         exclude: /node_modules/,
-        loader: StringReplacePlugin.replace({
+        enforce: "post",
+        use: StringReplacePlugin.replace({
           replacements: [
             {
               pattern: /<!--\[if\sBOOTSTRAP-CSS\]><!\[endif\]-->/g,
@@ -163,7 +198,7 @@ module.exports = {
     fs: "empty"
   },
 
-  postcss: [autoprefixer],
+  // postcss: [autoprefixer],
 
   resolve: {
     alias: {
@@ -173,12 +208,13 @@ module.exports = {
       "#PLUGINS": absPath("plugins"),
       "#SRC": absPath("src")
     },
-    extensions: ["", ".js", ".less", ".css"],
-    root: [absPath(), absPath("node_modules"), absPath("packages")],
-    modulesDirectories: ["node_modules", "packages"]
-  },
-
-  resolveLoader: {
-    root: [absPath("node_modules"), absPath("packages")]
+    extensions: [".js", ".less", ".css"],
+    modules: [
+      absPath(),
+      absPath("packages"),
+      absPath("node_modules"),
+      "packages",
+      "node_modules"
+    ]
   }
 };

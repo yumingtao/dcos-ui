@@ -3,6 +3,7 @@ import HtmlWebpackPlugin from "html-webpack-plugin";
 import StringReplacePlugin from "string-replace-webpack-plugin";
 import WebpackNotifierPlugin from "webpack-notifier";
 import webpack from "webpack";
+import path from "path";
 import SVGCompilerPlugin from "./plugins/svg-compiler-plugin";
 
 import packageInfo from "../package";
@@ -62,17 +63,37 @@ if (environment === "development") {
   };
 }
 
-let reactHotLoader = "react-hot!";
+function absPath() {
+  const args = [].slice.apply(arguments);
+  args.unshift(__dirname, "..");
+
+  return path.resolve.apply(path.resolve, args);
+}
+
+let reactHotLoader = [
+  { loader: "react-hot-loader" },
+  {
+    loader: "babel-loader",
+    options: {
+      cacheDirectory: "/tmp"
+    }
+  }
+];
 
 if (process.env.REACTJS_COMPONENTS_LOCAL) {
-  reactHotLoader = "";
+  reactHotLoader = {
+    loader: "babel-loader",
+    options: {
+      cacheDirectory: "/tmp"
+    }
+  };
 }
 
 module.exports = Object.assign({}, webpackConfig, {
   entry,
   devtool,
   output: {
-    path: "./build",
+    path: absPath("./build"),
     filename: "[name].js"
   },
   devServer,
@@ -83,60 +104,88 @@ module.exports = Object.assign({}, webpackConfig, {
       template: "./src/index.html"
     }),
 
-    new ExtractTextPlugin("./[name].css"),
+    new ExtractTextPlugin({ filename: "./[name].css" }),
 
     new WebpackNotifierPlugin({ alwaysNotify: true }),
 
-    new webpack.optimize.CommonsChunkPlugin("vendor", "vendor.js", Infinity),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: "vendor",
+      filename: "vendor.bundle.js",
+      minChunks: Infinity
+    }),
 
     new SVGCompilerPlugin({ baseDir: "src/img/components/icons" })
   ],
   module: {
-    preLoaders: webpackConfig.module.preLoaders,
-    loaders: webpackConfig.module.loaders.concat([
+    rules: webpackConfig.module.rules.concat([
       {
         test: /\.js$/,
         // Exclude all node_modules except dcos-dygraphs
         exclude: /(?=\/node_modules\/)(?!\/node_modules\/dcos-dygraphs\/)/,
-        loader: reactHotLoader +
-          "babel?" +
-          JSON.stringify({
-            cacheDirectory: "/tmp",
-            // Map through resolve to fix preset loading problem
-            presets: ["babel-preset-es2015", "babel-preset-react"].map(
-              require.resolve
-            )
-          })
+        use: reactHotLoader
       },
       {
         test: /\.css$/,
-        loader: "style!css!postcss"
+        use: ["style-loader", "css-loader", "postcss-loader"]
       },
       {
         test: /\.less$/,
-        loader: "style?sourceMap!css?sourceMap!postcss?sourceMap!less?sourceMap"
+        use: [
+          { loader: "style-loader", options: { sourceMap: true } },
+          { loader: "css-loader", options: { sourceMap: true } },
+          { loader: "postcss-loader", options: { sourceMap: true } },
+          { loader: "less-loader", options: { sourceMap: true } }
+        ]
       },
       {
         test: /\.png$/,
-        loader: "file?name=./[hash]-[name].[ext]&limit=100000&mimetype=image/png"
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              name: "./[hash]-[name].[ext]&limit=100000&mimetype=image/png"
+            }
+          }
+        ]
       },
       {
         test: /\.svg$/,
-        loader: "file?name=./[hash]-[name].[ext]&limit=100000&mimetype=image/svg+xml"
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              name: "./[hash]-[name].[ext]&limit=100000&mimetype=image/svg+xml"
+            }
+          }
+        ]
       },
       {
         test: /\.gif$/,
-        loader: "file?name=./[hash]-[name].[ext]&limit=100000&mimetype=image/gif"
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              name: "./[hash]-[name].[ext]&limit=100000&mimetype=image/gif"
+            }
+          }
+        ]
       },
       {
         test: /\.jpg$/,
-        loader: "file?name=./[hash]-[name].[ext]"
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              name: "./[hash]-[name].[ext]"
+            }
+          }
+        ]
       },
       // Replace @@variables
       {
         test: /.js$/,
         exclude: /node_modules/,
-        loader: StringReplacePlugin.replace({
+        use: StringReplacePlugin.replace({
           replacements: [
             {
               pattern: /@@(\w+)/gi,
@@ -147,7 +196,6 @@ module.exports = Object.assign({}, webpackConfig, {
           ]
         })
       }
-    ]),
-    postLoaders: webpackConfig.module.postLoaders
+    ])
   }
 });
