@@ -3,21 +3,21 @@
  */
 var fs = require('fs');
 var path = require('path');
-var testPaths = ['src', 'plugins', 'tests', 'packages'];
+var roots = ['../src', '../plugins', '../tests', '../packages'];
 
 if (process.env.npm_config_externalplugins) {
-  testPaths.push(process.env.npm_config_externalplugins);
+  roots.push(process.env.npm_config_externalplugins);
 }
 
 var config = {
   'automock': true,
-  'testPathDirs': testPaths,
+  'roots': roots,
   'globals': {
     '__DEV__': true
   },
-  'scriptPreprocessor': 'jest/preprocessor.js',
-  'setupTestFrameworkScriptFile': 'jest/setupTestFramework.js',
-  'setupFiles': ['jest/setupEnv.js'],
+  'transform': { ".*": './preprocessor.js'},
+  'setupTestFrameworkScriptFile': './setupTestFramework.js',
+  'setupFiles': ['./setupEnv.js'],
   'testRegex': '/__tests__/.*\\-test\\.(es6|js)$',
   'moduleFileExtensions': [
     'js',
@@ -32,7 +32,7 @@ var config = {
   'timers': 'fake',
   'coverageReporters': ["json", "lcov", "cobertura", "text"],
   // We need this to override jest's default ['/node_modules/']
-  'preprocessorIgnorePatterns' : [],
+  'transformIgnorePatterns' : [],
   'unmockedModulePathPatterns': [
     'babel-polyfill',
     'babel-runtime',

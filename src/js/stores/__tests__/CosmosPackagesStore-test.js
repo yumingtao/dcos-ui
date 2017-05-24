@@ -21,13 +21,14 @@ const UniverseInstalledPackagesList = require("../../structs/UniverseInstalledPa
 const UniversePackagesList = require("../../structs/UniversePackagesList");
 
 describe("CosmosPackagesStore", function() {
+  const $scope = {};
   beforeEach(function() {
-    this.configUseFixture = Config.useFixtures;
+    $scope.configUseFixture = Config.useFixtures;
     Config.useFixtures = true;
   });
 
   afterEach(function() {
-    Config.useFixtures = this.configUseFixture;
+    Config.useFixtures = $scope.configUseFixture;
   });
 
   describe("#fetchAvailablePackages", function() {
