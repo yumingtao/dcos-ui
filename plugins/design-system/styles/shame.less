@@ -1,5 +1,9 @@
 // Shame CSS
+
 // A place to put quick CSS iterations and cleanup later
+
+@import '../../../node_modules/codemirror/lib/codemirror.css';
+@import 'railscasts.css';
 
 // Do and don't styles
 // For green and red labels when showing examples
@@ -19,4 +23,28 @@
 .ds-dont {
   border-color: #f33745;
   color: #f33745;
+}
+
+.code-example-wrapper {
+  background-color: #fff;
+  border-left: 1px solid #e5e5e5;
+  border-right: 1px solid #e5e5e5;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 10px;
+  position: relative;
+}
+
+.code-example-wrapper.header {
+  border-top: 1px solid #e5e5e5;
+  padding-top: 20px;
+}
+
+.code-example-wrapper.footer {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.code-example-footer-content button {
+  float: right;
 }

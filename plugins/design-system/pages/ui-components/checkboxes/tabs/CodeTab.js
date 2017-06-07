@@ -1,13 +1,40 @@
 import React, { Component } from "react";
 
+import FieldInput from "#SRC/js/components/form/FieldInput";
+import FieldLabel from "#SRC/js/components/form/FieldLabel";
+import FormGroup from "#SRC/js/components/form/FormGroup";
+
+import ComponentExample from "../../../../components/ComponentExample";
+
 class CodeTab extends Component {
   render() {
     return (
-      <div>
-        <h3 className="flush-top">Primary Button</h3>
-        <p>Here's a primary button</p>
-        <button className="button button-primary">Button</button>
-      </div>
+      <ComponentExample>
+        <div>
+          <FormGroup>
+            <FieldLabel>
+              <FieldInput
+                checked={false}
+                disabled={false}
+                name="check_box"
+                type="checkbox"
+              />
+              Check Me
+            </FieldLabel>
+          </FormGroup>
+          <FormGroup>
+            <FieldLabel>
+              <FieldInput
+                checked={false}
+                disabled={false}
+                name="check_box"
+                type="checkbox"
+              />
+              Check Me
+            </FieldLabel>
+          </FormGroup>
+        </div>
+      </ComponentExample>
     );
   }
 }
