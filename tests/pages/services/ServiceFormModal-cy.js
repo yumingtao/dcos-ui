@@ -161,6 +161,7 @@ describe("Service Form Modal", function() {
     const SERVICE_SPEC = {
       id: "/sleep",
       cmd: "sleep 3000",
+      constraints: [],
       instances: 1,
       cpus: 1,
       mem: 128,
@@ -170,6 +171,7 @@ describe("Service Form Modal", function() {
       backoffFactor: 1.15,
       maxLaunchDelaySeconds: 3600,
       container: {
+        docker: {},
         type: "MESOS",
         volumes: [
           {
@@ -213,11 +215,20 @@ describe("Service Form Modal", function() {
       killSelection: "YOUNGEST_FIRST",
       portDefinitions: [
         {
+          labels: {},
           port: 0,
           protocol: "tcp"
         }
       ],
-      requirePorts: false
+      requirePorts: false,
+      secrets: {},
+      storeUrls: [],
+      redinessChecks: [],
+      labels: {},
+      healthChecks: [],
+      fetch: [],
+      env: {},
+      dependencies: []
     };
 
     beforeEach(function() {

@@ -18,12 +18,16 @@ const CreateServiceModalFormUtil = {
     }
 
     return Object.keys(object).reduce(function(memo, key) {
-      if (!ValidatorUtil.isEmpty(object[key]) && !Number.isNaN(object[key])) {
+      if (
+        object[key] != null &&
+        object[key] !== "" &&
+        !Number.isNaN(object[key])
+      ) {
         // Apply the strip function recursively and keep only non-empty values
         const value = CreateServiceModalFormUtil.stripEmptyProperties(
           object[key]
         );
-        if (!ValidatorUtil.isEmpty(value) && !Number.isNaN(value)) {
+        if (value != null && !Number.isNaN(value) && value !== "") {
           memo[key] = value;
         }
       }
