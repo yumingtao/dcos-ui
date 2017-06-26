@@ -17,8 +17,8 @@
   },
   "license": "Apache-2.0",
   "engines": {
-    "node": "7.10.x",
-    "npm": "4.5.x"
+    "node": "8.1.x",
+    "npm": "4.6.x"
   },
   "browserslist": [
     "last 2 versions",
@@ -129,7 +129,7 @@
   "scripts": {
     "check-env": "./scripts/validate-engine-versions",
     "clean": "rm -rf dist",
-    "shrinkwrap": "npm shrinkwrap --dev && ./node_modules/.bin/gulp fixShrinkwrap",
+    "shrinkwrap-dev": "npm shrinkwrap --dev",
     "preinstall": "./scripts/pre-install",
     "prebuild-assets": "./node_modules/.bin/gulp checkDependencies && npm install compression-webpack-plugin@latest",
     "build-assets": "npm run clean && NODE_ENV=production webpack --config ./webpack/webpack.production.babel.js",
