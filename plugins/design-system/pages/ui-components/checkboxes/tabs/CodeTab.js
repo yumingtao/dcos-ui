@@ -16,10 +16,10 @@ class CodeTab extends Component {
               <FieldInput
                 checked={false}
                 disabled={false}
-                name="check_box"
+                name="check_box_first"
                 type="checkbox"
               />
-              Check Me
+              Check Me First
             </FieldLabel>
           </FormGroup>
           <FormGroup>
@@ -27,10 +27,10 @@ class CodeTab extends Component {
               <FieldInput
                 checked={false}
                 disabled={false}
-                name="check_box"
+                name="check_box_second"
                 type="checkbox"
               />
-              Check Me
+              Check Me Second
             </FieldLabel>
           </FormGroup>
         </div>

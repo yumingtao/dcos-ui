@@ -5,7 +5,7 @@ import CodeExample from "./CodeExample";
 import CodeExampleFooter from "./CodeExampleFooter";
 import CodeExampleHeader from "./CodeExampleHeader";
 
-const DEFAULT_HEIGHT = 210;
+const DEFAULT_HEIGHT = 205;
 
 const REACT_STRING_OPTIONS = {
   showDefaultProps: false,
@@ -20,6 +20,7 @@ class ComponentExample extends Component {
       isExpanded: false
     };
 
+    this.defaultHeight = this.props.defaultHeight || DEFAULT_HEIGHT;
     this.expandCollapseToggle = this.expandCollapseToggle.bind(this);
   }
 
@@ -27,17 +28,8 @@ class ComponentExample extends Component {
     this.setState({ isExpanded: !this.state.isExpanded });
   }
 
-  getHeight() {
-    if (this.state.isExpanded) {
-      return "100%";
-    }
-
-    return DEFAULT_HEIGHT;
-  }
-
   render() {
     const code = this.props.children;
-    const height = this.getHeight();
 
     return (
       <div>
@@ -45,7 +37,9 @@ class ComponentExample extends Component {
         <CodeExampleHeader>
           {code}
         </CodeExampleHeader>
-        <CodeExample height={height}>
+        <CodeExample
+          height={this.state.isExpanded ? "100%" : this.defaultHeight}
+        >
           {`${reactElementToJSXString(code, REACT_STRING_OPTIONS)}`}
         </CodeExample>
         <CodeExampleFooter>
