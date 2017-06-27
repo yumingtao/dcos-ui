@@ -9,32 +9,35 @@ import ComponentExample from "../../../../components/ComponentExample";
 class CodeTab extends Component {
   render() {
     return (
-      <ComponentExample>
-        <div>
-          <FormGroup>
-            <FieldLabel>
-              <FieldInput
-                checked={false}
-                disabled={false}
-                name="check_box_first"
-                type="checkbox"
-              />
-              Check Me First
-            </FieldLabel>
-          </FormGroup>
-          <FormGroup>
-            <FieldLabel>
-              <FieldInput
-                checked={false}
-                disabled={false}
-                name="check_box_second"
-                type="checkbox"
-              />
-              Check Me Second
-            </FieldLabel>
-          </FormGroup>
-        </div>
-      </ComponentExample>
+      <div>
+        <h3 className="flush-top">Checkbox</h3>
+        <ComponentExample activeTab="React">
+          <div>
+            <FormGroup>
+              <FieldLabel>
+                <FieldInput
+                  checked={false}
+                  disabled={false}
+                  name="check_box_first"
+                  type="checkbox"
+                />
+                Check Me First
+              </FieldLabel>
+            </FormGroup>
+            <FormGroup>
+              <FieldLabel>
+                <FieldInput
+                  checked={false}
+                  disabled={false}
+                  name="check_box_second"
+                  type="checkbox"
+                />
+                Check Me Second
+              </FieldLabel>
+            </FormGroup>
+          </div>
+        </ComponentExample>
+      </div>
     );
   }
 }

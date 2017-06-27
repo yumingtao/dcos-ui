@@ -20,9 +20,10 @@ class CodeExample extends Component {
   }
 
   render() {
+    const { lang } = this.props;
     var options = {
       lineNumbers: true,
-      mode: "jsx",
+      mode: lang,
       theme: "railscasts",
       readOnly: true
     };
