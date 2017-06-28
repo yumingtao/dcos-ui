@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import ReactDOMServer from "react-dom/server";
+import JSBeautify from "js-beautify";
 import reactElementToJSXString from "react-element-to-jsx-string";
 
 import TabButton from "#SRC/js/components/TabButton";
@@ -70,7 +72,7 @@ class ComponentExample extends Component {
                 lang="text/html"
                 height={this.state.isExpanded ? "100%" : this.defaultHeight}
               >
-                {"<div><p>Hello</p></div>"}
+                {`${JSBeautify.html(ReactDOMServer.renderToStaticMarkup(code))}`}
               </CodeExample>
             </TabView>
           </TabViewList>
