@@ -9,9 +9,13 @@ import Tabs from "#SRC/js/components/Tabs";
 import TabView from "#SRC/js/components/TabView";
 import TabViewList from "#SRC/js/components/TabViewList";
 
+import ClipboardTrigger from "#SRC/js/components/ClipboardTrigger";
+
 import CodeExample from "./CodeExample";
 import CodeExampleFooter from "./CodeExampleFooter";
 import CodeExampleHeader from "./CodeExampleHeader";
+
+import ComponentExampleConstants from "../constants/ComponentExample";
 
 const DEFAULT_HEIGHT = 205;
 
@@ -20,13 +24,16 @@ const REACT_STRING_OPTIONS = {
   useBooleanShorthandSyntax: false
 };
 
+const { type: { REACT, HTML } } = ComponentExampleConstants;
+
 class ComponentExample extends Component {
   constructor() {
     super(...arguments);
 
     this.state = {
       isExpanded: false,
-      activeTab: null
+      isCodeCopied: false,
+      activeTab: this.props.activeTab
     };
 
     this.defaultHeight = this.props.defaultHeight || DEFAULT_HEIGHT;
@@ -42,11 +49,31 @@ class ComponentExample extends Component {
     this.setState({ activeTab });
   }
 
+  handleCodeCopy() {
+    this.setState({ isCodeCopied: true });
+  }
+
+  getCopyCode(code) {
+    if (this.state.activeTab === REACT) {
+      return reactElementToJSXString(code, REACT_STRING_OPTIONS);
+    }
+
+    return JSBeautify.html(ReactDOMServer.renderToStaticMarkup(code));
+  }
+
   render() {
     const code = this.props.children;
 
     return (
       <div>
+        <ClipboardTrigger
+          className="dropdown-menu-item-padding-surrogate clickable"
+          copyText={this.getCopyCode(code)}
+          onTextCopy={this.handleCodeCopy}
+          useTooltip="true"
+        >
+          Test
+        </ClipboardTrigger>
         <CodeExampleHeader>
           {code}
         </CodeExampleHeader>
@@ -55,11 +82,11 @@ class ComponentExample extends Component {
           activeTab={this.state.activeTab}
         >
           <TabButtonList className="code-example-tab-container">
-            <TabButton id="react" label="React" />
-            <TabButton id="html" label="HTML" />
+            <TabButton id={REACT} label="React" />
+            <TabButton id={HTML} label="HTML" />
           </TabButtonList>
           <TabViewList>
-            <TabView id="react">
+            <TabView id={REACT}>
               <CodeExample
                 lang="jsx"
                 height={this.state.isExpanded ? "100%" : this.defaultHeight}
@@ -67,7 +94,7 @@ class ComponentExample extends Component {
                 {`${reactElementToJSXString(code, REACT_STRING_OPTIONS)}`}
               </CodeExample>
             </TabView>
-            <TabView id="html">
+            <TabView id={HTML}>
               <CodeExample
                 lang="text/html"
                 height={this.state.isExpanded ? "100%" : this.defaultHeight}
