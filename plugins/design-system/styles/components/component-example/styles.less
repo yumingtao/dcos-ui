@@ -11,6 +11,8 @@
     position: relative;
 
     &.header {
+      background: @component-example-header-color;
+      border-bottom: 1px solid @component-example-border-color;
       border-top: 1px solid @component-example-border-color;
       padding-top: 20px;
     }
@@ -22,6 +24,10 @@
 
         button {
           float: right;
+
+          .icon {
+            margin-left: 5px;
+          }
         }
       }
     }
@@ -31,11 +37,45 @@
     border-left: 1px solid @component-example-border-color;
     border-right: 1px solid @component-example-border-color;
     margin-bottom: 0;
-    padding-left: 10px;
 
     .tooltip-wrapper {
       float: right;
       margin-right: 15px;
+      margin-top: 15px;
+    }
+
+    .code-example-tab {
+      background: @component-example-tab-color;
+      border: 1px solid @component-example-border-color;
+      margin-right: 0;
+      margin-top: 15px;
+      padding-left: 20px;
+      padding-right: 20px;
+      padding-top: 10px;
+
+      &.active {
+        background: @component-example-tab-active-color;
+
+        & > .menu-tabbed-item-label {
+          color: @component-example-tab-active-text-color;
+
+          &:after {
+            background: @component-example-tab-active-color;
+          }
+        }
+      }
+
+      .menu-tabbed-item-label {
+
+        &:hover {
+          color: @component-example-tab-active-text-color;
+          text-decoration: none;
+
+          &:after {
+            background: @component-example-tab-active-color;
+          }
+        }
+      }
     }
   }
 }

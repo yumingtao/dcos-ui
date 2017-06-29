@@ -25,6 +25,12 @@ const REACT_STRING_OPTIONS = {
   useBooleanShorthandSyntax: false
 };
 
+const METHODS_TO_BIND = [
+  "expandCollapseToggle",
+  "handleTabChange",
+  "handleCodeCopy"
+];
+
 const { type: { REACT, HTML } } = ComponentExampleConstants;
 
 class ComponentExample extends Component {
@@ -38,9 +44,10 @@ class ComponentExample extends Component {
     };
 
     this.defaultHeight = this.props.defaultHeight || DEFAULT_HEIGHT;
-    this.expandCollapseToggle = this.expandCollapseToggle.bind(this);
-    this.handleTabChange = this.handleTabChange.bind(this);
-    this.handleCodeCopy = this.handleCodeCopy.bind(this);
+
+    METHODS_TO_BIND.forEach(method => {
+      this[method] = this[method].bind(this);
+    });
   }
 
   expandCollapseToggle() {
@@ -76,8 +83,8 @@ class ComponentExample extends Component {
           activeTab={this.state.activeTab}
         >
           <TabButtonList className="code-example-tab-container">
-            <TabButton id={REACT} label="React" />
-            <TabButton id={HTML} label="HTML" />
+            <TabButton className="code-example-tab" id={REACT} label={REACT} />
+            <TabButton className="code-example-tab" id={HTML} label={HTML} />
 
             <ClipboardTrigger
               className="clickable"
@@ -85,7 +92,7 @@ class ComponentExample extends Component {
               onTextCopy={this.handleCodeCopy}
               useTooltip="true"
             >
-              <Icon size="mini" id="clipboard" />
+              <Icon size="small" id="clipboard" />
             </ClipboardTrigger>
           </TabButtonList>
           <TabViewList>
@@ -109,11 +116,15 @@ class ComponentExample extends Component {
         </Tabs>
         <CodeExampleFooter>
           <button
-            className="button"
+            className="button button-link"
             type="button"
             onClick={this.expandCollapseToggle}
           >
-            {this.state.isExpanded ? "Show less code" : "Show more code"}
+            {this.state.isExpanded ? "Show less" : "Show more"}
+            <Icon
+              size="mini"
+              id={this.state.isExpanded ? "caret-up" : "caret-down"}
+            />
           </button>
         </CodeExampleFooter>
       </div>
