@@ -10,6 +10,7 @@ import TabView from "#SRC/js/components/TabView";
 import TabViewList from "#SRC/js/components/TabViewList";
 
 import ClipboardTrigger from "#SRC/js/components/ClipboardTrigger";
+import Icon from "#SRC/js/components/Icon";
 
 import CodeExample from "./CodeExample";
 import CodeExampleFooter from "./CodeExampleFooter";
@@ -39,6 +40,7 @@ class ComponentExample extends Component {
     this.defaultHeight = this.props.defaultHeight || DEFAULT_HEIGHT;
     this.expandCollapseToggle = this.expandCollapseToggle.bind(this);
     this.handleTabChange = this.handleTabChange.bind(this);
+    this.handleCodeCopy = this.handleCodeCopy.bind(this);
   }
 
   expandCollapseToggle() {
@@ -66,14 +68,6 @@ class ComponentExample extends Component {
 
     return (
       <div>
-        <ClipboardTrigger
-          className="dropdown-menu-item-padding-surrogate clickable"
-          copyText={this.getCopyCode(code)}
-          onTextCopy={this.handleCodeCopy}
-          useTooltip="true"
-        >
-          Test
-        </ClipboardTrigger>
         <CodeExampleHeader>
           {code}
         </CodeExampleHeader>
@@ -84,6 +78,15 @@ class ComponentExample extends Component {
           <TabButtonList className="code-example-tab-container">
             <TabButton id={REACT} label="React" />
             <TabButton id={HTML} label="HTML" />
+
+            <ClipboardTrigger
+              className="clickable"
+              copyText={this.getCopyCode(code)}
+              onTextCopy={this.handleCodeCopy}
+              useTooltip="true"
+            >
+              <Icon size="mini" id="clipboard" />
+            </ClipboardTrigger>
           </TabButtonList>
           <TabViewList>
             <TabView id={REACT}>

@@ -1,0 +1,41 @@
+& when (@component-example-enabled) {
+
+  .code-example-wrapper {
+    background-color: #fff;
+    border-left: 1px solid @component-example-border-color;
+    border-right: 1px solid @component-example-border-color;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 10px;
+    position: relative;
+
+    &.header {
+      border-top: 1px solid @component-example-border-color;
+      padding-top: 20px;
+    }
+
+    &.footer {
+      border-bottom: 1px solid @component-example-border-color;
+
+      .code-example-footer-content {
+
+        button {
+          float: right;
+        }
+      }
+    }
+  }
+
+  .code-example-tab-container {
+    border-left: 1px solid @component-example-border-color;
+    border-right: 1px solid @component-example-border-color;
+    margin-bottom: 0;
+    padding-left: 10px;
+
+    .tooltip-wrapper {
+      float: right;
+      margin-right: 15px;
+    }
+  }
+}
