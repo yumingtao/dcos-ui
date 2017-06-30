@@ -34,9 +34,9 @@
   }
 
   .code-example-tab-container {
-    border-left: 1px solid @component-example-border-color;
-    border-right: 1px solid @component-example-border-color;
+    background: @component-example-editor-color;
     margin-bottom: 0;
+    padding-bottom: 20px;
 
     .tooltip-wrapper {
       float: right;
@@ -44,9 +44,14 @@
       margin-top: 15px;
     }
 
+    .code-example-tab:first-child {
+      margin-left: 20px;
+    }
+
     .code-example-tab {
       background: @component-example-tab-color;
       border: 1px solid @component-example-border-color;
+      height: 40px;
       margin-right: 0;
       margin-top: 15px;
       padding-left: 20px;
@@ -66,6 +71,7 @@
       }
 
       .menu-tabbed-item-label {
+        padding-bottom: 0;
 
         &:hover {
           color: @component-example-tab-active-text-color;
