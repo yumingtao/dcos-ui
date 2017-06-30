@@ -11,12 +11,26 @@ class CodeExample extends Component {
     });
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return (
+      this.props.lang !== nextProps.lang ||
+      this.props.height !== nextProps.height ||
+      (nextState != null && this.state.code !== nextState.code)
+    );
+  }
+
   setHeight(ref) {
     if (ref != null) {
+      const { height, handleCanExpand } = this.props;
       const cm = ref.getCodeMirror();
-      const { height } = this.props;
 
-      cm.setSize(null, height);
+      cm.setSize(null, "100%");
+      if (cm.doc.height > height) {
+        cm.setSize(null, height);
+        handleCanExpand(true);
+      } else {
+        handleCanExpand(false);
+      }
     }
   }
 

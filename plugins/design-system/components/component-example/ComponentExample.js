@@ -28,7 +28,8 @@ const REACT_STRING_OPTIONS = {
 const METHODS_TO_BIND = [
   "expandCollapseToggle",
   "handleTabChange",
-  "handleCodeCopy"
+  "handleCodeCopy",
+  "handleCanExpand"
 ];
 
 const { type: { REACT, HTML } } = ComponentExampleConstants;
@@ -40,6 +41,7 @@ class ComponentExample extends Component {
     this.state = {
       isExpanded: false,
       isCodeCopied: false,
+      canExpand: false,
       activeTab: this.props.activeTab
     };
 
@@ -50,28 +52,45 @@ class ComponentExample extends Component {
     });
   }
 
+  isReactTab() {
+    return this.state.activeTab === REACT;
+  }
+
   expandCollapseToggle() {
     this.setState({ isExpanded: !this.state.isExpanded });
   }
 
   handleTabChange(activeTab) {
     this.setState({ activeTab });
+    this.setState({ isExpanded: false });
+  }
+
+  handleCanExpand(canExpand) {
+    this.setState({ canExpand });
   }
 
   handleCodeCopy() {
     this.setState({ isCodeCopied: true });
   }
 
-  getCopyCode(code) {
-    if (this.state.activeTab === REACT) {
-      return reactElementToJSXString(code, REACT_STRING_OPTIONS);
-    }
-
-    return JSBeautify.html(ReactDOMServer.renderToStaticMarkup(code));
-  }
-
   render() {
     const code = this.props.children;
+    const reactCode = reactElementToJSXString(code, REACT_STRING_OPTIONS);
+    const htmlCode = JSBeautify.html(ReactDOMServer.renderToStaticMarkup(code));
+
+    const expandButton = (
+      <button
+        className="button button-link"
+        type="button"
+        onClick={this.expandCollapseToggle}
+      >
+        {this.state.isExpanded ? "Show less" : "Show more"}
+        <Icon
+          size="mini"
+          id={this.state.isExpanded ? "caret-up" : "caret-down"}
+        />
+      </button>
+    );
 
     return (
       <div>
@@ -93,10 +112,9 @@ class ComponentExample extends Component {
               id={HTML}
               label={HTML}
             />
-
             <ClipboardTrigger
               className="clickable"
-              copyText={this.getCopyCode(code)}
+              copyText={this.isReactTab() ? reactCode : htmlCode}
               onTextCopy={this.handleCodeCopy}
               useTooltip="true"
             >
@@ -108,32 +126,24 @@ class ComponentExample extends Component {
               <CodeExample
                 lang="jsx"
                 height={this.state.isExpanded ? "100%" : this.defaultHeight}
+                handleCanExpand={this.handleCanExpand}
               >
-                {`${reactElementToJSXString(code, REACT_STRING_OPTIONS)}`}
+                {`${reactCode}`}
               </CodeExample>
             </TabView>
             <TabView id={HTML}>
               <CodeExample
                 lang="text/html"
                 height={this.state.isExpanded ? "100%" : this.defaultHeight}
+                handleCanExpand={this.handleCanExpand}
               >
-                {`${JSBeautify.html(ReactDOMServer.renderToStaticMarkup(code))}`}
+                {`${htmlCode}`}
               </CodeExample>
             </TabView>
           </TabViewList>
         </Tabs>
         <CodeExampleFooter>
-          <button
-            className="button button-link"
-            type="button"
-            onClick={this.expandCollapseToggle}
-          >
-            {this.state.isExpanded ? "Show less" : "Show more"}
-            <Icon
-              size="mini"
-              id={this.state.isExpanded ? "caret-up" : "caret-down"}
-            />
-          </button>
+          {this.state.isExpanded || this.state.canExpand ? expandButton : ""}
         </CodeExampleFooter>
       </div>
     );
