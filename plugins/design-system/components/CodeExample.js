@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import ReactCodeMirror from "react-codemirror";
+import "../vendor/simplescrollbars.js";
 
 require("codemirror/mode/jsx/jsx");
 
@@ -25,6 +26,7 @@ class CodeExample extends Component {
       lineNumbers: true,
       mode: lang,
       theme: "railscasts",
+      scrollbarStyle: "overlay",
       readOnly: true
     };
 
