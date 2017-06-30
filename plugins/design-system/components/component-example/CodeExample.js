@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import ReactCodeMirror from "react-codemirror";
-import "../vendor/simplescrollbars.js";
+import "../../vendor/simplescrollbars.js";
 
 require("codemirror/mode/jsx/jsx");
 

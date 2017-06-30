@@ -4,7 +4,8 @@ import FieldInput from "#SRC/js/components/form/FieldInput";
 import FieldLabel from "#SRC/js/components/form/FieldLabel";
 import FormGroup from "#SRC/js/components/form/FormGroup";
 
-import ComponentExample from "../../../../components/ComponentExample";
+import ComponentExample
+  from "../../../../components/component-example/ComponentExample";
 import ComponentExampleConstants from "../../../../constants/ComponentExample";
 
 const { type: { REACT } } = ComponentExampleConstants;

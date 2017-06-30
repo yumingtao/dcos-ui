@@ -3,7 +3,6 @@ import ReactDOMServer from "react-dom/server";
 import JSBeautify from "js-beautify";
 import reactElementToJSXString from "react-element-to-jsx-string";
 
-import TabButton from "#SRC/js/components/TabButton";
 import TabButtonList from "#SRC/js/components/TabButtonList";
 import Tabs from "#SRC/js/components/Tabs";
 import TabView from "#SRC/js/components/TabView";
@@ -15,8 +14,9 @@ import Icon from "#SRC/js/components/Icon";
 import CodeExample from "./CodeExample";
 import CodeExampleFooter from "./CodeExampleFooter";
 import CodeExampleHeader from "./CodeExampleHeader";
+import ComponentExampleTab from "./ComponentExampleTab";
 
-import ComponentExampleConstants from "../constants/ComponentExample";
+import ComponentExampleConstants from "../../constants/ComponentExample";
 
 const DEFAULT_HEIGHT = 205;
 
@@ -83,8 +83,16 @@ class ComponentExample extends Component {
           activeTab={this.state.activeTab}
         >
           <TabButtonList className="code-example-tab-container">
-            <TabButton className="code-example-tab" id={REACT} label={REACT} />
-            <TabButton className="code-example-tab" id={HTML} label={HTML} />
+            <ComponentExampleTab
+              className="code-example-tab"
+              id={REACT}
+              label={REACT}
+            />
+            <ComponentExampleTab
+              className="code-example-tab"
+              id={HTML}
+              label={HTML}
+            />
 
             <ClipboardTrigger
               className="clickable"
