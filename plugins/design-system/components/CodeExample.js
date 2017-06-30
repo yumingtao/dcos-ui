@@ -25,7 +25,7 @@ class CodeExample extends Component {
     var options = {
       lineNumbers: true,
       mode: lang,
-      theme: "railscasts",
+      theme: "one-dark",
       scrollbarStyle: "overlay",
       readOnly: true
     };
