@@ -74,7 +74,19 @@ class ComponentExample extends Component {
   }
 
   render() {
+    const { headerOnly } = this.props;
+
     const code = this.props.children;
+    const header = (
+      <CodeExampleHeader>
+        {code}
+      </CodeExampleHeader>
+    );
+
+    if (headerOnly) {
+      return header;
+    }
+
     const reactCode = reactElementToJSXString(code, REACT_STRING_OPTIONS);
     const htmlCode = JSBeautify.html(ReactDOMServer.renderToStaticMarkup(code));
 
@@ -94,9 +106,7 @@ class ComponentExample extends Component {
 
     return (
       <div>
-        <CodeExampleHeader>
-          {code}
-        </CodeExampleHeader>
+        {header}
         <Tabs
           handleTabChange={this.handleTabChange}
           activeTab={this.state.activeTab}
@@ -149,5 +159,9 @@ class ComponentExample extends Component {
     );
   }
 }
+
+ComponentExample.defaultProps = {
+  headerOnly: false
+};
 
 module.exports = ComponentExample;
