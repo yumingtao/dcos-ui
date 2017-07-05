@@ -1,9 +1,9 @@
 import classNames from "classnames/dedupe";
-import React from "react";
+import React, { Component } from "react";
 
 const METHODS_TO_BIND = ["handleClick"];
 
-class ComponentExampleTab extends React.Component {
+class ComponentExampleTab extends Component {
   constructor() {
     super(...arguments);
 

@@ -1,37 +1,12 @@
 import classNames from "classnames/dedupe";
-import React from "react";
+import React, { Component } from "react";
 
 const defaultClasses = {
   panel: "code-example-wrapper header",
   content: "code-example-header-content"
 };
 
-var CodeExampleHeader = React.createClass({
-  displayName: "CodeExampleHeader",
-
-  propTypes: {
-    heading: React.PropTypes.node,
-    footer: React.PropTypes.node,
-
-    // classes
-    contentClass: React.PropTypes.oneOfType([
-      React.PropTypes.array,
-      React.PropTypes.object,
-      React.PropTypes.string
-    ]),
-    headingClass: React.PropTypes.oneOfType([
-      React.PropTypes.array,
-      React.PropTypes.object,
-      React.PropTypes.string
-    ]),
-    footerClass: React.PropTypes.oneOfType([
-      React.PropTypes.array,
-      React.PropTypes.object,
-      React.PropTypes.string
-    ]),
-    onClick: React.PropTypes.func
-  },
-
+class CodeExampleHeader extends Component {
   getNode(nodeName) {
     const { props } = this;
     const node = props[nodeName];
@@ -50,7 +25,7 @@ var CodeExampleHeader = React.createClass({
         {node}
       </div>
     );
-  },
+  }
 
   render() {
     const { props } = this;
@@ -70,6 +45,29 @@ var CodeExampleHeader = React.createClass({
       </div>
     );
   }
-});
+}
+
+CodeExampleHeader.propTypes = {
+  heading: React.PropTypes.node,
+  footer: React.PropTypes.node,
+
+  contentClass: React.PropTypes.oneOfType([
+    React.PropTypes.array,
+    React.PropTypes.object,
+    React.PropTypes.string
+  ]),
+  headingClass: React.PropTypes.oneOfType([
+    React.PropTypes.array,
+    React.PropTypes.object,
+    React.PropTypes.string
+  ]),
+  footerClass: React.PropTypes.oneOfType([
+    React.PropTypes.array,
+    React.PropTypes.object,
+    React.PropTypes.string
+  ]),
+
+  onClick: React.PropTypes.func
+};
 
 module.exports = CodeExampleHeader;
