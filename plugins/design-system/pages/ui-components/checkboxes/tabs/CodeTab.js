@@ -6,16 +6,13 @@ import FormGroup from "#SRC/js/components/form/FormGroup";
 
 import ComponentExample
   from "../../../../components/component-example/ComponentExample";
-import ComponentExampleConstants from "../../../../constants/ComponentExample";
-
-const { type: { REACT } } = ComponentExampleConstants;
 
 class CodeTab extends Component {
   render() {
     return (
       <div>
         <h3 className="flush-top">Checkbox</h3>
-        <ComponentExample activeTab={REACT}>
+        <ComponentExample>
           <div>
             <FormGroup>
               <FieldLabel>

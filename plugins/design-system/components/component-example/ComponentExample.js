@@ -32,7 +32,7 @@ const METHODS_TO_BIND = [
   "handleCanExpand"
 ];
 
-const { type: { REACT, HTML } } = ComponentExampleConstants;
+const { REACT, HTML, PREVIEW } = ComponentExampleConstants;
 
 class ComponentExample extends Component {
   constructor() {
@@ -42,7 +42,7 @@ class ComponentExample extends Component {
       isExpanded: false,
       isCodeCopied: false,
       canExpand: false,
-      activeTab: this.props.activeTab
+      activeTab: this.props.activeTab || REACT
     };
 
     this.defaultHeight = this.props.defaultHeight || DEFAULT_HEIGHT;
@@ -54,6 +54,18 @@ class ComponentExample extends Component {
 
   isReactTab() {
     return this.state.activeTab === REACT;
+  }
+
+  isReactOnly() {
+    return this.props.only === REACT;
+  }
+
+  isHtmlOnly() {
+    return this.props.only === HTML;
+  }
+
+  isPreviewOnly() {
+    return this.props.only === PREVIEW;
   }
 
   expandCollapseToggle() {
@@ -74,8 +86,6 @@ class ComponentExample extends Component {
   }
 
   render() {
-    const { headerOnly } = this.props;
-
     const code = this.props.children;
     const header = (
       <CodeExampleHeader>
@@ -83,12 +93,90 @@ class ComponentExample extends Component {
       </CodeExampleHeader>
     );
 
-    if (headerOnly) {
+    if (this.isPreviewOnly()) {
       return header;
     }
 
     const reactCode = reactElementToJSXString(code, REACT_STRING_OPTIONS);
     const htmlCode = JSBeautify.html(ReactDOMServer.renderToStaticMarkup(code));
+
+    const clipboard = (
+      <ClipboardTrigger
+        className="clickable"
+        copyText={this.isReactTab() ? reactCode : htmlCode}
+        onTextCopy={this.handleCodeCopy}
+        useTooltip={true}
+      >
+        <Icon size="small" id="clipboard" />
+      </ClipboardTrigger>
+    );
+
+    const reactCodeExample = (
+      <CodeExample
+        lang="jsx"
+        height={this.state.isExpanded ? "100%" : this.defaultHeight}
+        handleCanExpand={this.handleCanExpand}
+      >
+        {`${reactCode}`}
+      </CodeExample>
+    );
+
+    const htmlCodeExample = (
+      <CodeExample
+        lang="text/html"
+        height={this.state.isExpanded ? "100%" : this.defaultHeight}
+        handleCanExpand={this.handleCanExpand}
+      >
+        {`${htmlCode}`}
+      </CodeExample>
+    );
+
+    const reactBody = (
+      <div>
+        <div className="code-example-heading">
+          {clipboard}
+        </div>
+        {reactCodeExample}
+      </div>
+    );
+
+    const htmlBody = (
+      <div>
+        <div className="code-example-heading">
+          {clipboard}
+        </div>
+        {htmlCodeExample}
+      </div>
+    );
+
+    const tabsBody = (
+      <Tabs
+        handleTabChange={this.handleTabChange}
+        activeTab={this.state.activeTab}
+      >
+        <TabButtonList className="code-example-heading tabs">
+          <ComponentExampleTab
+            className="code-example-tab"
+            id={REACT}
+            label={REACT.toUpperCase()}
+          />
+          <ComponentExampleTab
+            className="code-example-tab"
+            id={HTML}
+            label={HTML.toUpperCase()}
+          />
+          {clipboard}
+        </TabButtonList>
+        <TabViewList>
+          <TabView id={REACT}>
+            {reactCodeExample}
+          </TabView>
+          <TabView id={HTML}>
+            {htmlCodeExample}
+          </TabView>
+        </TabViewList>
+      </Tabs>
+    );
 
     const expandButton = (
       <button
@@ -104,64 +192,33 @@ class ComponentExample extends Component {
       </button>
     );
 
+    const footer = (
+      <CodeExampleFooter>
+        {this.state.isExpanded || this.state.canExpand ? expandButton : ""}
+      </CodeExampleFooter>
+    );
+
+    let body = null;
+    if (this.isReactOnly()) {
+      body = reactBody;
+    } else if (this.isHtmlOnly()) {
+      body = htmlBody;
+    } else {
+      body = tabsBody;
+    }
+
     return (
       <div>
         {header}
-        <Tabs
-          handleTabChange={this.handleTabChange}
-          activeTab={this.state.activeTab}
-        >
-          <TabButtonList className="code-example-tab-container">
-            <ComponentExampleTab
-              className="code-example-tab"
-              id={REACT}
-              label={REACT}
-            />
-            <ComponentExampleTab
-              className="code-example-tab"
-              id={HTML}
-              label={HTML}
-            />
-            <ClipboardTrigger
-              className="clickable"
-              copyText={this.isReactTab() ? reactCode : htmlCode}
-              onTextCopy={this.handleCodeCopy}
-              useTooltip="true"
-            >
-              <Icon size="small" id="clipboard" />
-            </ClipboardTrigger>
-          </TabButtonList>
-          <TabViewList>
-            <TabView id={REACT}>
-              <CodeExample
-                lang="jsx"
-                height={this.state.isExpanded ? "100%" : this.defaultHeight}
-                handleCanExpand={this.handleCanExpand}
-              >
-                {`${reactCode}`}
-              </CodeExample>
-            </TabView>
-            <TabView id={HTML}>
-              <CodeExample
-                lang="text/html"
-                height={this.state.isExpanded ? "100%" : this.defaultHeight}
-                handleCanExpand={this.handleCanExpand}
-              >
-                {`${htmlCode}`}
-              </CodeExample>
-            </TabView>
-          </TabViewList>
-        </Tabs>
-        <CodeExampleFooter>
-          {this.state.isExpanded || this.state.canExpand ? expandButton : ""}
-        </CodeExampleFooter>
+        {body}
+        {footer}
       </div>
     );
   }
 }
 
-ComponentExample.defaultProps = {
-  headerOnly: false
+ComponentExample.propTypes = {
+  only: React.PropTypes.oneOf([REACT, HTML, PREVIEW])
 };
 
 module.exports = ComponentExample;

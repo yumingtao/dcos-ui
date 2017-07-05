@@ -1,6 +1,5 @@
 module.exports = {
-  type: {
-    REACT: "REACT",
-    HTML: "HTML"
-  }
+  REACT: "react",
+  HTML: "html",
+  PREVIEW: "preview"
 };
