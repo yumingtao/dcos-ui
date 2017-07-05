@@ -64,6 +64,10 @@ class ComponentExample extends Component {
     return this.props.only === HTML;
   }
 
+  isSingleCode() {
+    return this.isReactOnly() || this.isHtmlOnly();
+  }
+
   isPreviewOnly() {
     return this.props.only === PREVIEW;
   }
@@ -83,6 +87,40 @@ class ComponentExample extends Component {
 
   handleCodeCopy() {
     this.setState({ isCodeCopied: true });
+  }
+
+  generateCodeExample(lang, code) {
+    return (
+      <CodeExample
+        lang={lang}
+        height={this.state.isExpanded ? "100%" : this.defaultHeight}
+        handleCanExpand={this.handleCanExpand}
+      >
+        {`${code}`}
+      </CodeExample>
+    );
+  }
+
+  generateFooter() {
+    const expandButton = (
+      <button
+        className="button button-link"
+        type="button"
+        onClick={this.expandCollapseToggle}
+      >
+        {this.state.isExpanded ? "Show less" : "Show more"}
+        <Icon
+          size="mini"
+          id={this.state.isExpanded ? "caret-up" : "caret-down"}
+        />
+      </button>
+    );
+
+    return (
+      <CodeExampleFooter>
+        {this.state.isExpanded || this.state.canExpand ? expandButton : ""}
+      </CodeExampleFooter>
+    );
   }
 
   render() {
@@ -111,41 +149,15 @@ class ComponentExample extends Component {
       </ClipboardTrigger>
     );
 
-    const reactCodeExample = (
-      <CodeExample
-        lang="jsx"
-        height={this.state.isExpanded ? "100%" : this.defaultHeight}
-        handleCanExpand={this.handleCanExpand}
-      >
-        {`${reactCode}`}
-      </CodeExample>
-    );
+    const reactCodeExample = this.generateCodeExample("jsx", reactCode);
+    const htmlCodeExample = this.generateCodeExample("text/html", htmlCode);
 
-    const htmlCodeExample = (
-      <CodeExample
-        lang="text/html"
-        height={this.state.isExpanded ? "100%" : this.defaultHeight}
-        handleCanExpand={this.handleCanExpand}
-      >
-        {`${htmlCode}`}
-      </CodeExample>
-    );
-
-    const reactBody = (
+    const codeBody = (
       <div>
         <div className="code-example-heading">
           {clipboard}
         </div>
-        {reactCodeExample}
-      </div>
-    );
-
-    const htmlBody = (
-      <div>
-        <div className="code-example-heading">
-          {clipboard}
-        </div>
-        {htmlCodeExample}
+        {this.isReactOnly() ? reactCodeExample : htmlCodeExample}
       </div>
     );
 
@@ -178,39 +190,12 @@ class ComponentExample extends Component {
       </Tabs>
     );
 
-    const expandButton = (
-      <button
-        className="button button-link"
-        type="button"
-        onClick={this.expandCollapseToggle}
-      >
-        {this.state.isExpanded ? "Show less" : "Show more"}
-        <Icon
-          size="mini"
-          id={this.state.isExpanded ? "caret-up" : "caret-down"}
-        />
-      </button>
-    );
-
-    const footer = (
-      <CodeExampleFooter>
-        {this.state.isExpanded || this.state.canExpand ? expandButton : ""}
-      </CodeExampleFooter>
-    );
-
-    let body = null;
-    if (this.isReactOnly()) {
-      body = reactBody;
-    } else if (this.isHtmlOnly()) {
-      body = htmlBody;
-    } else {
-      body = tabsBody;
-    }
+    const footer = this.generateFooter();
 
     return (
       <div>
         {header}
-        {body}
+        {this.isSingleCode() ? codeBody : tabsBody}
         {footer}
       </div>
     );
