@@ -96,6 +96,15 @@ class ComponentExample extends Component {
     this.setState({ isCodeCopied: true });
   }
 
+  parse(code) {
+    const { maxLines } = this.props;
+    if (maxLines) {
+      return code.split("\n").slice(0, maxLines).join("\n").concat("\n...");
+    }
+
+    return code;
+  }
+
   generateCodeExample(lang, code) {
     return (
       <CodeExample
@@ -103,7 +112,7 @@ class ComponentExample extends Component {
         height={this.state.isExpanded ? "100%" : this.defaultHeight}
         handleCanExpand={this.handleCanExpand}
       >
-        {`${code}`}
+        {`${this.parse(code)}`}
       </CodeExample>
     );
   }
@@ -197,20 +206,19 @@ class ComponentExample extends Component {
       </Tabs>
     );
 
-    const footer = this.generateFooter();
-
     return (
       <div>
         {header}
         {this.isSingleCodeType() ? codeBody : tabsBody}
-        {footer}
+        {this.generateFooter()}
       </div>
     );
   }
 }
 
 ComponentExample.propTypes = {
-  only: React.PropTypes.oneOf([REACT, HTML, PREVIEW])
+  only: React.PropTypes.oneOf([REACT, HTML, PREVIEW]),
+  maxLines: React.PropTypes.number
 };
 
 module.exports = ComponentExample;
