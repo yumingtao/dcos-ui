@@ -41,9 +41,12 @@ class ComponentExample extends Component {
     this.state = {
       isExpanded: false,
       isCodeCopied: false,
-      canExpand: false,
-      activeTab: this.props.activeTab || REACT
+      canExpand: false
     };
+
+    if (this.hasTabs()) {
+      this.state.activeTab = this.props.activeTab || REACT;
+    }
 
     this.defaultHeight = this.props.defaultHeight || DEFAULT_HEIGHT;
 
@@ -52,8 +55,8 @@ class ComponentExample extends Component {
     });
   }
 
-  isReactTab() {
-    return this.state.activeTab === REACT;
+  isReactCode() {
+    return this.isReactOnly() || this.state.activeTab === REACT;
   }
 
   isReactOnly() {
@@ -64,8 +67,12 @@ class ComponentExample extends Component {
     return this.props.only === HTML;
   }
 
-  isSingleCode() {
+  isSingleCodeType() {
     return this.isReactOnly() || this.isHtmlOnly();
+  }
+
+  hasTabs() {
+    return !this.isSingleCodeType();
   }
 
   isPreviewOnly() {
@@ -141,7 +148,7 @@ class ComponentExample extends Component {
     const clipboard = (
       <ClipboardTrigger
         className="clickable"
-        copyText={this.isReactTab() ? reactCode : htmlCode}
+        copyText={this.isReactCode() ? reactCode : htmlCode}
         onTextCopy={this.handleCodeCopy}
         useTooltip={true}
       >
@@ -195,7 +202,7 @@ class ComponentExample extends Component {
     return (
       <div>
         {header}
-        {this.isSingleCode() ? codeBody : tabsBody}
+        {this.isSingleCodeType() ? codeBody : tabsBody}
         {footer}
       </div>
     );
