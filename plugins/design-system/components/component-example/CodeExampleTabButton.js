@@ -3,7 +3,7 @@ import React, { Component } from "react";
 
 const METHODS_TO_BIND = ["handleClick"];
 
-class ComponentExampleTab extends Component {
+class CodeExampleTabButton extends Component {
   constructor() {
     super(...arguments);
 
@@ -16,7 +16,7 @@ class ComponentExampleTab extends Component {
     const { activeTab, children, onClick } = this.props;
 
     return React.Children.map(children, tabChild => {
-      if (tabChild.type === ComponentExampleTab) {
+      if (tabChild.type === CodeExampleTabButton) {
         return React.cloneElement(tabChild, { activeTab, onClick });
       }
 
@@ -42,13 +42,16 @@ class ComponentExampleTab extends Component {
       id
     } = this.props;
     const classes = classNames(
-      "menu-tabbed-item",
+      "code-example-tabbed-item",
       {
         active: active || activeTab === id
       },
       className
     );
-    const labelClasses = classNames("menu-tabbed-item-label", labelClassName);
+    const labelClasses = classNames(
+      "code-example-tabbed-item-label",
+      labelClassName
+    );
 
     return (
       <div className={classes} onClick={this.handleClick}>
@@ -67,7 +70,7 @@ const classProps = React.PropTypes.oneOfType([
   React.PropTypes.string
 ]);
 
-ComponentExampleTab.propTypes = {
+CodeExampleTabButton.propTypes = {
   active: React.PropTypes.bool,
   children: React.PropTypes.node,
   className: classProps,
@@ -76,4 +79,4 @@ ComponentExampleTab.propTypes = {
   labelClassName: classProps
 };
 
-module.exports = ComponentExampleTab;
+module.exports = CodeExampleTabButton;

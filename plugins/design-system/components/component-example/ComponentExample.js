@@ -3,18 +3,19 @@ import ReactDOMServer from "react-dom/server";
 import JSBeautify from "js-beautify";
 import reactElementToJSXString from "react-element-to-jsx-string";
 
-import TabButtonList from "#SRC/js/components/TabButtonList";
-import Tabs from "#SRC/js/components/Tabs";
-import TabView from "#SRC/js/components/TabView";
-import TabViewList from "#SRC/js/components/TabViewList";
-
 import ClipboardTrigger from "#SRC/js/components/ClipboardTrigger";
 import Icon from "#SRC/js/components/Icon";
 
 import CodeExample from "./CodeExample";
 import CodeExampleFooter from "./CodeExampleFooter";
 import CodeExampleHeader from "./CodeExampleHeader";
-import ComponentExampleTab from "./ComponentExampleTab";
+
+import CodeExampleTabButtonList from "./CodeExampleTabButtonList";
+import CodeExampleTabs from "./CodeExampleTabs";
+import CodeExampleTabView from "./CodeExampleTabView";
+import CodeExampleTabViewList from "./CodeExampleTabViewList";
+
+import CodeExampleTabButton from "./CodeExampleTabButton";
 
 import ComponentExampleConstants from "../../constants/ComponentExample";
 
@@ -170,7 +171,7 @@ class ComponentExample extends Component {
 
     const codeBody = (
       <div>
-        <div className="code-example-heading">
+        <div className="code-example-heading single">
           {clipboard}
         </div>
         {this.isReactOnly() ? reactCodeExample : htmlCodeExample}
@@ -178,32 +179,24 @@ class ComponentExample extends Component {
     );
 
     const tabsBody = (
-      <Tabs
+      <CodeExampleTabs
         handleTabChange={this.handleTabChange}
         activeTab={this.state.activeTab}
       >
-        <TabButtonList className="code-example-heading tabs">
-          <ComponentExampleTab
-            className="code-example-tab"
-            id={REACT}
-            label={REACT.toUpperCase()}
-          />
-          <ComponentExampleTab
-            className="code-example-tab"
-            id={HTML}
-            label={HTML.toUpperCase()}
-          />
+        <CodeExampleTabButtonList className="tabs">
+          <CodeExampleTabButton id={REACT} label={REACT.toUpperCase()} />
+          <CodeExampleTabButton id={HTML} label={HTML.toUpperCase()} />
           {clipboard}
-        </TabButtonList>
-        <TabViewList>
-          <TabView id={REACT}>
+        </CodeExampleTabButtonList>
+        <CodeExampleTabViewList>
+          <CodeExampleTabView id={REACT}>
             {reactCodeExample}
-          </TabView>
-          <TabView id={HTML}>
+          </CodeExampleTabView>
+          <CodeExampleTabView id={HTML}>
             {htmlCodeExample}
-          </TabView>
-        </TabViewList>
-      </Tabs>
+          </CodeExampleTabView>
+        </CodeExampleTabViewList>
+      </CodeExampleTabs>
     );
 
     return (
