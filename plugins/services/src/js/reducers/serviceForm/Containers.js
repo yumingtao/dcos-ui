@@ -107,6 +107,12 @@ function containersParser(state) {
       memo.push(new Transaction(["containers", index, "name"], item.name));
     }
 
+    if (item.image) {
+      memo.push(
+        new Transaction(["containers", index, "image"], item.image, ADD_ITEM)
+      );
+    }
+
     if (item.image && item.image.id) {
       memo.push(
         new Transaction(["containers", index, "image", "id"], item.image.id)
