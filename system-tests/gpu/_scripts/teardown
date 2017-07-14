@@ -1,0 +1,10 @@
+#!/bin/bash
+
+AGENT_ID=$(dcos node | head -n2 | tail -n1 | awk '{print $3}')
+RESOURCE_DIRECTORY="/opt/mesosphere/etc/mesos-slave"
+
+dcos node ssh --master-proxy --mesos-id=$AGENT_ID
+
+cat "$RESOURCE_DIRECTORY-backup" >> $RESOURCE_DIRECTORY
+
+exit

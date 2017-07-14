@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# create app with external volumes
+dcos marathon app add ../app.json

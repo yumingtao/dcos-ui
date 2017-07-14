@@ -1,0 +1,24 @@
+#!/bin/bash
+
+GPU_RESOURCES='{"name":"gpus","type":"SCALAR","scalar": {"value": 4}}'
+RESOURCE_DIRECTORY="/opt/mesosphere/etc/mesos-slave"
+AGENT_ID=$(dcos node | head -n2 | tail -n1 | awk '{print $3}')
+
+cat $RESOURCE_DIRECTORY >> "$RESOURCE_DIRECTORY-backup"
+
+cat <<EOF | base64 | read SCRIPT
+  file_contents=$(<$RESOURCE_DIRECTORY)
+  file_content_length=${#file_contents}
+  file_contents_substring=${file_contents:0:$file_content_length-1}
+  file_contents_substring+=GPU_RESOURCES
+  file_contents_substring+=]
+  echo "$file_contents" > "$RESOURCE_DIRECTORY"
+EOF
+
+dcos node ssh --master-proxy --mesos-id=$AGENT_ID "echo $SCRIPT | base64 -D | bash"
+
+sudo rm -f /var/lib/dcos/mesos-resource
+sudo rm -f /var/lib/mesos/slave/meta/slaves/latest
+sudo systemctl restart dcos-mesos-slave
+
+exit
