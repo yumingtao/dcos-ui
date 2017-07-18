@@ -167,7 +167,7 @@ class ComponentExample extends Component {
     );
 
     const reactCodeExample = this.generateCodeExample("jsx", reactCode);
-    const htmlCodeExample = this.generateCodeExample("text/html", htmlCode);
+    const htmlCodeExample = this.generateCodeExample("html", htmlCode);
 
     const codeBody = (
       <div>

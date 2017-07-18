@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import ReactCodeMirror from "react-codemirror";
+import AceEditor from "react-ace";
+import ReactDOM from "react-dom";
+
+import "brace/mode/jsx";
+import "brace/mode/html";
+import "brace/theme/tomorrow_night";
+
 import "../../vendor/simplescrollbars.js";
 
 require("codemirror/mode/jsx/jsx");
@@ -19,37 +25,44 @@ class CodeExample extends Component {
     );
   }
 
+  setMaxHeight(container, editor) {
+    var lineHeight = editor.renderer.lineHeight;
+    var doc = editor.getSession().getDocument();
+    container.style.height = lineHeight * doc.getLength() + "px";
+  }
+
   setHeight(ref) {
     if (ref != null) {
-      const { height, handleCanExpand } = this.props;
-      const cm = ref.getCodeMirror();
+      const editor = ref.editor;
+      const container = ReactDOM.findDOMNode(this);
+      this.setMaxHeight(container, editor);
 
-      cm.setSize(null, "100%");
-      if (cm.doc.height > height) {
-        cm.setSize(null, height);
+      const { height, handleCanExpand } = this.props;
+
+      if (container.clientHeight > height) {
+        container.style.height = `${height}px`;
         handleCanExpand(true);
       } else {
         handleCanExpand(false);
       }
+
+      editor.resize();
     }
   }
 
   render() {
     const { lang } = this.props;
-    var options = {
-      lineNumbers: true,
-      mode: lang,
-      theme: "one-dark",
-      scrollbarStyle: "overlay",
-      readOnly: true
-    };
+    const theme = "tomorrow_night";
 
     return (
-      <ReactCodeMirror
+      <AceEditor
         ref={this.setHeight.bind(this)}
         value={this.props.children}
         onChange={this.updateCode}
-        options={options}
+        mode={lang}
+        theme={theme}
+        width="100%"
+        readOnly={true}
       />
     );
   }
