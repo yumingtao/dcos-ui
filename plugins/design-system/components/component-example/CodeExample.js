@@ -6,10 +6,6 @@ import "brace/mode/jsx";
 import "brace/mode/html";
 import "brace/theme/tomorrow_night";
 
-import "../../vendor/simplescrollbars.js";
-
-require("codemirror/mode/jsx/jsx");
-
 class CodeExample extends Component {
   updateCode(newCode) {
     this.setState({
