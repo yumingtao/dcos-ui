@@ -1,23 +1,26 @@
 & when (@component-example-enabled) {
 
-  .ace_scrollbar-v {
-    overflow-y: auto !important;
-  }
+  .ace_editor {
 
-  ::-webkit-scrollbar {
-    width: 0.5em;
-  }
+    .ace_scrollbar-v {
+      overflow-y: auto;
+    }
 
-  ::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  }
+    ::-webkit-scrollbar {
+      width: 0.7em;
+    }
 
-  ::-webkit-scrollbar-thumb {
-    background: rgba(100, 100, 100, 0.8);
-  }
+    ::-webkit-scrollbar-track {
+      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    }
 
-  ::-webkit-scrollbar-corner {
-    background: rgba(100, 100, 100, 0.4);
+    ::-webkit-scrollbar-thumb {
+      background: rgba(100, 100, 100, 0.8);
+    }
+
+    ::-webkit-scrollbar-corner {
+      background: rgba(100, 100, 100, 0.4);
+    }
   }
 
   .code-example-wrapper {
