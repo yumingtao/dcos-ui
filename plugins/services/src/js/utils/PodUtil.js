@@ -90,7 +90,7 @@ var PodUtil = {
       // Filter combined container list to remove potential duplicates
       const containerIds = new Map();
       combinedContainers = combinedContainers.filter(function({ containerId }) {
-        if (!containerIds.has(containerId)) {
+        if (!containerIds.has(containerId) && containerId != null) {
           containerIds.set(containerId);
 
           return true;
