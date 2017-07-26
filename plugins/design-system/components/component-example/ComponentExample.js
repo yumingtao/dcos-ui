@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import ReactDOMServer from "react-dom/server";
-import JSBeautify from "js-beautify";
 import reactElementToJSXString from "react-element-to-jsx-string";
 
+import StringUtil from "#SRC/js/utils/StringUtil";
 import ClipboardTrigger from "#SRC/js/components/ClipboardTrigger";
 import Icon from "#SRC/js/components/Icon";
 
@@ -153,7 +153,9 @@ class ComponentExample extends Component {
     }
 
     const reactCode = reactElementToJSXString(code, REACT_STRING_OPTIONS);
-    const htmlCode = JSBeautify.html(ReactDOMServer.renderToStaticMarkup(code));
+    const htmlCode = StringUtil.formatMarkdown(
+      ReactDOMServer.renderToStaticMarkup(code)
+    );
 
     const clipboard = (
       <ClipboardTrigger
