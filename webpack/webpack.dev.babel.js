@@ -3,10 +3,13 @@ import HtmlWebpackPlugin from "html-webpack-plugin";
 import StringReplacePlugin from "string-replace-webpack-plugin";
 import WebpackNotifierPlugin from "webpack-notifier";
 import webpack from "webpack";
+import Bundle from "webpack-bundle-analyzer";
 import SVGCompilerPlugin from "./plugins/svg-compiler-plugin";
 
 import packageInfo from "../package";
 import webpackConfig from "./webpack.config.babel";
+
+const BundleAnalyzerPlugin = Bundle.BundleAnalyzerPlugin;
 
 // Defaults to value in package.json.
 // Can override with npm config set port 80
@@ -89,7 +92,9 @@ module.exports = Object.assign({}, webpackConfig, {
 
     new webpack.optimize.CommonsChunkPlugin("vendor", "vendor.js", Infinity),
 
-    new SVGCompilerPlugin({ baseDir: "src/img/components/icons" })
+    new SVGCompilerPlugin({ baseDir: "src/img/components/icons" }),
+
+    new BundleAnalyzerPlugin({ analyzerPort: 4200 })
   ],
   module: {
     preLoaders: webpackConfig.module.preLoaders,

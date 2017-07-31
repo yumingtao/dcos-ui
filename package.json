@@ -20,7 +20,10 @@
     "node": "4.4.x",
     "npm": "3.9.x"
   },
-  "browserslist": ["last 2 versions", "ie 11"],
+  "browserslist": [
+    "last 2 versions",
+    "ie 11"
+  ],
   "config": {
     "port": 4200,
     "externalplugins": ""
@@ -121,6 +124,7 @@
     "transform-loader": "0.2.3",
     "vinyl": "1.1.1",
     "webpack": "1.14.0",
+    "webpack-bundle-analyzer": "^2.8.3",
     "webpack-dev-server": "1.14.1",
     "webpack-notifier": "1.3.0"
   },
