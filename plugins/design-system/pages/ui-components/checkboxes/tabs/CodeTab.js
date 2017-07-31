@@ -7,13 +7,19 @@ import FormGroup from "#SRC/js/components/form/FormGroup";
 import ComponentExample
   from "../../../../components/component-example/ComponentExample";
 
+import {
+  ReactCode,
+  HtmlCode,
+  Preview
+} from "../../../../components/component-example/ComponentExampleOverride";
+
 class CodeTab extends Component {
   render() {
     return (
       <div>
         <h3 className="flush-top">Checkbox</h3>
         <ComponentExample>
-          <div>
+          <ReactCode>
             <FormGroup>
               <FieldLabel>
                 <FieldInput
@@ -36,7 +42,25 @@ class CodeTab extends Component {
                 Check Me Second
               </FieldLabel>
             </FormGroup>
-          </div>
+          </ReactCode>
+          <HtmlCode>
+            <div>
+              Test
+            </div>
+          </HtmlCode>
+          <Preview>
+            <FormGroup>
+              <FieldLabel>
+                <FieldInput
+                  checked={false}
+                  disabled={false}
+                  name="check_box_first"
+                  type="checkbox"
+                />
+                Check Me First
+              </FieldLabel>
+            </FormGroup>
+          </Preview>
         </ComponentExample>
       </div>
     );
