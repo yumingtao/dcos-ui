@@ -17,7 +17,7 @@ import CodeExampleTabViewList from "./CodeExampleTabViewList";
 
 import CodeExampleTabButton from "./CodeExampleTabButton";
 
-import ComponentExampleConstants from "../../constants/ComponentExample";
+import { ReactCode, HtmlCode, Preview } from "./ComponentExampleOverrides";
 
 const DEFAULT_HEIGHT = 205;
 
@@ -26,14 +26,17 @@ const REACT_STRING_OPTIONS = {
   useBooleanShorthandSyntax: false
 };
 
+const TAB_LABELS = {
+  React: "REACT",
+  Html: "HTML"
+};
+
 const METHODS_TO_BIND = [
   "expandCollapseToggle",
   "handleTabChange",
   "handleCodeCopy",
   "handleCanExpand"
 ];
-
-const { REACT, HTML, PREVIEW } = ComponentExampleConstants;
 
 class ComponentExample extends Component {
   constructor() {
@@ -45,8 +48,8 @@ class ComponentExample extends Component {
       canExpand: false
     };
 
-    if (this.hasTabs()) {
-      this.state.activeTab = this.props.activeTab || REACT;
+    if (this.isTabbedMode()) {
+      this.state.activeTab = this.props.activeTab || ReactCode;
     }
 
     this.defaultHeight = this.props.defaultHeight || DEFAULT_HEIGHT;
@@ -56,28 +59,71 @@ class ComponentExample extends Component {
     });
   }
 
-  isReactCode() {
-    return this.isReactOnly() || this.state.activeTab === REACT;
+  findChildByType(type) {
+    return [].concat(this.props.children).find(function(child) {
+      return child.type === type;
+    });
   }
 
-  isReactOnly() {
-    return this.props.only === REACT;
+  isEmptyHtmlOverride() {
+    const htmlCode = this.findChildByType(HtmlCode);
+
+    return htmlCode && !htmlCode.props.children;
   }
 
-  isHtmlOnly() {
-    return this.props.only === HTML;
+  isEmptyReactOverride() {
+    const reactCode = this.findChildByType(ReactCode);
+
+    return reactCode && !reactCode.props.children;
   }
 
-  isSingleCodeType() {
-    return this.isReactOnly() || this.isHtmlOnly();
+  isPreviewMode() {
+    return this.isEmptyHtmlOverride() && this.isEmptyReactOverride();
   }
 
-  hasTabs() {
-    return !this.isSingleCodeType();
+  isSingleBlockMode() {
+    return (
+      !this.isPreviewMode() &&
+      (this.isEmptyHtmlOverride() || this.isEmptyReactOverride())
+    );
   }
 
-  isPreviewOnly() {
-    return this.props.only === PREVIEW;
+  isReactMode() {
+    return this.isSingleBlockMode() && this.isEmptyHtmlOverride();
+  }
+
+  isShowingReactCode() {
+    return this.isReactMode() || this.state.activeTab === ReactCode;
+  }
+
+  isTabbedMode() {
+    return !this.isSingleBlockMode();
+  }
+
+  getHtmlCode(jsxCode) {
+    let htmlCode = this.findChildByType(HtmlCode);
+    if (htmlCode) {
+      htmlCode = htmlCode.props.children;
+    }
+
+    return StringUtil.formatMarkdown(
+      ReactDOMServer.renderToStaticMarkup(htmlCode || jsxCode)
+    );
+  }
+
+  getReactCode(jsxCode) {
+    let reactCode = this.findChildByType(ReactCode);
+    if (reactCode) {
+      reactCode = reactCode.props.children;
+    }
+
+    return reactElementToJSXString(reactCode || jsxCode, REACT_STRING_OPTIONS);
+  }
+
+  getPreview() {
+    return [].concat(this.props.children).find(function(child) {
+      return child.type !== ReactCode && child.type !== HtmlCode;
+    });
   }
 
   expandCollapseToggle() {
@@ -97,15 +143,6 @@ class ComponentExample extends Component {
     this.setState({ isCodeCopied: true });
   }
 
-  parse(code) {
-    const { maxLines } = this.props;
-    if (maxLines) {
-      return code.split("\n").slice(0, maxLines).join("\n").concat("\n...");
-    }
-
-    return code;
-  }
-
   generateCodeExample(lang, code) {
     return (
       <CodeExample
@@ -113,7 +150,7 @@ class ComponentExample extends Component {
         height={this.state.isExpanded ? "100%" : this.defaultHeight}
         handleCanExpand={this.handleCanExpand}
       >
-        {`${this.parse(code)}`}
+        {`${code}`}
       </CodeExample>
     );
   }
@@ -141,26 +178,24 @@ class ComponentExample extends Component {
   }
 
   render() {
-    const code = this.props.children;
+    const componentPreview = this.findChildByType(Preview).props.children;
     const header = (
       <CodeExampleHeader>
-        {code}
+        {componentPreview}
       </CodeExampleHeader>
     );
 
-    if (this.isPreviewOnly()) {
+    if (this.isPreviewMode()) {
       return header;
     }
 
-    const reactCode = reactElementToJSXString(code, REACT_STRING_OPTIONS);
-    const htmlCode = StringUtil.formatMarkdown(
-      ReactDOMServer.renderToStaticMarkup(code)
-    );
+    const reactCode = this.getReactCode(componentPreview);
+    const htmlCode = this.getHtmlCode(componentPreview);
 
     const clipboard = (
       <ClipboardTrigger
         className="clickable"
-        copyText={this.isReactCode() ? reactCode : htmlCode}
+        copyText={this.isShowingReactCode() ? reactCode : htmlCode}
         onTextCopy={this.handleCodeCopy}
         useTooltip={true}
       >
@@ -176,7 +211,7 @@ class ComponentExample extends Component {
         <div className="code-example-heading single">
           {clipboard}
         </div>
-        {this.isReactOnly() ? reactCodeExample : htmlCodeExample}
+        {this.isReactMode() ? reactCodeExample : htmlCodeExample}
       </div>
     );
 
@@ -186,15 +221,15 @@ class ComponentExample extends Component {
         activeTab={this.state.activeTab}
       >
         <CodeExampleTabButtonList className="tabs">
-          <CodeExampleTabButton id={REACT} label={REACT.toUpperCase()} />
-          <CodeExampleTabButton id={HTML} label={HTML.toUpperCase()} />
+          <CodeExampleTabButton id={ReactCode} label={TAB_LABELS.React} />
+          <CodeExampleTabButton id={HtmlCode} label={TAB_LABELS.Html} />
           {clipboard}
         </CodeExampleTabButtonList>
         <CodeExampleTabViewList>
-          <CodeExampleTabView id={REACT}>
+          <CodeExampleTabView id={ReactCode}>
             {reactCodeExample}
           </CodeExampleTabView>
-          <CodeExampleTabView id={HTML}>
+          <CodeExampleTabView id={HtmlCode}>
             {htmlCodeExample}
           </CodeExampleTabView>
         </CodeExampleTabViewList>
@@ -204,16 +239,11 @@ class ComponentExample extends Component {
     return (
       <div>
         {header}
-        {this.isSingleCodeType() ? codeBody : tabsBody}
+        {this.isSingleBlockMode() ? codeBody : tabsBody}
         {this.generateFooter()}
       </div>
     );
   }
 }
-
-ComponentExample.propTypes = {
-  only: React.PropTypes.oneOf([REACT, HTML, PREVIEW]),
-  maxLines: React.PropTypes.number
-};
 
 module.exports = ComponentExample;
