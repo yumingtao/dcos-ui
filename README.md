@@ -1,5 +1,7 @@
 # DC/OS UI [![Velocity](http://jenkins.mesosphere.com/buildStatus/icon?job=public-dcos-ui-master)](http://jenkins.mesosphere.com/view/DCOS%20UI/job/public-dcos-ui-master/)
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/dcos/dcos-ui.svg)](https://greenkeeper.io/)
+
 The User Interface for The Datacenter Operating System.
 
 The DC/OS UI is used by datacenter operators to administer and manage a datacenter. Developers use DC/OS UI to manage, deploy and debug their applications. The DC/OS UI sits at the top of the [DC/OS stack](https://dcos.io/docs/latest/overview/architecture/) along with the [CLI](github.com/dcos/dcos-cli).
