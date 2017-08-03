@@ -1,4 +1,5 @@
 import { RequestUtil } from "mesosphere-shared-reactjs";
+import { XHRConnection, ConnectionManager } from "connection-manager";
 
 import AppDispatcher from "#SRC/js/events/AppDispatcher";
 import Config from "#SRC/js/config/Config";
@@ -280,50 +281,84 @@ var MarathonActions = {
     });
   },
 
-  fetchGroups: RequestUtil.debounceOnError(
-    Config.getRefreshRate(),
-    function(resolve, reject) {
-      return function() {
-        const url = buildURI("/groups");
-        const embed = [
-          { name: "embed", value: "group.groups" },
-          { name: "embed", value: "group.apps" },
-          { name: "embed", value: "group.pods" },
-          { name: "embed", value: "group.apps.deployments" },
-          { name: "embed", value: "group.apps.counts" },
-          { name: "embed", value: "group.apps.tasks" },
-          { name: "embed", value: "group.apps.taskStats" },
-          { name: "embed", value: "group.apps.lastTaskFailure" }
-        ];
+  fetchGroups() {
+    var xhr = new XHRConnection(
+      buildURI("/groups"),
+      "GET",
+      [
+        { name: "embed", value: "group.groups" },
+        { name: "embed", value: "group.apps" },
+        { name: "embed", value: "group.pods" },
+        { name: "embed", value: "group.apps.deployments" },
+        { name: "embed", value: "group.apps.counts" },
+        { name: "embed", value: "group.apps.tasks" },
+        { name: "embed", value: "group.apps.taskStats" },
+        { name: "embed", value: "group.apps.lastTaskFailure" }
+      ],
+      "application/json; charset=utf-8"
+    );
 
-        RequestUtil.json({
-          url,
-          data: embed,
-          success(response) {
-            AppDispatcher.handleServerAction({
-              type: REQUEST_MARATHON_GROUPS_SUCCESS,
-              data: MarathonUtil.parseGroups(response)
-            });
-            resolve();
-          },
-          error(xhr) {
-            AppDispatcher.handleServerAction({
-              type: REQUEST_MARATHON_GROUPS_ERROR,
-              data: xhr.message,
-              xhr
-            });
-            reject();
-          },
-          hangingRequestCallback() {
-            AppDispatcher.handleServerAction({
-              type: REQUEST_MARATHON_GROUPS_ONGOING
-            });
-          }
-        });
-      };
-    },
-    { delayAfterCount: Config.delayAfterErrorCount }
-  ),
+    xhr.on("success", function() {
+      AppDispatcher.handleServerAction({
+        type: REQUEST_MARATHON_GROUPS_SUCCESS,
+        data: MarathonUtil.parseGroups(JSON.parse(xhr.response))
+      });
+    });
+
+    xhr.on("error", function() {
+      AppDispatcher.handleServerAction({
+        type: REQUEST_MARATHON_GROUPS_ERROR,
+        data: xhr.response,
+        xhr
+      });
+    });
+
+    ConnectionManager.queue(xhr);
+  },
+  // fetchGroups: RequestUtil.debounceOnError(
+  //   Config.getRefreshRate(),
+  //   function(resolve, reject) {
+  //     return function() {
+  //       const url = buildURI("/groups");
+  //       const embed = [
+  //         { name: "embed", value: "group.groups" },
+  //         { name: "embed", value: "group.apps" },
+  //         { name: "embed", value: "group.pods" },
+  //         { name: "embed", value: "group.apps.deployments" },
+  //         { name: "embed", value: "group.apps.counts" },
+  //         { name: "embed", value: "group.apps.tasks" },
+  //         { name: "embed", value: "group.apps.taskStats" },
+  //         { name: "embed", value: "group.apps.lastTaskFailure" }
+  //       ];
+
+  //       RequestUtil.json({
+  //         url,
+  //         data: embed,
+  //         success(response) {
+  //           AppDispatcher.handleServerAction({
+  //             type: REQUEST_MARATHON_GROUPS_SUCCESS,
+  //             data: MarathonUtil.parseGroups(response)
+  //           });
+  //           resolve();
+  //         },
+  //         error(xhr) {
+  //           AppDispatcher.handleServerAction({
+  //             type: REQUEST_MARATHON_GROUPS_ERROR,
+  //             data: xhr.message,
+  //             xhr
+  //           });
+  //           reject();
+  //         },
+  //         hangingRequestCallback() {
+  //           AppDispatcher.handleServerAction({
+  //             type: REQUEST_MARATHON_GROUPS_ONGOING
+  //           });
+  //         }
+  //       });
+  //     };
+  //   },
+  //   { delayAfterCount: Config.delayAfterErrorCount }
+  // ),
 
   fetchDeployments: RequestUtil.debounceOnError(
     Config.getRefreshRate(),
