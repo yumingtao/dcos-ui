@@ -1,4 +1,4 @@
-import __protected from "object-util";
+import __protected from "object-utilities";
 import AbstractConnection from "./AbstractConnection";
 
 export default class WebSocketConnection extends AbstractConnection {

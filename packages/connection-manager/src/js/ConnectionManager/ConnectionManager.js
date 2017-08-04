@@ -1,4 +1,4 @@
-import __protected from "object-util";
+import __protected from "object-utilities";
 import { AuthStore } from "authenticator";
 import ConnectionQueue from "../ConnectionQueue/ConnectionQueue.js";
 

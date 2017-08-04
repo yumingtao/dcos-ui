@@ -1,5 +1,5 @@
 import { EventEmitter } from "events";
-import __protected from "object-util";
+import __protected from "object-utilities";
 
 /**
  * AbstractConnection provides some default properties/methods used by Connection Manager
@@ -51,7 +51,7 @@ export default class AbstractConnection extends EventEmitter {
    */
   close() {}
   /**
-   * Resets the Connection
+   * Resets the connection
    */
   reset() {}
 }

@@ -1,4 +1,4 @@
-import __protected from "object-util";
+import __protected from "object-utilities";
 import AbstractConnection from "./AbstractConnection";
 
 /**
@@ -29,6 +29,23 @@ export default class XHRConnection extends AbstractConnection {
     this.handleLoadEvent = this.handleLoadEvent.bind(this);
     this.handleTimeoutEvent = this.handleTimeoutEvent.bind(this);
   }
+
+  /**
+   * native getter
+   */
+  get response() {
+    return __protected(this).native.response;
+  }
+  get readyState() {
+    return __protected(this).native.readyState;
+  }
+  get responseType() {
+    return __protected(this).native.responseType;
+  }
+  get status() {
+    return __protected(this).native.status;
+  }
+
   /**
    * create, prepare, open and send the xhr request
    * @param {string} [token] – authentication token
@@ -58,7 +75,7 @@ export default class XHRConnection extends AbstractConnection {
 
     this.handleOpenEvent();
 
-    __protected(this).native.withCredentials = true;
+    // __protected(this).native.withCredentials = true;
 
     if (__protected(this).contentType !== null) {
       __protected(this).native.setRequestHeader(
@@ -89,18 +106,6 @@ export default class XHRConnection extends AbstractConnection {
     delete __protected(this).native;
   }
 
-  /**
-   * native response getter
-   */
-  get response() {
-    return __protected(this).native.response;
-  }
-  /**
-   * native status getter
-   */
-  get status() {
-    return __protected(this).native.status;
-  }
   /**
    * handle open event of native xhr
    */
