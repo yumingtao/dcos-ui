@@ -21,6 +21,9 @@ export default class XHRConnection extends AbstractConnection {
     __protected(this).data = data;
 
     this.handleOpenEvent = this.handleOpenEvent.bind(this);
+
+    this.handleProgressEvent = this.handleProgressEvent.bind(this);
+
     this.handleAbortEvent = this.handleAbortEvent.bind(this);
     this.handleErrorEvent = this.handleErrorEvent.bind(this);
     this.handleLoadEvent = this.handleLoadEvent.bind(this);
@@ -35,6 +38,11 @@ export default class XHRConnection extends AbstractConnection {
       throw new Error("cannot open XHR Connection a second time!");
     }
     __protected(this).native = new XMLHttpRequest();
+
+    __protected(this).native.addEventListener(
+      "progress",
+      this.handleProgressEvent
+    );
 
     __protected(this).native.addEventListener("abort", this.handleAbortEvent);
     __protected(this).native.addEventListener("error", this.handleErrorEvent);
@@ -99,6 +107,12 @@ export default class XHRConnection extends AbstractConnection {
   handleOpenEvent() {
     this.state = 1;
     this.emit("open", this);
+  }
+  /**
+   * handle open event of native xhr
+   */
+  handleProgressEvent() {
+    this.emit("progress", this);
   }
   /**
    * handle abort event of native xhr
