@@ -14,6 +14,7 @@ import services from "../../../plugins/services/src/js/routes/services";
 import settings from "./settings";
 import systemOverview from "./system-overview";
 import universe from "./universe";
+import telemetry from "./telemetry";
 
 // Modules that produce routes
 const routeFactories = [Organization, Network];
@@ -30,6 +31,7 @@ function getApplicationRoutes() {
     services,
     jobs,
     nodes,
+    telemetry,
     universe,
     systemOverview,
     components,
