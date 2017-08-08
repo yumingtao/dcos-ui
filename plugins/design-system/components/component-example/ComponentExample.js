@@ -45,12 +45,9 @@ class ComponentExample extends Component {
     this.state = {
       isExpanded: false,
       isCodeCopied: false,
-      canExpand: false
+      canExpand: false,
+      activeTab: this.isTabbedMode() ? this.props.activeTab || ReactCode : null
     };
-
-    if (this.isTabbedMode()) {
-      this.state.activeTab = this.props.activeTab || ReactCode;
-    }
 
     this.defaultHeight = this.props.defaultHeight || DEFAULT_HEIGHT;
 
@@ -120,19 +117,15 @@ class ComponentExample extends Component {
     return reactElementToJSXString(reactCode || jsxCode, REACT_STRING_OPTIONS);
   }
 
-  getPreview() {
-    return [].concat(this.props.children).find(function(child) {
-      return child.type !== ReactCode && child.type !== HtmlCode;
-    });
-  }
-
   expandCollapseToggle() {
     this.setState({ isExpanded: !this.state.isExpanded });
   }
 
   handleTabChange(activeTab) {
-    this.setState({ activeTab });
-    this.setState({ isExpanded: false });
+    this.setState({
+      activeTab,
+      isExpanded: false
+    });
   }
 
   handleCanExpand(canExpand) {
@@ -144,10 +137,12 @@ class ComponentExample extends Component {
   }
 
   generateCodeExample(lang, code) {
+    const height = this.state.isExpanded ? "100%" : this.defaultHeight;
+
     return (
       <CodeExample
         lang={lang}
-        height={this.state.isExpanded ? "100%" : this.defaultHeight}
+        height={height}
         handleCanExpand={this.handleCanExpand}
       >
         {`${code}`}
