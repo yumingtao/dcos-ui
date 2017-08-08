@@ -6,6 +6,9 @@ import "brace/mode/jsx";
 import "brace/mode/html";
 import "brace/theme/tomorrow_night";
 
+const SUPPORTED_CODE_TYPES = ["jsx", "html"];
+const SUPPORTED_THEMES = ["tomorrow_night"];
+
 class CodeExample extends Component {
   updateCode(newCode) {
     this.setState({
@@ -22,24 +25,32 @@ class CodeExample extends Component {
   }
 
   setMaxHeight(container, editor) {
-    var lineHeight = editor.renderer.lineHeight;
-    var doc = editor.getSession().getDocument();
+    const lineHeight = editor.renderer.lineHeight;
+    const doc = editor.getSession().getDocument();
     container.style.height = lineHeight * doc.getLength() + "px";
   }
 
   setHeight(ref) {
+    const { height, handleCanExpand } = this.props;
+
     if (ref != null) {
       const editor = ref.editor;
       const container = ReactDOM.findDOMNode(this);
-      this.setMaxHeight(container, editor);
+      const heightParam = `${height}px`;
 
-      const { height, handleCanExpand } = this.props;
-
-      if (container.clientHeight > height) {
-        container.style.height = `${height}px`;
-        handleCanExpand(true);
+      if (!height) {
+        this.setMaxHeight(container, editor);
+      } else if (!handleCanExpand) {
+        container.style.height = heightParam;
       } else {
-        handleCanExpand(false);
+        this.setMaxHeight(container, editor);
+
+        if (container.clientHeight > height) {
+          container.style.height = heightParam;
+          handleCanExpand(true);
+        } else {
+          handleCanExpand(false);
+        }
       }
 
       editor.resize();
@@ -47,21 +58,39 @@ class CodeExample extends Component {
   }
 
   render() {
-    const { lang } = this.props;
-    const theme = "tomorrow_night";
+    const { lang, theme, width, children, readOnly } = this.props;
 
     return (
       <AceEditor
         ref={this.setHeight.bind(this)}
-        value={this.props.children}
+        value={children}
         onChange={this.updateCode}
         mode={lang}
         theme={theme}
-        width="100%"
-        readOnly={true}
+        width={width}
+        readOnly={readOnly}
       />
     );
   }
 }
+
+CodeExample.defaultProps = {
+  theme: "tomorrow_night",
+  width: "100%",
+  readOnly: true
+};
+
+CodeExample.propTypes = {
+  width: React.PropTypes.string,
+  theme: React.PropTypes.oneOf(SUPPORTED_THEMES),
+  handleCanExpand: React.PropTypes.func,
+  height: React.PropTypes.oneOfType([
+    React.PropTypes.string,
+    React.PropTypes.number
+  ]),
+  readOnly: React.PropTypes.bool,
+  lang: React.PropTypes.oneOf(SUPPORTED_CODE_TYPES).isRequired,
+  children: React.PropTypes.node.isRequired
+};
 
 module.exports = CodeExample;
