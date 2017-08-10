@@ -20,13 +20,17 @@
     "node": "4.4.x",
     "npm": "3.9.x"
   },
-  "browserslist": ["last 2 versions", "ie 11"],
+  "browserslist": [
+    "last 2 versions",
+    "ie 11"
+  ],
   "config": {
     "port": 4200,
     "externalplugins": ""
   },
   "dependencies": {
     "babel-polyfill": "6.23.0",
+    "baconjs": "0.7.95",
     "browser-info": "0.4.0",
     "classnames": "2.2.3",
     "clipboard": "1.5.10",

@@ -1,0 +1,19 @@
+{
+  "events": [
+    {
+      "path": "task.path.name",
+      "value": "bar",
+      "type": "task"
+    },
+    {
+      "path": "task.path.name",
+      "value": "bar",
+      "type": "task"
+    },
+    {
+      "path": "task.path.name",
+      "value": "bar",
+      "type": "task"
+    }
+  ]
+}
