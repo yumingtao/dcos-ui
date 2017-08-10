@@ -1,4 +1,6 @@
-const StateSchemas = {
+import { Aliases } from "./StateAliases";
+
+const Schema = {
   state: {
     version: "",
     cluster: "",
@@ -36,7 +38,8 @@ const StateSchemas = {
     cpus: "",
     disk: "",
     mem: "",
-    gpus: undefined
+    gpus: undefined,
+    ports: ""
   },
   "state.frameworks.tasks.statuses": {
     timestamp: ""
@@ -45,20 +48,7 @@ const StateSchemas = {
     key: "",
     value: ""
   },
-  "state.frameworks.completed_tasks.labels": {
-    key: "",
-    value: ""
-  },
-  "state.frameworks.completed_tasks": {
-    id: "",
-    labels: []
-  },
   "state.executors": {
-    id: "",
-    type: "",
-    directory: ""
-  },
-  "state.completed_executors": {
     id: "",
     type: "",
     directory: ""
@@ -69,4 +59,14 @@ const StateSchemas = {
   }
 };
 
-module.export = StateSchemas;
+Object.keys(Aliases).forEach(function(aliasKey) {
+  Object.keys(Schema).forEach(function(schemaKey) {
+    if (schemaKey.startsWith(aliasKey)) {
+      Aliases[aliasKey].forEach(function(alias) {
+        Schema[schemaKey.replace(aliasKey, alias)] = Schema[schemaKey];
+      });
+    }
+  });
+});
+
+module.export = Schema;

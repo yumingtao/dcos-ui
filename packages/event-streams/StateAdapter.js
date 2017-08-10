@@ -1,77 +1,78 @@
+import Util from "#SRC/js/utils/Util";
+
 import { Schema } from "./StateSchema";
-
-// var Bacon = require("baconjs").Bacon;
-// const DELAY = 10;
-// const eventStream = Bacon.fromArray(events);
-// eventStream.bufferWithTime(DELAY).reduce();
-
-const EventTypes = {
-  Framework: "FRAMEWORK",
-  Task: "TASK",
-  Agent: "AGENT"
-};
-
-const customFieldMapper = {
-  "state.frameworks.tasks.resources": mesosObject => {
-    return mesosObject["resources"].reduce(function(result, entry) {
-      result[entry.name] = entry.scalar.value;
-    }, {});
-  },
-  "state.frameworks.tasks.ports": mesosObject => {
-    return Object.values(mesosObject["discovery"]["ports"]).toString();
-  },
-  "state.frameworks.tasks.framework_id": mesosObject => {
-    return mesosObject["framework_id"]["value"];
-  },
-  "state.frameworks": mesosObject => {
-    const frameworkIds = Object.keys(mesosObject[EventTypes.Framework]);
-
-    return frameworkIds.map(function(frameworkId) {
-      const framework = mesosObject[EventTypes.Framework][frameworkId];
-      framework["id"] = frameworkId;
-
-      return framework;
-    });
-  },
-  "state.slaves": mesosObject => {
-    const slaveIds = Object.keys(mesosObject[EventTypes.Agent]);
-
-    return slaveIds.map(function(slaveId) {
-      const slave = mesosObject[EventTypes.Agent][slaveId];
-      slave["id"] = slaveId;
-
-      return slave;
-    });
-  },
-  "state.frameworks.tasks": mesosObject => {
-    const taskIds = Object.keys(mesosObject[EventTypes.Task]);
-
-    return taskIds.map(function(taskId) {
-      const task = mesosObject[EventTypes.Task][taskId];
-      task["id"] = taskId;
-
-      return task;
-    });
-  }
-};
+import { StateMapper } from "./StateMapper";
+import { MesosMapper } from "./MesosMapper";
 
 const StateAdapter = {
-  mesosState: {},
+  stateObject: null,
+  stateLookups: null,
 
   // Traverse the events from the stream and build an object
   buildMesosState(streamArray) {
     streamArray.forEach(function(event) {
-      this.insertNestedPropertyInObject(event.path, event.value);
+      if (this.stateObject == null) {
+        this.stateObject = this.generateState(event.value);
+        this.setLookupsForEntites();
+      } else {
+        this.insertToStateObject(event);
+      }
     });
   },
 
-  // Add to mesos state object based on path and value
-  insertNestedPropertyInObject(path, value) {
-    if (path == null || this.mesosState == null || value == null) {
+  insertToStateObject(event) {
+    const pathId = event.path.slice(0, 2).join(".");
+    let restOfPath = event.path.slice(2).join(".");
+
+    const item = Util.findNestedPropertyInObject(this.stateLookups, pathId);
+
+    if (MesosMapper[restOfPath]) {
+      restOfPath = MesosMapper[restOfPath];
+    }
+
+    this.insertNestedPropertyInObject(restOfPath, event.value, item);
+  },
+
+  setLookupsForEntites() {
+    const taskKeys = ["tasks", "completed_tasks"];
+    const frameworkKeys = ["frameworks", "completed_frameworks"];
+
+    const tasks = {};
+    const frameworks = {};
+    const agents = {};
+
+    frameworkKeys
+      .map(function(frameworkKey) {
+        return this.stateObject[frameworkKey];
+      }, this)
+      .forEach(function(framework) {
+        frameworks[framework.id] = framework;
+
+        taskKeys.forEach(function(taskKey) {
+          framework[taskKey].foreach(function(task) {
+            tasks[task.id] = task;
+          });
+        });
+      });
+
+    this.stateObject.slaves.forEach(function(slave) {
+      agents[slave.id] = slave;
+    });
+
+    this.stateLookups = {
+      TASK: tasks,
+      FRAMEWORK: frameworks,
+      AGENT: agents
+    };
+  },
+
+  // Add to state object based on path and value
+  insertNestedPropertyInObject(path, value, object) {
+    if (path == null || object == null || value == null) {
       return;
     }
 
-    let current = this.mesosState;
+    let current = object;
     const fields = path.split(".");
     fields.slice(0, fields.length - 1).forEach(function(prop) {
       if (!Object.keys(current).includes(prop)) {
@@ -90,50 +91,10 @@ const StateAdapter = {
     }
   },
 
-  groupTasks(tasks) {
-    const groupedTasks = {
-      active: [],
-      completed: []
-    };
-
-    tasks.forEach(function(task) {
-      if (task.state === "TASK_RUNNING") {
-        groupedTasks.active.push(task);
-      } else {
-        groupedTasks.completed.push(task);
-      }
-    });
-
-    return groupedTasks;
-  },
-
-  groupFrameworks(frameworks) {
-    const groupedFrameworks = {
-      active: [],
-      completed: []
-    };
-
-    frameworks.forEach(function(framework) {
-      if (!framework.active || !framework.connected) {
-        groupedFrameworks.completed.push(framework);
-      } else {
-        groupedFrameworks.active.push(framework);
-      }
-    });
-
-    return groupedFrameworks;
-  },
-
-  getTasksByFrameworkId(tasks, frameworkId) {
-    return tasks.filter(function(task) {
-      return task.framework_id === frameworkId;
-    });
-  },
-
   applyStateSchema(schemaKey, schemaKeys, mesosObject) {
     const stateObject = Object.assign({}, Schema[schemaKey]);
     const stateKeys = Object.keys(stateObject);
-    const customKeys = Object.keys(customFieldMapper);
+    const customKeys = Object.keys(StateMapper);
 
     if (!mesosObject) {
       return stateObject;
@@ -144,9 +105,9 @@ const StateAdapter = {
     stateKeys.forEach(function(stateKey) {
       const newKey = schemaKey + "." + stateKey;
       if (schemaKeys.includes(newKey)) {
-        const newMesosObject = customFieldMapper[newKey]
-          ? customFieldMapper[newKey](mesosObject)
-          : null;
+        const newMesosObject = StateMapper[newKey]
+          ? StateMapper[newKey](mesosObject)
+          : mesosObject[stateKey];
         if (Array.isArray(stateObject[stateKey])) {
           stateObject[stateKey] = this.applyArrayStateSchema(
             newKey,
@@ -161,7 +122,7 @@ const StateAdapter = {
           );
         }
       } else if (customKeys.includes(newKey)) {
-        stateObject[stateKey] = customFieldMapper[newKey](mesosObject);
+        stateObject[stateKey] = StateMapper[newKey](mesosObject);
       } else if (mesosKeys.includes(stateKey)) {
         stateObject[stateKey] = mesosObject[stateKey];
       }
@@ -176,7 +137,7 @@ const StateAdapter = {
       return results;
     }
 
-    const customKeys = Object.keys(customFieldMapper);
+    const customKeys = Object.keys(StateMapper);
 
     mesosObjects.forEach(function(mesosEntry) {
       const stateObject = Object.assign({}, Schema[schemaKey]);
@@ -184,9 +145,9 @@ const StateAdapter = {
       Object.keys(stateObject).forEach(function(field) {
         const newKey = schemaKey + "." + field;
         if (schemaKeys.includes(newKey)) {
-          const newMesosObjects = customFieldMapper[newKey]
-            ? customFieldMapper[newKey](mesosEntry)
-            : null;
+          const newMesosObjects = StateMapper[newKey]
+            ? StateMapper[newKey](mesosEntry)
+            : mesosEntry[field];
           if (Array.isArray(stateObject[field])) {
             stateObject[field] = this.applyArrayStateSchema(
               newKey,
@@ -201,7 +162,7 @@ const StateAdapter = {
             );
           }
         } else if (customKeys.includes(newKey)) {
-          stateObject[field] = customFieldMapper[newKey](mesosEntry);
+          stateObject[field] = StateMapper[newKey](mesosEntry);
         } else {
           stateObject[field] = mesosEntry[field];
         }
@@ -213,57 +174,36 @@ const StateAdapter = {
     return results;
   },
 
+  updateFrameworksWithTasks(frameworks, groupedTasks) {
+    frameworks.forEach(function(framework) {
+      Object.keys(groupedTasks).forEach(function(type) {
+        if (!framework[type]) {
+          framework[type] = [];
+        }
+
+        groupedTasks[type].forEach(function(task) {
+          if (task.framework_id.value === framework.framework_info.id.value) {
+            framework[type].push(task);
+          }
+        });
+      });
+    });
+  },
+
   // Generate state based on Mesos object
-  generateState() {
+  generateState(mesosState) {
     const schemaKeys = Object.keys(Schema);
 
-    const state = this.applyStateSchema("state", schemaKeys, this.mesosState);
+    Object.keys(mesosState["get_frameworks"]).forEach(function(frameworkGroup) {
+      this.updateFrameworksWithTasks(
+        mesosState["get_frameworks"][frameworkGroup],
+        mesosState["get_tasks"]
+      );
+    }, this);
+
+    const state = this.applyStateSchema("state", schemaKeys, mesosState);
 
     return state;
-    // const agents = this.applyStateSchema(
-    //   this.mesosState[EventTypes.Agent],
-    //   EventTypes.Agent
-    // );
-
-    // const frameworks = this.applyStateSchema(
-    //   this.mesosState[EventTypes.Framework],
-    //   EventTypes.Framework
-    // );
-
-    // const tasks = this.applyStateSchema(
-    //   this.mesosState[EventTypes.Task],
-    //   EventTypes.Task
-    // );
-
-    // const groupedFrameworks = this.groupFrameworks(frameworks);
-    // const groupedTasks = this.groupTasks(tasks);
-
-    // stateObject.slaves.push(agents);
-
-    // stateObject.frameworks.push(groupedFrameworks.active);
-    // stateObject.completed_frameworks.push(groupedFrameworks.completed);
-
-    // stateObject.frameworks.forEach(function(framework) {
-    //   framework.tasks = this.getTasksByFramework(
-    //     groupedTasks.active,
-    //     framework.id
-    //   );
-
-    //   framework.completed_tasks = this.getTasksByFramework(
-    //     groupedTasks.completed,
-    //     framework.id
-    //   );
-    // });
-
-    // stateKeys
-    //   .filter(function(key) {
-    //     return !Object.keys(customFieldMapper).includes(key);
-    //   })
-    //   .forEach(function(key) {
-    //     if (Object.keys(this.mesosState).includes(key)) {
-    //       stateObject[key] = this.mesosState[key];
-    //     }
-    //   });
   }
 };
 
