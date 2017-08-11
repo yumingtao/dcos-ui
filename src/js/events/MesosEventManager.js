@@ -100,10 +100,7 @@ var MesosEventManager = {
           console.log("Got FRAMEWORK_ADDED" + data);
           console.log(data);
           const arr = List(
-            EventUtil.generateEventsFromFramework(
-              data["framework_added"],
-              false
-            )
+            EventUtil.generateEventsFromFramework(data["framework"], false)
           );
           immutableQueue = immutableQueue.concat(arr);
 
@@ -134,9 +131,7 @@ var MesosEventManager = {
           console.log("Got FRAMEWORK_REMOVED");
           console.log(data);
           const arr = List(
-            EventUtil.generateEventsFromFrameworkRemoved(
-              data["framework_removed"]
-            )
+            EventUtil.generateEventsFromFrameworkRemoved(data["framework_info"])
           );
           immutableQueue = immutableQueue.concat(arr);
 

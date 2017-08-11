@@ -74,7 +74,7 @@ const EventUtil = {
     const ret = [];
     const taskId = taskUpdate["status"]["task_id"]["value"];
 
-    const fields = ["status"];
+    const fields = ["state", "status"];
 
     ret.push.apply(
       ret,

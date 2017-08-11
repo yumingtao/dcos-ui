@@ -1,5 +1,3 @@
-import Util from "#SRC/js/utils/Util";
-
 import MesosEventManager from "#SRC/js/events/MesosEventManager";
 
 import Schema from "./StateSchemas";
@@ -9,6 +7,29 @@ import MesosMapper from "./MesosMapper";
 const StateAdapter = {
   stateObject: null,
   stateLookups: null,
+
+  stagingTasks: {},
+
+  getFrameworkById(frameworkId) {
+    return this.stateObject.frameworks.find(function(framework) {
+      return framework.id === frameworkId;
+    });
+  },
+
+  tryDeployStaging(taskId) {
+    const task = this.stagingTasks[taskId];
+    const frameworkId = task["framework_id"];
+    if (frameworkId) {
+      this.stateLookups["TASK"][taskId] = task;
+      console.log("lookups after staging");
+      console.log(this.stateLookups);
+      const framework = this.getFrameworkById(frameworkId);
+      if (framework) {
+        framework.tasks.push(task);
+        delete this.stagingTasks[taskId];
+      }
+    }
+  },
 
   // Traverse the events from the stream and build an object
   buildMesosState() {
@@ -30,35 +51,7 @@ const StateAdapter = {
           self.insertToStateObject(eventObject);
         }
       }
-      // events.forEach(function(event) {
-      //   const eventObject = event.get(0);
-      //   if (self.stateObject == null) {
-      //     console.log("Made state object for event");
-      //     self.stateObject = self.generateState(eventObject.value);
-      //     self.setLookupsForEntites();
-      //   } else {
-      //     console.log("Update state object for event");
-      //     self.insertToStateObject(eventObject);
-      //   }
-      // });
     });
-
-    // const self = this;
-    // stream.subscribe(function(events) {
-    //   console.log("Events are:");
-    //   console.log(events);
-    //   events.forEach(function(event) {
-    //     const eventObject = event.get(0);
-    //     if (self.stateObject == null) {
-    //       console.log("Made state object for event");
-    //       self.stateObject = self.generateState(eventObject.value);
-    //       self.setLookupsForEntites();
-    //     } else {
-    //       console.log("Update state object for event");
-    //       self.insertToStateObject(eventObject);
-    //     }
-    //   });
-    // });
   },
 
   getStateObject() {
@@ -66,16 +59,53 @@ const StateAdapter = {
   },
 
   insertToStateObject(event) {
-    const pathId = event.path.slice(0, 2).join(".");
-    let restOfPath = event.path.slice(2).join(".");
-
-    const item = Util.findNestedPropertyInObject(this.stateLookups, pathId);
+    const pathId = event.path.slice(0, 2);
+    let restOfPath = event.path.slice(2);
 
     if (MesosMapper[restOfPath]) {
       restOfPath = MesosMapper[restOfPath];
     }
 
-    this.insertNestedPropertyInObject(restOfPath, event.value, item);
+    // console.log("path id is:");
+    // console.log(pathId);
+    const item = this.findNestedPropertyInObject(this.stateLookups, pathId);
+    if (!item) {
+      const entityType = pathId[0];
+      const eventId = pathId[1];
+      const isTask = entityType === "TASK";
+      const lookup = isTask ? this.stagingTasks : this.stateLookups[entityType];
+      if (!lookup[eventId]) {
+        lookup[eventId] = {
+          id: eventId
+        };
+      }
+
+      if (!isTask) {
+        const value = lookup[eventId];
+        if (entityType === "AGENT") {
+          this.stateObject.agents.push(value);
+        } else if (entityType === "FRAMEWORK") {
+          this.stateObject.frameworks.push(value);
+        }
+      }
+
+      this.insertNestedPropertyInObject(
+        restOfPath,
+        event.value,
+        lookup[eventId]
+      );
+
+      if (isTask) {
+        this.tryDeployStaging(eventId);
+      }
+    } else {
+      // console.log("updating");
+      // console.log(restOfPath);
+      // console.log(event.value);
+      // console.log(item);
+      // console.log("----");
+      this.insertNestedPropertyInObject(restOfPath, event.value, item);
+    }
   },
 
   setLookupsForEntites() {
@@ -115,14 +145,13 @@ const StateAdapter = {
   },
 
   // Add to state object based on path and value
-  insertNestedPropertyInObject(path, value, object) {
-    if (path == null || object == null || value == null) {
+  insertNestedPropertyInObject(pathFields, value, object) {
+    if (pathFields == null || object == null || value == null) {
       return;
     }
 
     let current = object;
-    const fields = path.split(".");
-    fields.slice(0, fields.length - 1).forEach(function(prop) {
+    pathFields.slice(0, pathFields.length - 1).forEach(function(prop) {
       if (!Object.keys(current).includes(prop)) {
         current[prop] = {};
       }
@@ -130,13 +159,27 @@ const StateAdapter = {
       current = current[prop];
     });
 
-    const inputField = fields.pop();
+    const inputField = pathFields.pop();
     if (Array.isArray(value)) {
       const fieldArray = current[inputField] || [];
       current[inputField] = fieldArray.concat(value);
     } else {
       current[inputField] = value;
     }
+  },
+
+  findNestedPropertyInObject(obj, pathFields) {
+    if (pathFields == null || obj == null) {
+      return null;
+    }
+
+    return pathFields.reduce(function(current, nextProp) {
+      if (current == null) {
+        return current;
+      }
+
+      return current[nextProp];
+    }, obj);
   },
 
   applyStateSchema(schemaKey, schemaKeys, mesosObject) {
