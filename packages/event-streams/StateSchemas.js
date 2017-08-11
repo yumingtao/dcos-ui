@@ -1,4 +1,4 @@
-import { Aliases } from "./StateAliases";
+import Aliases from "./StateAliases";
 
 const Schema = {
   state: {
@@ -69,4 +69,4 @@ Object.keys(Aliases).forEach(function(aliasKey) {
   });
 });
 
-module.export = Schema;
+module.exports = Schema;

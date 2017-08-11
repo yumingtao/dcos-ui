@@ -1,23 +1,68 @@
 import Util from "#SRC/js/utils/Util";
 
-import { Schema } from "./StateSchema";
-import { StateMapper } from "./StateMapper";
-import { MesosMapper } from "./MesosMapper";
+import MesosEventManager from "#SRC/js/events/MesosEventManager";
+
+import Schema from "./StateSchemas";
+import StateMapper from "./StateMapper";
+import MesosMapper from "./MesosMapper";
 
 const StateAdapter = {
   stateObject: null,
   stateLookups: null,
 
   // Traverse the events from the stream and build an object
-  buildMesosState(streamArray) {
-    streamArray.forEach(function(event) {
-      if (this.stateObject == null) {
-        this.stateObject = this.generateState(event.value);
-        this.setLookupsForEntites();
-      } else {
-        this.insertToStateObject(event);
+  buildMesosState() {
+    console.log("Called build state");
+    const self = this;
+    MesosEventManager.createEventStream(function(events) {
+      console.log("Events are:");
+      console.log(events);
+
+      for (var i = 0; i < events.size; i++) {
+        const eventObject = events.get(i);
+        if (self.stateObject == null) {
+          console.log("Made state object for event");
+          self.stateObject = self.generateState(eventObject.value);
+          console.log(self.stateObject);
+          self.setLookupsForEntites();
+        } else {
+          console.log("Update state object for event");
+          self.insertToStateObject(eventObject);
+        }
       }
+      // events.forEach(function(event) {
+      //   const eventObject = event.get(0);
+      //   if (self.stateObject == null) {
+      //     console.log("Made state object for event");
+      //     self.stateObject = self.generateState(eventObject.value);
+      //     self.setLookupsForEntites();
+      //   } else {
+      //     console.log("Update state object for event");
+      //     self.insertToStateObject(eventObject);
+      //   }
+      // });
     });
+
+    // const self = this;
+    // stream.subscribe(function(events) {
+    //   console.log("Events are:");
+    //   console.log(events);
+    //   events.forEach(function(event) {
+    //     const eventObject = event.get(0);
+    //     if (self.stateObject == null) {
+    //       console.log("Made state object for event");
+    //       self.stateObject = self.generateState(eventObject.value);
+    //       self.setLookupsForEntites();
+    //     } else {
+    //       console.log("Update state object for event");
+    //       self.insertToStateObject(eventObject);
+    //     }
+    //   });
+    // });
+  },
+
+  getStateObject() {
+    return this.stateObject;
   },
 
   insertToStateObject(event) {
@@ -49,7 +94,10 @@ const StateAdapter = {
         frameworks[framework.id] = framework;
 
         taskKeys.forEach(function(taskKey) {
-          framework[taskKey].foreach(function(task) {
+          if (!framework[taskKey]) {
+            return;
+          }
+          framework[taskKey].forEach(function(task) {
             tasks[task.id] = task;
           });
         });
@@ -207,4 +255,4 @@ const StateAdapter = {
   }
 };
 
-module.export = StateAdapter;
+module.exports = StateAdapter;

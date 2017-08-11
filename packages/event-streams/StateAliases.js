@@ -7,4 +7,4 @@ const Aliases = {
   "state.executors": ["state.completed_executors"]
 };
 
-module.export = Aliases;
+module.exports = Aliases;

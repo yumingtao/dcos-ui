@@ -1,22 +1,25 @@
 import MasterClient from "../components/MesosOperatorApiClient";
 import EventUtil from "../utils/mesos-operator-api/EventUtil";
 
-const Bacon = require("baconjs").Bacon;
+// const Bacon = require("baconjs");
+
 const { List } = require("immutable");
 
 const callbacks = [];
 var immutableQueue = List([]);
 
 var MesosEventManager = {
-  createEventStream() {
-    return Bacon.fromCallback(function(callback) {
-      callbacks.push(callback);
-      callback(immutableQueue);
-    });
+  createEventStream(callback) {
+    callbacks.push(callback);
+    callback(immutableQueue);
   },
   startConnection() {
     function triggerEvent(immutableEvents) {
+      console.log("trigger event:");
+      console.log(immutableEvents);
+      console.log(callbacks);
       callbacks.forEach(function(callback) {
+        console.log("trigger callback:");
         callback(immutableEvents);
       });
     }

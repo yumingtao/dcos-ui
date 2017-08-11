@@ -1,4 +1,4 @@
-import { Aliases } from "./StateAliases";
+import Aliases from "./StateAliases";
 
 const StateMapper = {
   "state.frameworks": mesosObject => {
@@ -40,7 +40,7 @@ const StateMapper = {
     }, {});
   },
   "state.frameworks.tasks.labels": mesosObject => {
-    if (mesosObject["labels"]["labels"]) {
+    if (mesosObject["labels"]) {
       return mesosObject["labels"]["labels"];
     }
   },
@@ -82,4 +82,4 @@ Object.keys(Aliases).forEach(function(aliasKey) {
   });
 });
 
-module.export = StateMapper;
+module.exports = StateMapper;

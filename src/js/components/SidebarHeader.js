@@ -10,6 +10,8 @@ import MesosSummaryStore from "../stores/MesosSummaryStore";
 import SidebarActions from "../events/SidebarActions";
 import UserAccountDropdown from "./UserAccountDropdown";
 
+import StateAdapter from "../../../packages/event-streams/StateAdapter";
+
 const METHODS_TO_BIND = ["handleItemSelect", "handleTextCopy"];
 
 class SidebarHeader extends mixin(StoreMixin) {
@@ -136,6 +138,20 @@ class SidebarHeader extends mixin(StoreMixin) {
         onClick() {
           SidebarActions.close();
           SidebarActions.openCliInstructions();
+        }
+      },
+      {
+        html: "Call Adapter",
+        id: "call-adapter",
+        onClick() {
+          StateAdapter.buildMesosState();
+        }
+      },
+      {
+        html: "Get State Object",
+        id: "get-state-object",
+        onClick() {
+          console.log(StateAdapter.getStateObject());
         }
       }
     ];

@@ -6,4 +6,4 @@ const MesosMapper = {
   "agent_info.hostname": "hostname"
 };
 
-module.export = MesosMapper;
+module.exports = MesosMapper;
