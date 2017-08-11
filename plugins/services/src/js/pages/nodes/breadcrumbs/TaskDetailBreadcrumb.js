@@ -10,6 +10,12 @@ class TaskDetailBreadcrumb extends BreadcrumbSegment {
     ];
   }
 
+  componentWillMount() {
+    if (Object.keys(MesosStateStore.get("lastMesosState")).length !== 0) {
+      this.onStateStoreSuccess();
+    }
+  }
+
   componentDidMount() {
     this.updateCrumbStatus();
   }

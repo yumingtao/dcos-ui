@@ -1,24 +1,30 @@
 const http = require("http");
-const winston = require("winston");
+// const winston = require("winston");
 
 const masterCalls = require("./Mastercalls");
 const agentCalls = require("./AgentCalls");
 
 module.exports = {
   getLogger(path, fileName, logLevel) {
-    const logger = new winston.Logger({
-      transports: [
-        new winston.transports.Console({ level: logLevel || "error" }),
-        new (require("winston-daily-rotate-file"))({
-          filename: path && fileName
-            ? path + "/" + fileName
-            : "logs/mesos-operator-api.log",
-          level: logLevel || "error",
-          prepend: true,
-          json: false
-        })
-      ]
-    });
+    // const logger = new winston.Logger({
+    //   transports: [
+    //     new winston.transports.Console({ level: logLevel || "error" }),
+    //     new (require("winston-daily-rotate-file"))({
+    //       filename: path && fileName
+    //         ? path + "/" + fileName
+    //         : "logs/mesos-operator-api.log",
+    //       level: logLevel || "error",
+    //       prepend: true,
+    //       json: false
+    //     })
+    //   ]
+    // });
+
+    const logger = {
+      info: () => {},
+      error: () => {},
+      logLevel
+    };
 
     return logger;
   },

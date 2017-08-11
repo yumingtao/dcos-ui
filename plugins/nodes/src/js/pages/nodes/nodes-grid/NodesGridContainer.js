@@ -48,6 +48,12 @@ class NodesGridContainer extends mixin(StoreMixin, QueryParamsMixin) {
     });
   }
 
+  componentWillMount() {
+    if (Object.keys(MesosStateStore.get("lastMesosState")).length !== 0) {
+      this.onStateStoreSuccess();
+    }
+  }
+
   componentWillReceiveProps(props) {
     const { services, location: { query } } = props;
     const ids = services.map(function(service) {

@@ -8,34 +8,40 @@ import CompositeState from "../structs/CompositeState";
 import Config from "../config/Config";
 import DCOSStore from "./DCOSStore";
 import Framework from "../../../plugins/services/src/js/structs/Framework";
+
+// import StateAdapter
+//   from "../../../packages/events-stream/src/js/subscribers/state/StateAdapter";
+
 import GetSetBaseStore from "./GetSetBaseStore";
 import {
   MESOS_STATE_CHANGE,
   MESOS_STATE_REQUEST_ERROR,
   VISIBILITY_CHANGE
 } from "../constants/EventTypes";
-import MesosStateActions from "../events/MesosStateActions";
+// import MesosStateActions from "../events/MesosStateActions";
 import MesosStateUtil from "../utils/MesosStateUtil";
 import Task from "../../../plugins/services/src/js/structs/Task";
 import VisibilityStore from "./VisibilityStore";
 
-var requestInterval = null;
+// import MesosEventManager from "../events/MesosEventManager";
+
+// var requestInterval = null;
 
 function startPolling() {
-  if (requestInterval == null) {
-    MesosStateActions.fetchState();
-    requestInterval = setInterval(
-      MesosStateActions.fetchState,
-      Config.getRefreshRate()
-    );
-  }
+  // if (requestInterval == null) {
+  //   MesosStateActions.fetchState();
+  //   requestInterval = setInterval(
+  //     MesosStateActions.fetchState,
+  //     Config.getRefreshRate()
+  //   );
+  // }
 }
 
 function stopPolling() {
-  if (requestInterval != null) {
-    clearInterval(requestInterval);
-    requestInterval = null;
-  }
+  // if (requestInterval != null) {
+  //   clearInterval(requestInterval);
+  //   requestInterval = null;
+  // }
 }
 
 /**
@@ -72,7 +78,9 @@ class MesosStateStore extends GetSetBaseStore {
 
     this.getSet_data = {
       lastMesosState: {},
-      taskCache: {}
+      taskCache: {},
+      pendingState: null,
+      throttled: false
     };
 
     PluginSDK.addStoreConfig({
@@ -98,7 +106,25 @@ class MesosStateStore extends GetSetBaseStore {
       var action = payload.action;
       switch (action.type) {
         case ActionTypes.REQUEST_MESOS_STATE_SUCCESS:
-          this.processStateSuccess(action.data);
+          const throttled = this.get("throttled");
+          if (throttled) {
+            console.log("Throttled update");
+            this.set({ pendingState: action.data });
+          } else {
+            this.set({ throttled: true });
+            this.processStateSuccess(action.data);
+            setTimeout(
+              function() {
+                if (this.get("pendingState")) {
+                  this.processStateSuccess(this.get("pendingState"));
+                  this.set({ pendingState: null });
+                }
+
+                this.set({ throttled: false });
+              }.bind(this),
+              Config.getRefreshRate()
+            );
+          }
           break;
         case ActionTypes.REQUEST_MESOS_STATE_ERROR:
           this.processStateError(action.xhr);
@@ -115,6 +141,9 @@ class MesosStateStore extends GetSetBaseStore {
       VISIBILITY_CHANGE,
       this.onVisibilityStoreChange.bind(this)
     );
+
+    // MesosEventManager.startConnection();
+    // StateAdapter.buildMesosState();
   }
 
   addChangeListener(eventName, callback) {
@@ -360,6 +389,7 @@ class MesosStateStore extends GetSetBaseStore {
   }
 
   processStateSuccess(lastMesosState) {
+    console.log("Processed new state");
     CompositeState.addState(lastMesosState);
     const taskCache = this.indexTasksByID(lastMesosState);
     this.set({ lastMesosState, taskCache });
@@ -367,6 +397,7 @@ class MesosStateStore extends GetSetBaseStore {
   }
 
   processStateError(xhr) {
+    console.log("Processed state error");
     this.emit(MESOS_STATE_REQUEST_ERROR, xhr);
   }
 

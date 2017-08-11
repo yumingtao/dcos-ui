@@ -113,6 +113,10 @@ class TaskDetail extends mixin(InternalStorageMixin, TabsMixin, StoreMixin) {
 
       this.updateCurrentTab();
     }
+
+    if (Object.keys(MesosStateStore.get("lastMesosState")).length !== 0) {
+      this.onStateStoreSuccess();
+    }
   }
 
   componentWillReceiveProps(nextProps) {

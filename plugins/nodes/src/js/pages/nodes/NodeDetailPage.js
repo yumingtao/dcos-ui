@@ -8,6 +8,7 @@ import { StoreMixin } from "mesosphere-shared-reactjs";
 import CompositeState from "#SRC/js/structs/CompositeState";
 import Loader from "#SRC/js/components/Loader";
 import MesosSummaryStore from "#SRC/js/stores/MesosSummaryStore";
+import MesosStateStore from "#SRC/js/stores/MesosStateStore";
 import Page from "#SRC/js/components/Page";
 import ResourceChart from "#SRC/js/components/charts/ResourceChart";
 import TabsMixin from "#SRC/js/mixins/TabsMixin";
@@ -68,6 +69,10 @@ class NodeDetailPage extends mixin(TabsMixin, StoreMixin) {
         }, this.tabs_tabs);
     }
     this.updateCurrentTab();
+
+    if (Object.keys(MesosStateStore.get("lastMesosState")).length !== 0) {
+      this.onStateStoreSuccess();
+    }
   }
 
   componentWillReceiveProps(nextProps) {

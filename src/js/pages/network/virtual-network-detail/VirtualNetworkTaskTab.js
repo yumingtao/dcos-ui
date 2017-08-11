@@ -57,6 +57,12 @@ class VirtualNetworkTaskTab extends mixin(StoreMixin) {
     });
   }
 
+  componentWillMount() {
+    if (Object.keys(MesosStateStore.get("lastMesosState")).length !== 0) {
+      this.onStateStoreSuccess();
+    }
+  }
+
   onStateStoreError(errorMessage) {
     this.setState({ tasksDataReceived: true, errorMessage });
   }

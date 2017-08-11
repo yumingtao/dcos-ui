@@ -29,6 +29,12 @@ class ServiceInstancesContainer extends mixin(StoreMixin) {
     });
   }
 
+  componentWillMount() {
+    if (Object.keys(MesosStateStore.get("lastMesosState")).length !== 0) {
+      this.onStateStoreSuccess();
+    }
+  }
+
   onStateStoreSuccess() {
     // Throttle updates
     if (
