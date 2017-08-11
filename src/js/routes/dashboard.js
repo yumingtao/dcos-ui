@@ -7,7 +7,8 @@ const dashboardRoutes = {
   type: Route,
   path: "dashboard",
   component: DashboardPage,
-  isInSidebar: true
+  isInSidebar: true,
+  anotherOne: "go"
 };
 
 module.exports = dashboardRoutes;
