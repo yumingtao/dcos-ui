@@ -8,7 +8,8 @@ const dashboardRoutes = {
   path: "dashboard",
   component: DashboardPage,
   isInSidebar: true,
-  anotherOne: "go"
+  anotherOne: "go",
+  moreUpdates: false
 };
 
 module.exports = dashboardRoutes;
