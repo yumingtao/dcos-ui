@@ -1,7 +1,7 @@
-const ComponenxtExampleOverrides = {};
+const ComponentExampleOverrides = {};
 
 ["ReactCode", "HtmlCode", "Preview"].forEach(function(element) {
-  ComponenxtExampleOverrides[element] = element;
+  ComponentExampleOverrides[element] = element;
 });
 
-module.exports = ComponenxtExampleOverrides;
+module.exports = ComponentExampleOverrides;
