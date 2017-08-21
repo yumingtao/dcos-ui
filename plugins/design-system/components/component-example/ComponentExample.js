@@ -16,6 +16,8 @@ import CodeExampleTabView from "./CodeExampleTabView";
 import CodeExampleTabViewList from "./CodeExampleTabViewList";
 
 import CodeExampleTabButton from "./CodeExampleTabButton";
+import ExpandButton from "./ExpandButton";
+import CollapseButton from "./CollapseButton";
 
 import { ReactCode, HtmlCode, Preview } from "./ComponentExampleOverrides";
 
@@ -32,7 +34,7 @@ const TAB_LABELS = {
 };
 
 const METHODS_TO_BIND = [
-  "expandCollapseToggle",
+  "toggleExpandCollapse",
   "handleTabChange",
   "handleCodeCopy",
   "handleCanExpand"
@@ -42,14 +44,16 @@ class ComponentExample extends Component {
   constructor() {
     super(...arguments);
 
+    const activeTab = this.isTabbedMode()
+      ? this.props.activeTab || ReactCode
+      : null;
+
     this.state = {
       isExpanded: false,
       isCodeCopied: false,
       canExpand: false,
-      activeTab: this.isTabbedMode() ? this.props.activeTab || ReactCode : null
+      activeTab
     };
-
-    this.defaultHeight = this.props.defaultHeight || DEFAULT_HEIGHT;
 
     METHODS_TO_BIND.forEach(method => {
       this[method] = this[method].bind(this);
@@ -57,7 +61,7 @@ class ComponentExample extends Component {
   }
 
   findChildByType(type) {
-    return [].concat(this.props.children).find(function(child) {
+    return React.Children.toArray(this.props.children).find(function(child) {
       return child.type === type;
     });
   }
@@ -117,7 +121,7 @@ class ComponentExample extends Component {
     return reactElementToJSXString(reactCode || jsxCode, REACT_STRING_OPTIONS);
   }
 
-  expandCollapseToggle() {
+  toggleExpandCollapse() {
     this.setState({ isExpanded: !this.state.isExpanded });
   }
 
@@ -136,8 +140,9 @@ class ComponentExample extends Component {
     this.setState({ isCodeCopied: true });
   }
 
-  generateCodeExample(lang, code) {
-    const height = this.state.isExpanded ? "100%" : this.defaultHeight;
+  getCodeBody(lang, code) {
+    const defaultHeight = this.props.defaultHeight;
+    const height = this.state.isExpanded ? "100%" : defaultHeight;
 
     return (
       <CodeExample
@@ -150,24 +155,14 @@ class ComponentExample extends Component {
     );
   }
 
-  generateFooter() {
-    const expandButton = (
-      <button
-        className="button button-link"
-        type="button"
-        onClick={this.expandCollapseToggle}
-      >
-        {this.state.isExpanded ? "Show less" : "Show more"}
-        <Icon
-          size="mini"
-          id={this.state.isExpanded ? "caret-up" : "caret-down"}
-        />
-      </button>
-    );
+  getFooter() {
+    const toggleButton = this.state.isExpanded
+      ? <CollapseButton onClick={this.toggleExpandCollapse} />
+      : <ExpandButton onClick={this.toggleExpandCollapse} />;
 
     return (
       <CodeExampleFooter>
-        {this.state.isExpanded || this.state.canExpand ? expandButton : ""}
+        {this.state.isExpanded || this.state.canExpand ? toggleButton : ""}
       </CodeExampleFooter>
     );
   }
@@ -198,8 +193,8 @@ class ComponentExample extends Component {
       </ClipboardTrigger>
     );
 
-    const reactCodeExample = this.generateCodeExample("jsx", reactCode);
-    const htmlCodeExample = this.generateCodeExample("html", htmlCode);
+    const reactCodeExample = this.getCodeBody("jsx", reactCode);
+    const htmlCodeExample = this.getCodeBody("html", htmlCode);
 
     const codeBody = (
       <div>
@@ -235,10 +230,14 @@ class ComponentExample extends Component {
       <div>
         {header}
         {this.isSingleBlockMode() ? codeBody : tabsBody}
-        {this.generateFooter()}
+        {this.getFooter()}
       </div>
     );
   }
 }
+
+ComponentExample.defaultProps = {
+  defaultHeight: DEFAULT_HEIGHT
+};
 
 module.exports = ComponentExample;
