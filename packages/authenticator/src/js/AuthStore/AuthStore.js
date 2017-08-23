@@ -1,9 +1,18 @@
-/*
-  It's important to always import a file written in the same case, that why we proxy it here.
-  This way you can import "authStore" or "AuthStore.js" and will get the same Instance.
-*/
-import AuthStore from "./AuthStoreInstance.js";
-
-export default (function() {
-  return AuthStore;
-})();
+export default class AuthStore {
+  constructor() {
+    Object.defineProperty(this, "_", {
+      configurable: false,
+      enumerable: false,
+      writeable: false,
+      value: {
+        tokens: []
+      }
+    });
+  }
+  setTokenForDomain(domain, token) {
+    this._.tokens[domain] = token;
+  }
+  getTokenForURL(url) {
+    return this._.tokens[url] || "";
+  }
+}

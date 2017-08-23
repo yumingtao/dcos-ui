@@ -1,43 +1,60 @@
-jest.dontMock("object-utilities");
-jest.dontMock("../ConnectionManager");
-
-const ConnectionManager = require("../ConnectionManager").default;
-const ConnectionManager2 = require("../ConnectionManager").default;
+var ConnectionManager = require("../ConnectionManager").default;
+// var ConnectionStore = require("../../ConnectionQueue/ConnectionQueue").default;
 
 describe("ConnectionManager", () => {
-  it("is always the same instance", () => {
-    expect(ConnectionManager).toEqual(ConnectionManager2);
+  beforeEach(() => {
+    ConnectionManager.connectionStore.includes = jest.fn(() => false);
+    ConnectionManager.connectionStore.add = jest.fn(() => true);
+    ConnectionManager.connectionStore.openCount = jest.fn(() => 0);
+    ConnectionManager.connectionStore.waitingCount = jest.fn(() => 0);
+    ConnectionManager.connectionStore.waitingHead = jest.fn(() => {});
+    ConnectionManager.connectionStore.delete = jest.fn(() => {});
   });
+  it("queue new connection", () => {
+    var connection = { state: 0, on: jest.fn() }, priority = 2;
 
-  it("queues connection", () => {
-    const c = { state: 0, on: jest.fn() };
-
-    ConnectionManager.__protected__.queue.add = jest.fn();
-
-    ConnectionManager.queue(c, 3);
-
-    expect(ConnectionManager.__protected__.queue.add).toBeCalledWith(c, 3);
+    ConnectionManager.queue(connection, priority);
+    expect(ConnectionManager.connectionStore.add).toBeCalledWith(
+      connection,
+      priority
+    );
   });
+  it("queue open connection", () => {
+    var connection = { state: 1 }, priority = 2;
 
-  it("does not queue duplicate connection", () => {
-    const c = { state: 0, on: jest.fn() };
-
-    ConnectionManager.__protected__.queue.includes = jest
-      .fn()
-      .mockReturnValue(true);
-
-    expect(ConnectionManager.queue(c, 3)).toEqual(false);
+    ConnectionManager.queue(connection, priority);
+    expect(ConnectionManager.connectionStore.add).toBeCalledWith(
+      connection,
+      priority
+    );
   });
+  it("not queue known connection", () => {
+    var connection = { state: 0, on: jest.fn() }, priority = 2;
+    ConnectionManager.connectionStore.includes.mockReturnValueOnce(true);
 
-  it("does not queue open connection", () => {
-    const c = { state: 1, on: jest.fn() };
-
-    expect(ConnectionManager.queue(c, 3)).toEqual(false);
+    ConnectionManager.queue(connection, priority);
+    expect(ConnectionManager.connectionStore.add).not.toBeCalled();
   });
+  it("not queue closed connection", () => {
+    var connection = { state: 2 }, priority = 2;
 
-  // it("shifts connection from queue and opens it", () => {
-  //   const c = { on: jest.fn(), open: jest.fn() };
-  //   ConnectionManager.queue(c);
-  //   expect(c.open).toBeCalled();
-  // });
+    ConnectionManager.queue(connection, priority);
+    expect(ConnectionManager.connectionStore.add).not.toBeCalled();
+  });
+  it("open next waiting connection from store", () => {
+    var connection = { open: jest.fn() };
+    ConnectionManager.connectionStore.waitingCount.mockReturnValueOnce(1);
+    ConnectionManager.connectionStore.waitingHead.mockReturnValueOnce(
+      connection
+    );
+
+    ConnectionManager.handleQueueActivity();
+    expect(connection.open).toBeCalled();
+  });
+  it("delete closed connection from store", () => {
+    var connection = { state: 2 };
+
+    ConnectionManager.handleConnectionClosingEvents(connection);
+    expect(ConnectionManager.connectionStore.delete).toBeCalled();
+  });
 });

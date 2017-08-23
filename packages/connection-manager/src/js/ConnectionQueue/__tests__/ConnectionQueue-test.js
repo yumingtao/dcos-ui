@@ -74,9 +74,7 @@ describe("ConnectionQueue", () => {
   it("default priority = maxPriority", () => {
     const q = new ConnectionQueue();
     expect(q.add({ foo: "bar" })).toEqual(true);
-    expect(q.__protected__.queue[q.__protected__.maxPriority].length).toEqual(
-      1
-    );
+    expect(q.protected.queue[q.protected.maxPriority].length).toEqual(1);
   });
 
   it("emits 'add' event on add", () => {

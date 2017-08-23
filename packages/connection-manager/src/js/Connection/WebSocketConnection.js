@@ -1,52 +1,51 @@
-import __protected from "object-utilities";
 import AbstractConnection from "./AbstractConnection";
 
 export default class WebSocketConnection extends AbstractConnection {
   constructor(url, protocols) {
     super(url);
-    __protected(this).protocols = protocols;
-    __protected(this).messages = [];
+    this.protected.protocols = protocols;
+    this.protected.messages = [];
   }
   open(token) {
-    if (__protected(this).native !== null) return false;
+    if (this.protected.native !== null) return false;
 
-    __protected(this).native = new WebSocket(
-      __protected(this).url,
-      __protected(this).protocols
+    this.protected.native = new WebSocket(
+      this.protected.url,
+      this.protected.protocols
     );
     this.emit("open");
 
-    __protected(this).native.addEventListener("close", () => {
+    this.protected.native.addEventListener("close", () => {
       this.state = 2;
       this.emit("close");
     });
-    __protected(this).native.addEventListener("error", () => {
+    this.protected.native.addEventListener("error", () => {
       this.state = 2;
       this.emit("error");
       this.emit("close");
     });
-    __protected(this).native.addEventListener("message", event => {
+    this.protected.native.addEventListener("message", event => {
       this.state = 1;
       this.emit("message", event.data);
     });
 
     this.state = 1;
-    __protected(this).native.send("Authorization: Bearer " + token);
-    __protected(this).native.send(__protected(this).data);
+    this.protected.native.send("Authorization: Bearer " + token);
+    this.protected.native.send(this.protected.data);
 
     return true;
   }
   close(code, reason) {
-    return __protected(this).native.close(code, reason);
+    return this.protected.native.close(code, reason);
   }
 
   // WebSocket methods
   message(message) {
-    __protected(this).messages.push(message);
-    while (this.state === 1 && __protected(this).messages.length) {
-      __protected(this).native.send(__protected(this).messages.shift());
+    this.protected.messages.push(message);
+    while (this.state === 1 && this.protected.messages.length) {
+      this.protected.native.send(this.protected.messages.shift());
     }
 
-    return __protected(this).messages.length;
+    return this.protected.messages.length;
   }
 }

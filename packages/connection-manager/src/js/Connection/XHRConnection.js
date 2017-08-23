@@ -1,4 +1,3 @@
-import __protected from "object-utilities";
 import AbstractConnection from "./AbstractConnection";
 
 /**
@@ -16,9 +15,9 @@ export default class XHRConnection extends AbstractConnection {
   constructor(url, method = "GET", data = null, contentType = null) {
     super(url);
 
-    __protected(this).method = method;
-    __protected(this).contentType = contentType;
-    __protected(this).data = data;
+    this.protected.method = method;
+    this.protected.contentType = contentType;
+    this.protected.data = data;
 
     this.handleOpenEvent = this.handleOpenEvent.bind(this);
 
@@ -34,16 +33,16 @@ export default class XHRConnection extends AbstractConnection {
    * native getter
    */
   get response() {
-    return __protected(this).native.response;
+    return this.protected.native.response;
   }
   get readyState() {
-    return __protected(this).native.readyState;
+    return this.protected.native.readyState;
   }
   get responseType() {
-    return __protected(this).native.responseType;
+    return this.protected.native.responseType;
   }
   get status() {
-    return __protected(this).native.status;
+    return this.protected.native.status;
   }
 
   /**
@@ -51,59 +50,53 @@ export default class XHRConnection extends AbstractConnection {
    * @param {string} [token] – authentication token
    */
   open(token) {
-    if (__protected(this).native !== null) {
+    if (this.protected.native !== null) {
       throw new Error("cannot open XHR Connection a second time!");
     }
-    __protected(this).native = new XMLHttpRequest();
+    this.protected.native = new XMLHttpRequest();
 
-    __protected(this).native.addEventListener(
+    this.protected.native.addEventListener(
       "progress",
       this.handleProgressEvent
     );
 
-    __protected(this).native.addEventListener("abort", this.handleAbortEvent);
-    __protected(this).native.addEventListener("error", this.handleErrorEvent);
-    __protected(this).native.addEventListener("load", this.handleLoadEvent);
-    __protected(this).native.addEventListener(
-      "timeout",
-      this.handleTimeoutEvent
-    );
-    __protected(this).native.open(
-      __protected(this).method,
-      __protected(this).url
-    );
+    this.protected.native.addEventListener("abort", this.handleAbortEvent);
+    this.protected.native.addEventListener("error", this.handleErrorEvent);
+    this.protected.native.addEventListener("load", this.handleLoadEvent);
+    this.protected.native.addEventListener("timeout", this.handleTimeoutEvent);
+    this.protected.native.open(this.protected.method, this.protected.url);
 
     this.handleOpenEvent();
 
-    // __protected(this).native.withCredentials = true;
+    // this.protected.native.withCredentials = true;
 
-    if (__protected(this).contentType !== null) {
-      __protected(this).native.setRequestHeader(
+    if (this.protected.contentType !== null) {
+      this.protected.native.setRequestHeader(
         "Content-Type",
-        __protected(this).contentType
+        this.protected.contentType
       );
     }
     if (token !== undefined && token !== "") {
-      __protected(this).native.setRequestHeader(
+      this.protected.native.setRequestHeader(
         "Authorization",
         "Bearer " + token
       );
     }
 
-    __protected(this).native.send(__protected(this).data);
+    this.protected.native.send(this.protected.data);
   }
   /**
    * aborts native xhr
    */
   close() {
-    __protected(this).native.abort();
+    this.protected.native.abort();
   }
   /**
    *
    * @todo abort here before delete?
    */
   reset() {
-    delete __protected(this).native;
+    delete this.protected.native;
   }
 
   /**

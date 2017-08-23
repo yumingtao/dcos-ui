@@ -1,5 +1,4 @@
 import { EventEmitter } from "events";
-import __protected from "object-utilities";
 
 /**
  * AbstractConnection provides some default properties/methods used by Connection Manager
@@ -21,23 +20,30 @@ export default class AbstractConnection extends EventEmitter {
       throw new Error("Can't instantiate without given URL!");
     }
 
-    __protected(this, {
-      url,
-      created: Date.now(),
-      native: null,
-      state: 0
+    Object.defineProperty(this, "protected", {
+      value: {
+        url,
+        created: Date.now(),
+        native: null,
+        state: 0,
+        uid: Symbol("Connection:" + url)
+      }
     });
   }
+
   set state(state) {
-    if (state >= __protected(this).state) {
-      __protected(this).state = state;
+    if (state >= this.protected.state) {
+      this.protected.state = state;
     }
   }
   get state() {
-    return __protected(this).state;
+    return this.protected.state;
   }
   get url() {
-    return __protected(this).url;
+    return this.protected.url;
+  }
+  get uid() {
+    return this.protected.uid;
   }
   // Abstract Methods
   /* eslint-disable no-unused-vars */
