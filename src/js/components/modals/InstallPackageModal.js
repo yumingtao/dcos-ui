@@ -5,6 +5,8 @@ import React from "react";
 import { StoreMixin } from "mesosphere-shared-reactjs";
 
 import BetaOptInUtil from "../../utils/BetaOptInUtil";
+import SchemaTabForm from "../../utils/SchemaTabForm";
+import Util from "../../utils/Util";
 import CosmosErrorHeader from "../CosmosErrorHeader";
 import CosmosErrorMessage from "../CosmosErrorMessage";
 import CosmosPackagesStore from "../../stores/CosmosPackagesStore";
@@ -15,7 +17,6 @@ import Image from "../Image";
 import InternalStorageMixin from "../../mixins/InternalStorageMixin";
 import Loader from "../Loader";
 import ReviewConfig from "../ReviewConfig";
-import SchemaForm from "../SchemaForm";
 import SchemaUtil from "../../utils/SchemaUtil";
 import StringUtil from "../../utils/StringUtil";
 import TabsMixin from "../../mixins/TabsMixin";
@@ -24,19 +25,20 @@ import UniversePackage from "../../structs/UniversePackage";
 const PREINSTALL_NOTES_CHAR_LIMIT = 140;
 
 const METHODS_TO_BIND = [
-  "getAdvancedSubmit",
   "handleAcceptBetaTerms",
   "handleChangeTab",
   "handleInstallPackage",
   "handleAdvancedFormChange",
   "handleModalClose",
-  "handlePreinstallNotesToggle"
+  "handlePreinstallNotesToggle",
+  "handleFormChange",
+  "initializeFormData"
 ];
 
 class InstallPackageModal
   extends mixin(InternalStorageMixin, TabsMixin, StoreMixin) {
-  constructor() {
-    super(...arguments);
+  constructor(props) {
+    super(props);
 
     this.tabs_tabs = {
       betaTerms: "BetaTerms",
@@ -53,10 +55,14 @@ class InstallPackageModal
       pendingRequest: false
     });
 
+    const schemaDefinition = props.cosmosPackage.getConfig();
+
     this.state = {
       currentTab: "defaultInstall",
       schemaIncorrect: false,
-      truncatedPreInstallNotes: true
+      truncatedPreInstallNotes: true,
+      currentFormData: this.initializeFormData(schemaDefinition),
+      schema: schemaDefinition
     };
 
     this.store_listeners = [
@@ -208,18 +214,24 @@ class InstallPackageModal
     this.tabs_handleTabClick(currentTab);
   }
 
+  handleClickReviewAndDeploy() {
+    this.tabs_handleTabClick("reviewAdvancedConfig");
+    console.log("currentFormData: ", this.state.currentFormData);
+    console.log("schema: ", this.state.schema); // fix the kerbelos and tls value
+  }
+
   handleInstallPackage() {
-    const { betaTermsAccepted } = this.state;
-    const { cosmosPackage, isBetaPackage } = this.props;
+    const { currentFormData } = this.state;
+    const { cosmosPackage } = this.props;
     const name = cosmosPackage.getName();
     const version = cosmosPackage.getCurrentVersion();
-    let configuration = this.getPackageConfiguration();
+    // let configuration = this.getPackageConfiguration();
 
-    if (isBetaPackage && betaTermsAccepted) {
-      configuration = BetaOptInUtil.setBetaOptIn(configuration);
-    }
+    // if (isBetaPackage && betaTermsAccepted) {
+    //   configuration = BetaOptInUtil.setBetaOptIn(configuration);
+    // }
 
-    CosmosPackagesStore.installPackage(name, version, configuration);
+    CosmosPackagesStore.installPackage(name, version, currentFormData);
     this.internalStorage_update({ pendingRequest: true });
     this.forceUpdate();
   }
@@ -232,33 +244,6 @@ class InstallPackageModal
   handlePreinstallNotesToggle() {
     const truncatedPreInstallNotes = !this.state.truncatedPreInstallNotes;
     this.setState({ truncatedPreInstallNotes });
-  }
-
-  getAdvancedSubmit(triggerSubmit) {
-    this.triggerAdvancedSubmit = triggerSubmit;
-  }
-
-  getPackageConfiguration() {
-    const { advancedConfiguration } = this.internalStorage_get();
-    const { currentTab } = this.state;
-    const { cosmosPackage } = this.props;
-
-    const isAdvancedInstall =
-      currentTab === "advancedInstall" || currentTab === "reviewAdvancedConfig";
-
-    if (isAdvancedInstall && advancedConfiguration) {
-      return advancedConfiguration;
-    }
-
-    if (isAdvancedInstall && !advancedConfiguration) {
-      return SchemaUtil.definitionToJSONDocument(
-        SchemaUtil.schemaToMultipleDefinition({
-          schema: cosmosPackage.getConfig()
-        })
-      );
-    }
-
-    return {};
   }
 
   getLoadingScreen() {
@@ -274,9 +259,7 @@ class InstallPackageModal
     return (
       <div>
         <div className="modal-body">
-          <CosmosErrorHeader>
-            An Error Occurred
-          </CosmosErrorHeader>
+          <CosmosErrorHeader>An Error Occurred</CosmosErrorHeader>
           <CosmosErrorMessage error={installError} flushBottom={true} />
         </div>
         <div className="modal-footer">
@@ -305,7 +288,8 @@ class InstallPackageModal
 
     return (
       <p className="small text-align-left flush-bottom">
-        {notes}{this.getPreInstallNotesToggle(truncated, notes)}
+        {notes}
+        {this.getPreInstallNotesToggle(truncated, notes)}
       </p>
     );
   }
@@ -325,7 +309,9 @@ class InstallPackageModal
 
     const text = (
       <span className="clickable" onClick={this.handlePreinstallNotesToggle}>
-        <u>{textTruncationToggleWord}</u>
+        <u>
+          {textTruncationToggleWord}
+        </u>
       </span>
     );
 
@@ -410,8 +396,12 @@ class InstallPackageModal
                 src={cosmosPackage.getIcons()["icon-large"]}
               />
             </div>
-            <p className="h2 short-top short-bottom">{name}</p>
-            <p className={packageVersionClasses}>{version}</p>
+            <p className="h2 short-top short-bottom">
+              {name}
+            </p>
+            <p className={packageVersionClasses}>
+              {version}
+            </p>
             {this.getPreInstallNotes(preInstallNotes, truncated)}
             {error}
           </div>
@@ -444,7 +434,7 @@ class InstallPackageModal
           <button
             disabled={pendingRequest || hasFormErrors}
             className="button button-success"
-            onClick={this.handleChangeTab.bind(this, "reviewAdvancedConfig")}
+            onClick={this.handleClickReviewAndDeploy.bind(this)}
           >
             Review and Deploy
           </button>
@@ -456,6 +446,7 @@ class InstallPackageModal
   renderReviewAdvancedConfigTabView() {
     const { pendingRequest } = this.internalStorage_get();
     const { cosmosPackage } = this.props;
+    const { currentFormData } = this.state;
     const name = cosmosPackage.getName();
     const version = cosmosPackage.getCurrentVersion();
     let buttonText = "Deploy";
@@ -470,7 +461,7 @@ class InstallPackageModal
           packageIcon={cosmosPackage.getIcons()["icon-small"]}
           packageName={name}
           packageVersion={version}
-          configuration={this.getPackageConfiguration()}
+          configuration={currentFormData}
         />
         <div className="modal-footer">
           <div className="button-collection flush-bottom">
@@ -539,7 +530,9 @@ class InstallPackageModal
       errorText = (
         <span>
           {`${errorText} Or you may contact the maintainer: `}
-          <a href={`mailto:${maintainer}`}>{maintainer}</a>
+          <a href={`mailto:${maintainer}`}>
+            {maintainer}
+          </a>
         </span>
       );
     }
@@ -568,23 +561,45 @@ class InstallPackageModal
     );
   }
 
+  handleFormChange(form) {
+    let { currentFormData } = this.state;
+    currentFormData = form.formData;
+    this.setState({ currentFormData });
+  }
+
+  initializeFormData(value) {
+    if (!Util.isObject(value)) {
+      return value;
+    }
+    if (!value.properties) {
+      return value.default; // will be undefined sometimes, maybe won't matter
+    }
+
+    const defaults = {};
+    Object.keys(value.properties).forEach(property => {
+      defaults[property] = this.initializeFormData(value.properties[property]);
+    });
+
+    return defaults;
+  }
+
   getModalContents() {
-    const { currentTab, schemaIncorrect } = this.state;
+    const { currentTab, schemaIncorrect, schema, currentFormData } = this.state;
     const { cosmosPackage, isBetaPackage } = this.props;
 
     if (schemaIncorrect) {
       return this.getIncorrectSchemaWarning(cosmosPackage);
     }
 
-    let schema = cosmosPackage.getConfig();
-
     if (isBetaPackage) {
       // Remove beta opt-in from schema for better UX
-      schema = BetaOptInUtil.filterProperty(cosmosPackage.getConfig());
+      this.setState({
+        schema: BetaOptInUtil.filterProperty(cosmosPackage.getConfig())
+      });
     }
 
-    const name = cosmosPackage.getName();
-    const version = cosmosPackage.getCurrentVersion();
+    // const name = cosmosPackage.getName();
+    // const version = cosmosPackage.getCurrentVersion();
     const advancedConfigClasses = classNames(
       "modal-install-package-body-and-header",
       {
@@ -595,13 +610,10 @@ class InstallPackageModal
     return (
       <div className="modal-install-package-tab-form-wrapper">
         <div className={advancedConfigClasses}>
-          <SchemaForm
-            packageIcon={cosmosPackage.getIcons()["icon-small"]}
-            packageName={name}
-            packageVersion={version}
+          <SchemaTabForm
             schema={schema}
-            onChange={this.handleAdvancedFormChange}
-            getTriggerSubmit={this.getAdvancedSubmit}
+            onChange={this.handleFormChange}
+            formData={currentFormData}
           />
         </div>
         {this.tabs_getTabView()}

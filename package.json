@@ -20,7 +20,10 @@
     "node": "4.4.x",
     "npm": "3.9.x"
   },
-  "browserslist": ["last 2 versions", "ie 11"],
+  "browserslist": [
+    "last 2 versions",
+    "ie 11"
+  ],
   "config": {
     "port": 4200,
     "externalplugins": ""
@@ -40,6 +43,7 @@
     "less-color-lighten": "0.0.1",
     "lodash.throttle": "4.1.1",
     "md5": "2.1.0",
+    "react-jsonschema-form": "0.49.0",
     "mesosphere-react-typeahead": "0.8.3",
     "mesosphere-shared-reactjs": "0.0.24",
     "moment": "2.13.0",
