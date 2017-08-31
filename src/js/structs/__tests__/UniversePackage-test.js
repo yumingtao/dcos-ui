@@ -61,15 +61,25 @@ describe("UniversePackage", function() {
   });
 
   describe("#getAllVersions", function() {
-    it("returns all package versions", function() {
+    it("returns package versions by package name", function() {
       const pkg = new UniversePackage({
-        "0.4.0": "2",
-        "0.3.0": "1",
-        "0.2.1": "0"
+        foo: {
+          packageVersions: {
+            "0.4.0": "2",
+            "0.3.0": "1",
+            "0.2.1": "0"
+          }
+        }
       });
-      const allVersions = pkg.getAllVersions();
+      const selectedPackage = pkg.getPackageByName("foo");
 
-      expect(Object.keys(allVersions).length).toEqual(3);
+      expect(selectedPackage).toEqual({
+        packageVersions: {
+          "0.4.0": "2",
+          "0.3.0": "1",
+          "0.2.1": "0"
+        }
+      });
     });
   });
 });
