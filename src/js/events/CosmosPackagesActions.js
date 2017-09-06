@@ -209,6 +209,8 @@ const CosmosPackagesActions = {
       success(response) {
         const cosmosPackage = response.package;
 
+        console.log(response);
+
         AppDispatcher.handleServerAction({
           type: REQUEST_COSMOS_SERVICE_DESCRIBE_SUCCESS,
           data: cosmosPackage,
