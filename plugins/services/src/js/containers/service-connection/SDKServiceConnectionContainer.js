@@ -24,9 +24,10 @@ class SDKServiceConnectionContainer extends React.Component {
     METHODS_TO_BIND.forEach(method => {
       this[method] = this[method].bind(this);
     });
-    const service = this.props.service;
+  }
 
-    SDKEndpointActions.fetchEndpoints(service.getId());
+  componentDidMount() {
+    SDKEndpointActions.fetchEndpoints(this.props.service.getId());
   }
 
   getEndpointAddress(endpoint) {
@@ -90,13 +91,27 @@ class SDKServiceConnectionContainer extends React.Component {
     );
   }
 
+  getJSONEndpoints(endpoints) {
+    const jsonEndpoints = endpoints.filter(endpoint => {
+      return endpoint.isJSON();
+    });
+
+    if (!jsonEndpoints || jsonEndpoints.length === 0) {
+      return null;
+    }
+
+    return jsonEndpoints.map(endpoint => {
+      return this.getEndpoint(endpoint);
+    });
+  }
+
   getFileEndpoints(endpoints) {
     const fileEndpoints = endpoints.filter(endpoint => {
       return !endpoint.isJSON();
     });
 
     if (!fileEndpoints || fileEndpoints.length === 0) {
-      return;
+      return null;
     }
 
     return (
@@ -128,12 +143,7 @@ class SDKServiceConnectionContainer extends React.Component {
     return (
       <div className="container">
         <ConfigurationMap>
-          {endpoints.map(endpoint => {
-            if (!endpoint.isJSON()) return;
-
-            return this.getEndpoint(endpoint);
-          })}
-
+          {this.getJSONEndpoints(endpoints)}
           {this.getFileEndpoints(endpoints)}
         </ConfigurationMap>
       </div>

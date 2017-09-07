@@ -24,9 +24,6 @@ class SDKEndpointStore extends GetSetBaseStore {
     PluginSDK.addStoreConfig({
       store: this,
       storeID: this.storeID,
-      unmountWhen() {
-        return true;
-      },
       listenAlways: true
     });
 
@@ -59,11 +56,9 @@ class SDKEndpointStore extends GetSetBaseStore {
   }
 
   getEndpoints(serviceId) {
-    if (!this.get("endpoints")) {
-      return [];
-    }
+    const endpoints = this.get("endpoints") || [];
 
-    return this.get("endpoints")
+    return endpoints
       .filter(function(endpoint) {
         return endpoint.serviceId === serviceId;
       })
