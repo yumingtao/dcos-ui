@@ -6,11 +6,16 @@ import {
   REQUEST_SDK_ENDPOINTS_SUCCESS,
   REQUEST_SDK_ENDPOINTS_ERROR,
   REQUEST_SDK_ENDPOINT_SUCCESS,
-  REQUEST_SDK_ENDPOINT_ERROR
+  REQUEST_SDK_ENDPOINT_ERROR,
+  REQUEST_SDK_ENDPOINTS_LOADING
 } from "../constants/ActionTypes";
 
 const SDKEndpointsActions = {
   fetchEndpoints(serviceId) {
+    AppDispatcher.handleServerAction({
+      type: REQUEST_SDK_ENDPOINTS_LOADING,
+      data: { serviceId }
+    });
     const url = `/service/${serviceId}/v1/endpoints`;
     RequestUtil.json({
       url,
@@ -24,7 +29,10 @@ const SDKEndpointsActions = {
       error(xhr) {
         AppDispatcher.handleServerAction({
           type: REQUEST_SDK_ENDPOINTS_ERROR,
-          data: RequestUtil.parseResponseBody(xhr),
+          data: {
+            serviceId,
+            error: RequestUtil.parseResponseBody(xhr)
+          },
           xhr
         });
       }
@@ -49,7 +57,10 @@ const SDKEndpointsActions = {
       error: resp => {
         AppDispatcher.handleServerAction({
           type: REQUEST_SDK_ENDPOINT_ERROR,
-          error: resp
+          data: {
+            serviceId,
+            error: resp
+          }
         });
       }
     });

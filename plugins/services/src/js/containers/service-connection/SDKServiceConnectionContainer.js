@@ -1,5 +1,6 @@
 import React from "react";
 
+import Loader from "#SRC/js/components/Loader";
 import ConfigurationMap from "#SRC/js/components/ConfigurationMap";
 import ConfigurationMapHeading
   from "#SRC/js/components/ConfigurationMapHeading";
@@ -127,9 +128,39 @@ class SDKServiceConnectionContainer extends React.Component {
   }
 
   render() {
-    const endpoints = SDKEndpointStore.getEndpoints(this.props.service.getId());
+    const sdkEndpointService = SDKEndpointStore.getSDKEndpointService(
+      this.props.service.getId()
+    );
 
-    if (!endpoints || endpoints.length === 0) {
+    if (!sdkEndpointService) {
+      return <Loader />;
+    }
+
+    if (sdkEndpointService.error) {
+      return (
+        <AlertPanel>
+          <AlertPanelHeader>
+            Endpoints not found
+          </AlertPanelHeader>
+          <p className="flush-bottom">
+            {sdkEndpointService.error}
+          </p>
+        </AlertPanel>
+      );
+    }
+
+    if (
+      sdkEndpointService.totalLoadingEndpointsCount === -1 ||
+      sdkEndpointService.totalLoadingEndpointsCount !==
+        sdkEndpointService.endpoints.length
+    ) {
+      return <Loader />;
+    }
+
+    if (
+      !sdkEndpointService.endpoints ||
+      sdkEndpointService.endpoints.length === 0
+    ) {
       return (
         <AlertPanel>
           <AlertPanelHeader>No endpoints detected</AlertPanelHeader>
@@ -143,8 +174,8 @@ class SDKServiceConnectionContainer extends React.Component {
     return (
       <div className="container">
         <ConfigurationMap>
-          {this.getJSONEndpoints(endpoints)}
-          {this.getFileEndpoints(endpoints)}
+          {this.getJSONEndpoints(sdkEndpointService.endpoints)}
+          {this.getFileEndpoints(sdkEndpointService.endpoints)}
         </ConfigurationMap>
       </div>
     );

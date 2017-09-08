@@ -26,13 +26,6 @@ describe("SDKServiceEndpoint", function() {
     });
   });
 
-  describe("#getEndpointId", function() {
-    it("returns correct service id", function() {
-      expect(this.endpointJSON.getServiceId()).toEqual("/elastic");
-      expect(this.endpointFile.getServiceId()).toEqual("/hdfs");
-    });
-  });
-
   describe("#getVip", function() {
     it("returns correct vip", function() {
       expect(this.endpointJSON.getVip()).toEqual("vip1");

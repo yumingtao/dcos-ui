@@ -1,9 +1,6 @@
 import Item from "#SRC/js/structs/Item";
 
 class SDKServiceEndpoint extends Item {
-  getServiceId() {
-    return this.get("serviceId");
-  }
   getEndpointName() {
     return this.get("endpointName");
   }

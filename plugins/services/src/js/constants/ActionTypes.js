@@ -50,7 +50,8 @@ const ActionTypes = {};
   "REQUEST_SDK_ENDPOINTS_SUCCESS",
   "REQUEST_SDK_ENDPOINTS_ERROR",
   "REQUEST_SDK_ENDPOINT_SUCCESS",
-  "REQUEST_SDK_ENDPOINT_ERROR"
+  "REQUEST_SDK_ENDPOINT_ERROR",
+  "REQUEST_SDK_ENDPOINTS_LOADING"
 ].forEach(function(actionType) {
   ActionTypes[actionType] = actionType;
 });
