@@ -100,20 +100,16 @@ class ServiceConnectionContainer extends React.Component {
   }
 
   getPortDefinitions(portDefinitions) {
-    return (
-      <ConfigurationMapSection>
-        {portDefinitions.map(portDefinition => {
-          return (
-            <div>
-              <ConfigurationMapHeading>
-                {portDefinition.name}
-              </ConfigurationMapHeading>
-              {this.getPortDefinitionDetails(portDefinition)}
-            </div>
-          );
-        })}
-      </ConfigurationMapSection>
-    );
+    return portDefinitions.map(portDefinition => {
+      return (
+        <ConfigurationMapSection>
+          <ConfigurationMapHeading>
+            {portDefinition.name}
+          </ConfigurationMapHeading>
+          {this.getPortDefinitionDetails(portDefinition)}
+        </ConfigurationMapSection>
+      );
+    });
   }
 
   render() {

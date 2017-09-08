@@ -81,11 +81,19 @@ class SDKServiceConnectionContainer extends React.Component {
         </ConfigurationMapLabel>
         <ConfigurationMapValue>
           <a
-            className="active"
+            className="active endpoint-download"
             download={endpoint.getEndpointName()}
             href={`data:text/plain;content-disposition=attachment;filename=${endpoint.getEndpointName()};charset=utf-8,${encodeURIComponent(endpoint.getEndpointData())}`}
           >
-            <span><Icon id="download" size="mini" /> Download</span>
+            <span>
+              <Icon
+                id="download"
+                className="endpoint-download-icon"
+                size="mini"
+              />
+              {" "}
+              Download
+            </span>
           </a>
         </ConfigurationMapValue>
       </ConfigurationMapRow>
