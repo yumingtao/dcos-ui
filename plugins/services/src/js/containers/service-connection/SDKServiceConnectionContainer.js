@@ -173,7 +173,7 @@ class SDKServiceConnectionContainer extends React.Component {
         <AlertPanel>
           <AlertPanelHeader>No endpoints detected</AlertPanelHeader>
           <p className="flush-bottom">
-            There a currently no endpoints found for your service.
+            There are currently no endpoints found for your service.
           </p>
         </AlertPanel>
       );
