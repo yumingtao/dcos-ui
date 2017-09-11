@@ -38,6 +38,7 @@ const SDKEndpointsActions = {
       }
     });
   },
+
   fetchEndpoint(serviceId, endpointName) {
     const url = `/service/${serviceId}/v1/endpoints/${endpointName}`;
     const r = reqwest({
