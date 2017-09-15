@@ -1,10 +1,13 @@
 import classNames from "classnames";
-import { Modal } from "reactjs-components";
 import mixin from "reactjs-mixin";
 import React from "react";
 import { StoreMixin } from "mesosphere-shared-reactjs";
+import { routerShape } from "react-router";
+import { Link } from "react-router";
 
 import BetaOptInUtil from "../../utils/BetaOptInUtil";
+import Breadcrumb from "../../components/Breadcrumb";
+import BreadcrumbTextContent from "../../components/BreadcrumbTextContent";
 import CosmosErrorHeader from "../CosmosErrorHeader";
 import CosmosErrorMessage from "../CosmosErrorMessage";
 import CosmosPackagesStore from "../../stores/CosmosPackagesStore";
@@ -12,6 +15,7 @@ import defaultServiceImage
   from "../../../../plugins/services/src/img/icon-service-default-large@2x.png";
 import Icon from "../Icon";
 import Image from "../Image";
+import Page from "../Page";
 import InternalStorageMixin from "../../mixins/InternalStorageMixin";
 import Loader from "../Loader";
 import ReviewConfig from "../ReviewConfig";
@@ -32,6 +36,35 @@ const METHODS_TO_BIND = [
   "handleModalClose",
   "handlePreinstallNotesToggle"
 ];
+
+const PackageDetailBreadcrumbs = ({ cosmosPackage }) => {
+  const name = cosmosPackage.getName();
+  const version = cosmosPackage.getCurrentVersion();
+
+  const crumbs = [
+    <Breadcrumb key={0} title="Catalog">
+      <BreadcrumbTextContent>
+        <Link to="/catalog/packages">Catalog</Link>
+      </BreadcrumbTextContent>
+    </Breadcrumb>,
+    <Breadcrumb key={1} title={name}>
+      <BreadcrumbTextContent>
+        <Link to={`/catalog/packages/${name}`} query={{ version }} key={0}>
+          {name}
+        </Link>
+      </BreadcrumbTextContent>
+    </Breadcrumb>,
+    <Breadcrumb key={2} title={name}>
+      <BreadcrumbTextContent>
+        <Link to={`/catalog/packages/${name}/configure`} key={0}>
+          configure
+        </Link>
+      </BreadcrumbTextContent>
+    </Breadcrumb>
+  ];
+
+  return <Page.Header.Breadcrumbs iconID="packages" breadcrumbs={crumbs} />;
+};
 
 class InstallPackageModal
   extends mixin(InternalStorageMixin, TabsMixin, StoreMixin) {
@@ -54,7 +87,7 @@ class InstallPackageModal
     });
 
     this.state = {
-      currentTab: "defaultInstall",
+      currentTab: "advancedInstall",
       schemaIncorrect: false,
       truncatedPreInstallNotes: true
     };
@@ -75,14 +108,41 @@ class InstallPackageModal
       this[method] = this[method].bind(this);
     });
   }
+  componentDidMount() {
+    super.componentDidMount(...arguments);
+
+    const { packageName } = this.props.params;
+    const { version } = this.props.location.query;
+    // Fetch package description
+    CosmosPackagesStore.fetchPackageDescription(packageName, version);
+  }
 
   componentWillReceiveProps(nextProps) {
     super.componentWillReceiveProps(...arguments);
     const { props } = this;
+    const { packageName } = this.props.params;
+    const { version } = this.props.location.query;
+    // Fetch package description
+    console.log(
+      CosmosPackagesStore.fetchPackageDescription(packageName, version)
+    );
+    const cosmosPackage = CosmosPackagesStore.getPackageDetails();
+    console.log("props", version, packageName, cosmosPackage);
+    const nextState = {
+      cosmosPackage,
+      isBetaPackage: BetaOptInUtil.isBeta(cosmosPackage.getConfig)
+    };
+    console.log(props, nextProps);
 
     // Return early if open prop did not change
     if (props.open === nextProps.open) {
       return;
+    } else {
+      this.setState({
+        currentTab: "advancedInstall",
+        cosmosPackage: nextState.cosmosPackage,
+        isBetaPackage: nextState.isBetaPackage
+      });
     }
 
     // If closing
@@ -96,7 +156,9 @@ class InstallPackageModal
       this.triggerAdvancedSubmit = undefined;
       this.setState({
         currentTab: "defaultInstall",
-        truncatedPreInstallNotes: true
+        truncatedPreInstallNotes: true,
+        cosmosPackage,
+        isBetaPackage: nextState.isBetaPackage
       });
 
       return;
@@ -110,18 +172,25 @@ class InstallPackageModal
         betaOptInProperties: BetaOptInUtil.getProperty(
           nextProps.cosmosPackage.getConfig()
         ),
-        currentTab: "betaTerms"
+        currentTab: "betaTerms",
+        cosmosPackage,
+        isBetaPackage: nextState.isBetaPackage
       });
 
       return;
     }
 
     if (nextProps.advancedConfig) {
-      this.setState({ currentTab: "advancedInstall" });
+      this.setState({
+        currentTab: "advancedInstall",
+        cosmosPackage,
+        isBetaPackage: nextState.isBetaPackage
+      });
 
       return;
     }
 
+    this.setState(nextState);
     this.handleInstallPackage();
   }
 
@@ -139,7 +208,8 @@ class InstallPackageModal
   }
 
   onCosmosPackagesStoreDescriptionSuccess() {
-    const { cosmosPackage } = this.props;
+    // const { cosmosPackage } = this.state;
+    const cosmosPackage = CosmosPackagesStore.getPackageDetails();
     const schemaIncorrect = !SchemaUtil.validateSchema(
       cosmosPackage.getConfig()
     );
@@ -148,7 +218,7 @@ class InstallPackageModal
       hasError: schemaIncorrect
     });
 
-    this.setState({ schemaIncorrect });
+    this.setState({ schemaIncorrect, cosmosPackage });
   }
 
   onCosmosPackagesStoreInstallError(installError) {
@@ -209,8 +279,8 @@ class InstallPackageModal
   }
 
   handleInstallPackage() {
-    const { betaTermsAccepted } = this.state;
-    const { cosmosPackage, isBetaPackage } = this.props;
+    const { betaTermsAccepted, cosmosPackage } = this.state;
+    const { isBetaPackage } = this.props;
     const name = cosmosPackage.getName();
     const version = cosmosPackage.getCurrentVersion();
     let configuration = this.getPackageConfiguration();
@@ -241,7 +311,7 @@ class InstallPackageModal
   getPackageConfiguration() {
     const { advancedConfiguration } = this.internalStorage_get();
     const { currentTab } = this.state;
-    const { cosmosPackage } = this.props;
+    const { cosmosPackage } = this.state;
 
     const isAdvancedInstall =
       currentTab === "advancedInstall" || currentTab === "reviewAdvancedConfig";
@@ -374,7 +444,7 @@ class InstallPackageModal
       pendingRequest,
       installError
     } = this.internalStorage_get();
-    const { cosmosPackage } = this.props;
+    const { cosmosPackage } = this.state;
     const preInstallNotes = cosmosPackage.getPreInstallNotes();
     const name = cosmosPackage.getName();
     const version = cosmosPackage.getCurrentVersion();
@@ -438,7 +508,7 @@ class InstallPackageModal
     return (
       <div className="modal-footer">
         <div className="button-collection flush-bottom">
-          <button className="button" onClick={this.handleModalClose}>
+          <button className="button" onClick={this.context.router.goBack}>
             Cancel
           </button>
           <button
@@ -455,7 +525,7 @@ class InstallPackageModal
 
   renderReviewAdvancedConfigTabView() {
     const { pendingRequest } = this.internalStorage_get();
-    const { cosmosPackage } = this.props;
+    const { cosmosPackage } = this.state;
     const name = cosmosPackage.getName();
     const version = cosmosPackage.getCurrentVersion();
     let buttonText = "Deploy";
@@ -495,7 +565,7 @@ class InstallPackageModal
 
   renderPackageInstalledTabView() {
     const { appId } = this.internalStorage_get();
-    const { cosmosPackage } = this.props;
+    const { cosmosPackage } = this.state;
 
     const notes = cosmosPackage.getPostInstallNotes();
 
@@ -569,8 +639,14 @@ class InstallPackageModal
   }
 
   getModalContents() {
-    const { currentTab, schemaIncorrect } = this.state;
-    const { cosmosPackage, isBetaPackage } = this.props;
+    const { currentTab, schemaIncorrect, cosmosPackage } = this.state;
+    const { isBetaPackage } = this.props;
+
+    console.log(this.props, this.state, "CONTENSTS");
+    console.log("RENDER", schemaIncorrect, cosmosPackage);
+    if (cosmosPackage == null) {
+      return null;
+    }
 
     if (schemaIncorrect) {
       return this.getIncorrectSchemaWarning(cosmosPackage);
@@ -593,74 +669,56 @@ class InstallPackageModal
     );
 
     return (
-      <div className="modal-install-package-tab-form-wrapper">
-        <div className={advancedConfigClasses}>
-          <SchemaForm
-            packageIcon={cosmosPackage.getIcons()["icon-small"]}
-            packageName={name}
-            packageVersion={version}
-            schema={schema}
-            onChange={this.handleAdvancedFormChange}
-            getTriggerSubmit={this.getAdvancedSubmit}
-          />
+      <Page>
+        <Page.Header
+          breadcrumbs={
+            <PackageDetailBreadcrumbs cosmosPackage={cosmosPackage} />
+          }
+        />
+        <div className="modal-install-package-tab-form-wrapper">
+          <div className={advancedConfigClasses}>
+            <SchemaForm
+              packageIcon={cosmosPackage.getIcons()["icon-small"]}
+              packageName={name}
+              packageVersion={version}
+              schema={schema}
+              onChange={this.handleAdvancedFormChange}
+              getTriggerSubmit={this.getAdvancedSubmit}
+            />
+          </div>
+          {this.tabs_getTabView()}
         </div>
-        {this.tabs_getTabView()}
-      </div>
+      </Page>
     );
   }
 
   render() {
+    console.log(this.props, this.state);
     const { props, state } = this;
     const { currentTab } = state;
 
     const isAdvanced =
       currentTab === "advancedInstall" || currentTab === "reviewAdvancedConfig";
 
-    const backdropClasses = classNames({
-      "modal-backdrop": true,
-      "default-cursor": isAdvanced
-    });
-
-    const modalClasses = classNames("modal modal-install-package", {
-      "modal-large modal-install-package-advanced-view": isAdvanced,
-      "modal-small": !isAdvanced
-    });
-
-    const modalWrapperClasses = classNames({
-      "multiple-form-modal modal-form": isAdvanced
-    });
-
-    return (
-      <Modal
-        backdropClass={backdropClasses}
-        closeByBackdropClick={!isAdvanced}
-        modalClass={modalClasses}
-        modalWrapperClass={modalWrapperClasses}
-        onClose={this.handleModalClose}
-        open={props.open}
-        scrollContainerClass="multiple-form-modal-body"
-        showFooter={false}
-        useGemini={false}
-      >
-        {this.getModalContents()}
-      </Modal>
-    );
+    return this.getModalContents();
   }
 }
 
 InstallPackageModal.defaultProps = {
-  advancedConfig: false,
+  advancedConfig: true,
   isBetaPackage: false,
   onClose() {},
-  open: false
+  open: true
 };
 
 InstallPackageModal.propTypes = {
   advancedConfig: React.PropTypes.bool,
-  cosmosPackage: React.PropTypes.instanceOf(UniversePackage).isRequired,
-  isBetaPackage: React.PropTypes.bool,
   open: React.PropTypes.bool,
   onClose: React.PropTypes.func
+};
+
+InstallPackageModal.contextTypes = {
+  router: routerShape
 };
 
 module.exports = InstallPackageModal;

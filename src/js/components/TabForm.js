@@ -195,22 +195,10 @@ class TabForm extends mixin(InternalStorageMixin) {
 
     // On initial render, we don't want to render with Gemini because it will
     // cancel the parent's animation, due to it measuring the component.
-    if (!this.state.renderGemini) {
-      return (
-        <div className={multipleDefinitionClasses}>
-          {panels}
-        </div>
-      );
-    }
-
     return (
-      <GeminiScrollbar
-        autoshow={true}
-        className={multipleDefinitionClasses}
-        ref="geminiForms"
-      >
+      <div className={multipleDefinitionClasses}>
         {panels}
-      </GeminiScrollbar>
+      </div>
     );
   }
 

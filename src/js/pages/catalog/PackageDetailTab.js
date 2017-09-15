@@ -5,6 +5,7 @@ import { Link } from "react-router";
 import React from "react";
 /* eslint-enable no-unused-vars */
 import { StoreMixin } from "mesosphere-shared-reactjs";
+import { routerShape } from "react-router";
 
 import BetaOptInUtil from "../../utils/BetaOptInUtil";
 import Breadcrumb from "../../components/Breadcrumb";
@@ -221,12 +222,18 @@ class PackageDetailTab extends mixin(StoreMixin) {
       );
     }
 
+    const { pathname } = this.props.location;
+    const routePath = `${pathname}/configure`;
+
+    const configurePath = () => {
+      console.log(routePath);
+      this.context.router.push(routePath);
+    };
+    console.log(this.props);
+
     return (
       <div className="button-collection">
-        <button
-          className="button button-outline"
-          onClick={this.handleConfigureInstallModalOpen}
-        >
+        <button className="button button-outline" onClick={configurePath}>
           Configure
         </button>
         <button
@@ -340,16 +347,13 @@ class PackageDetailTab extends mixin(StoreMixin) {
             <ImageViewer images={cosmosPackage.getScreenshots()} />
           </div>
         </div>
-        <InstallPackageModal
-          open={state.openInstallModal}
-          cosmosPackage={cosmosPackage}
-          advancedConfig={state.advancedConfig}
-          isBetaPackage={BetaOptInUtil.isBeta(cosmosPackage.getConfig())}
-          onClose={this.handleInstallModalClose}
-        />
       </Page>
     );
   }
 }
+
+PackageDetailTab.contextTypes = {
+  router: routerShape
+};
 
 module.exports = PackageDetailTab;

@@ -71,8 +71,8 @@ class ServiceTreeView extends React.Component {
     const { modalHandlers } = this.context;
     // Only add id if service is not root
     const routePath = serviceTree.id === "/"
-      ? "/services/overview/create"
-      : `/services/overview/${encodeURIComponent(serviceTree.id)}/create`;
+      ? "/services/create"
+      : `/services/${encodeURIComponent(serviceTree.id)}/create`;
 
     const createService = () => {
       this.context.router.push(routePath);

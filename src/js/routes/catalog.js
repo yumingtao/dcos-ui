@@ -1,6 +1,7 @@
 import { Route, Redirect } from "react-router";
 
 import PackageDetailTab from "../pages/catalog/PackageDetailTab";
+import InstallPackageModal from "../components/modals/InstallPackageModal";
 import PackagesTab from "../pages/catalog/PackagesTab";
 import CatalogPage from "../pages/CatalogPage";
 
@@ -15,6 +16,12 @@ const universeRoutes = [
     type: Redirect,
     from: "/catalog",
     to: "/catalog/packages"
+  },
+  {
+    type: Route,
+    path: "catalog/packages/:packageName/configure",
+    component: InstallPackageModal,
+    hideHeaderNavigation: false
   },
   {
     type: Route,

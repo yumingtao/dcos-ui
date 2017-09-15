@@ -30,6 +30,11 @@ const serviceRoutes = [
   },
   {
     type: Route,
+    path: "services(/:id)/create",
+    component: CreateServiceModal
+  },
+  {
+    type: Route,
     component: ServicesPage,
     path: "services",
     category: "root",
@@ -43,19 +48,7 @@ const serviceRoutes = [
         children: [
           {
             type: Route,
-            path: "create",
-            component: CreateServiceModal
-          },
-          {
-            type: Route,
-            path: ":id",
-            children: [
-              {
-                type: Route,
-                path: "create",
-                component: CreateServiceModal
-              }
-            ]
+            path: ":id"
           }
         ]
       },
@@ -70,11 +63,6 @@ const serviceRoutes = [
         component: ServicesContainer,
         path: "detail/:id",
         children: [
-          {
-            type: Route,
-            path: "create",
-            component: CreateServiceModal
-          },
           {
             type: Route,
             path: "edit(/:version)",
