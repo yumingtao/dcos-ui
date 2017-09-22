@@ -344,6 +344,13 @@ describe("CosmosPackagesStore", function() {
       expect(resolvedOptions.name).toEqual("marathon-1");
     });
 
+    it("should return the resolvedOptions it was given", function() {
+      CosmosPackagesStore.fetchServiceDescription("foo");
+      var response = CosmosPackagesStore.getServiceDetails();
+      var resolvedOptions = response.resolvedOptions;
+      expect(resolvedOptions.name).toEqual("marathon-1");
+    });
+
     it("should pass though query parameters", function() {
       RequestUtil.json = jasmine.createSpy("RequestUtil#json");
       CosmosPackagesStore.fetchServiceDescription("foo");
