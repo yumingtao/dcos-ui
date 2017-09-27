@@ -120,6 +120,10 @@ module.exports = class Application extends Service {
     return status.displayName;
   }
 
+  isDeleting() {
+    return false;
+  }
+
   /**
    * @override
    */
@@ -129,6 +133,11 @@ module.exports = class Application extends Service {
     const queue = this.getQueue();
 
     const instances = this.getInstancesCount();
+
+    if (this.isDeleting()) {
+      return ServiceStatus.DELETING;
+    }
+
     if (instances === 0 && tasksRunning === 0) {
       return ServiceStatus.SUSPENDED;
     }

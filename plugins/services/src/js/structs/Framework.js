@@ -9,6 +9,13 @@ import Application from "./Application";
 import FrameworkSpec from "./FrameworkSpec";
 
 module.exports = class Framework extends Application {
+  /**
+   * @override
+   */
+  isDeleting() {
+    return this.getLabels().SDK_UNINSTALLING === "<truthy_value>";
+  }
+
   getPackageName() {
     return this.getLabels().DCOS_PACKAGE_NAME;
   }

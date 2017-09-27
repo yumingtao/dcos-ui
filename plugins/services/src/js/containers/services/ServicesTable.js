@@ -246,8 +246,8 @@ class ServicesTable extends React.Component {
       ? ServiceActionLabels.scale_by
       : ServiceActionLabels[SCALE];
     const isSDK = isSDKService(service);
-
-    const actions = [];
+    const isDeleting = service.isDeleting();
+    let actions = [];
 
     actions.push({
       className: "hidden",
@@ -316,6 +316,10 @@ class ServicesTable extends React.Component {
         </span>
       )
     });
+
+    if (isDeleting) {
+      actions = [];
+    }
 
     return (
       <Tooltip content="More actions">

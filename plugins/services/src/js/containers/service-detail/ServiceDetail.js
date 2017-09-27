@@ -169,8 +169,13 @@ class ServiceDetail extends mixin(TabsMixin) {
     const { service } = this.props;
     const instanceCount = service.getInstancesCount();
     const isSDK = isSDKService(service);
+    const isDeleting = service.isDeleting();
 
     const actions = [];
+
+    if (isDeleting) {
+      return actions;
+    }
 
     if (
       service instanceof Service &&

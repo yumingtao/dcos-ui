@@ -162,6 +162,13 @@ class TasksView extends mixin(SaveStateMixin) {
       return service.getServiceStatus().key === ServiceStatusTypes.DEPLOYING;
     });
 
+    // Disable buttons if deleting.
+    const isDeleting = Object.keys(checkedItems).some(function(taskId) {
+      const service = DCOSStore.serviceTree.getServiceFromTaskID(taskId);
+
+      return service.isDeleting();
+    });
+
     const isSDK = Object.keys(checkedItems).some(function(taskId) {
       const service = DCOSStore.serviceTree.getServiceFromTaskID(taskId);
 
@@ -180,19 +187,19 @@ class TasksView extends mixin(SaveStateMixin) {
     let handleRestartClick = function() {};
     let handleStopClick = function() {};
 
-    if (!isDeploying && !isSDK) {
+    if (!isDeploying && !isSDK && !isDeleting) {
       handleRestartClick = this.handleActionClick.bind(this, "restart");
     }
 
-    if (!hasSchedulerTask) {
+    if (!hasSchedulerTask && !isDeleting) {
       handleStopClick = this.handleActionClick.bind(this, "stop");
     }
 
     const restartButtonClasses = classNames("button button-link", {
-      disabled: isDeploying || isSDK
+      disabled: isDeploying || isSDK || isDeleting
     });
     const stopButtonClasses = classNames("button button-link", {
-      disabled: hasSchedulerTask
+      disabled: hasSchedulerTask || isDeleting
     });
 
     return (

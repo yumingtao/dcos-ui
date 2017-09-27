@@ -6,6 +6,10 @@ var SERVICE_STATUS = {
     key: ServiceStatusTypes.RUNNING,
     displayName: ServiceStatusLabels.RUNNING
   },
+  DELETING: {
+    key: ServiceStatusTypes.DELETING,
+    displayName: ServiceStatusLabels.DELETING
+  },
   DEPLOYING: {
     key: ServiceStatusTypes.DEPLOYING,
     displayName: ServiceStatusLabels.DEPLOYING
