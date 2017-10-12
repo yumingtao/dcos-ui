@@ -95,10 +95,9 @@ export default class FrameworkConfigurationForm extends Component {
   }
 
   getDropdownNavigationList() {
-    const { packageDetails, activeTab } = this.props;
-    const schema = packageDetails.getConfig();
+    const { formData, activeTab } = this.props;
 
-    return Object.keys(schema.properties).map(tabName => {
+    return Object.keys(formData).map(tabName => {
       return {
         id: tabName,
         isActive: activeTab === tabName,
@@ -235,6 +234,7 @@ export default class FrameworkConfigurationForm extends Component {
       deployErrors
     } = this.props;
 
+    // nicely format titles rendered by the json-schema library
     const TitleField = props => {
       return (
         <h2 className="flush-top short-bottom">
