@@ -46,7 +46,8 @@ const PackageDetailBreadcrumbs = ({ cosmosPackage }) => {
 
 const METHODS_TO_BIND = [
   "handlePackageVersionChange",
-  "handleReviewAndRunClick"
+  "handleReviewAndRunClick",
+  "onInstalledSuccessModalClose"
 ];
 
 class PackageDetailTab extends mixin(StoreMixin) {
@@ -287,7 +288,6 @@ class PackageDetailTab extends mixin(StoreMixin) {
 
     const { isLoadingSelectedVersion } = this.state;
 
-    // todo, open the new framework configuration
     return (
       <div className="button-collection">
         <Tooltip
@@ -379,7 +379,7 @@ class PackageDetailTab extends mixin(StoreMixin) {
       <Modal
         modalClass={"modal modal-small"}
         open={!!location.query.appId}
-        onClose={this.onInstalledSuccessModalClose.bind(this)}
+        onClose={this.onInstalledSuccessModalClose}
       >
         <div className="modal-install-package-tab-form-wrapper">
           <div className="modal-body">
@@ -389,7 +389,7 @@ class PackageDetailTab extends mixin(StoreMixin) {
               </span>
               <h2 className="short-top short-bottom">Success!</h2>
               <div className="install-package-modal-package-notes text-overflow-break-word">
-                {description}{" "}{"is being installed."}
+                {`${description} is being installed.`}
               </div>
             </div>
           </div>

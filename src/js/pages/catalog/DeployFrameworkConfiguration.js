@@ -9,6 +9,12 @@ import Util from "#SRC/js/utils/Util";
 import FrameworkConfiguration from "#SRC/js/components/FrameworkConfiguration";
 import Loader from "#SRC/js/components/Loader";
 
+const METHODS_TO_BIND = [
+  "handleGoBack",
+  "handleRun",
+  "onFormDataChange",
+  "onFormErrorChange"
+];
 export default class DeployFrameworkConfiguration extends mixin(StoreMixin) {
   constructor(props) {
     super(props);
@@ -36,6 +42,10 @@ export default class DeployFrameworkConfiguration extends mixin(StoreMixin) {
       props.params.packageName,
       props.location.query.version
     );
+
+    METHODS_TO_BIND.forEach(method => {
+      this[method] = this[method].bind(this);
+    });
   }
 
   onCosmosPackagesStorePackageDescriptionSuccess() {
@@ -125,11 +135,11 @@ export default class DeployFrameworkConfiguration extends mixin(StoreMixin) {
         formData={formData}
         deployErrors={deployErrors}
         formErrors={formErrors}
-        handleGoBack={this.handleGoBack.bind(this)}
-        handleRun={this.handleRun.bind(this)}
+        handleGoBack={this.handleGoBack}
+        handleRun={this.handleRun}
         isInitialDeploy={true}
-        onFormDataChange={this.onFormDataChange.bind(this)}
-        onFormErrorChange={this.onFormErrorChange.bind(this)}
+        onFormDataChange={this.onFormDataChange}
+        onFormErrorChange={this.onFormErrorChange}
       />
     );
   }
