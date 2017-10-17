@@ -8,6 +8,7 @@ import CosmosPackagesStore from "#SRC/js/stores/CosmosPackagesStore";
 import Util from "#SRC/js/utils/Util";
 import FrameworkConfiguration from "#SRC/js/components/FrameworkConfiguration";
 import Loader from "#SRC/js/components/Loader";
+import RequestErrorMsg from "#SRC/js/components/RequestErrorMsg";
 
 const METHODS_TO_BIND = [
   "handleGoBack",
@@ -23,7 +24,8 @@ export default class DeployFrameworkConfiguration extends mixin(StoreMixin) {
       packageDetails: null,
       deployErrors: null,
       formErrors: {},
-      formData: null
+      formData: null,
+      hasError: false
     };
 
     this.store_listeners = [
@@ -55,7 +57,7 @@ export default class DeployFrameworkConfiguration extends mixin(StoreMixin) {
   }
 
   onCosmosPackagesStorePackageDescriptionError() {
-    // todo figure out what this response looks like and what we should do
+    this.setState({ hasError: true });
   }
 
   onCosmosPackagesStoreInstallSuccess(name, version, appId) {
@@ -123,10 +125,20 @@ export default class DeployFrameworkConfiguration extends mixin(StoreMixin) {
   }
 
   render() {
-    const { packageDetails, deployErrors, formData, formErrors } = this.state;
+    const {
+      packageDetails,
+      deployErrors,
+      formData,
+      formErrors,
+      hasError
+    } = this.state;
 
     if (packageDetails == null) {
       return <Loader className="vertical-center" />;
+    }
+
+    if (hasError) {
+      return <RequestErrorMsg />;
     }
 
     return (
