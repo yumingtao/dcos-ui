@@ -7,6 +7,7 @@ import CosmosPackagesStore from "#SRC/js/stores/CosmosPackagesStore";
 import UniversePackage from "#SRC/js/structs/UniversePackage";
 import FrameworkConfiguration from "#SRC/js/components/FrameworkConfiguration";
 import Loader from "#SRC/js/components/Loader";
+import RequestErrorMsg from "#SRC/js/components/RequestErrorMsg";
 
 export default class EditFrameworkConfiguration extends mixin(StoreMixin) {
   constructor(props) {
@@ -16,7 +17,8 @@ export default class EditFrameworkConfiguration extends mixin(StoreMixin) {
       packageDetails: null,
       deployErrors: null,
       formData: null,
-      formErrors: {}
+      formErrors: {},
+      hasError: false
     };
 
     this.store_listeners = [
@@ -37,29 +39,13 @@ export default class EditFrameworkConfiguration extends mixin(StoreMixin) {
   onCosmosPackagesStoreServiceDescriptionSuccess() {
     const fullPackage = CosmosPackagesStore.getServiceDetails();
     const packageDetails = new UniversePackage(fullPackage.package);
-
-    // re-order the keys in resolvedOptions to same order as the JSON schema
-    const formData = this.reorderResolvedOptions(
-      fullPackage.resolvedOptions,
-      packageDetails
-    );
+    const formData = fullPackage.resolvedOptions;
 
     this.setState({ packageDetails, formData });
   }
 
   onCosmosPackagesStoreServiceDescriptionError() {
-    // todo figure out what this response looks like and what we should do
-  }
-
-  // this will only be meaningful in runtimes with deterministic key order
-  reorderResolvedOptions(resolvedOptions, packageDetails) {
-    const order = Object.keys(packageDetails.config.properties);
-    const orderedResolvedOptions = {};
-    order.forEach(tab => {
-      orderedResolvedOptions[tab] = resolvedOptions[tab];
-    });
-
-    return orderedResolvedOptions;
+    this.setState({ hasError: true });
   }
 
   onCosmosPackagesStoreServiceUpdateSuccess() {
@@ -100,10 +86,20 @@ export default class EditFrameworkConfiguration extends mixin(StoreMixin) {
   }
 
   render() {
-    const { packageDetails, deployErrors, formErrors, formData } = this.state;
+    const {
+      packageDetails,
+      deployErrors,
+      formErrors,
+      formData,
+      hasError
+    } = this.state;
 
     if (packageDetails == null) {
       return <Loader className="vertical-center" />;
+    }
+
+    if (hasError) {
+      return <RequestErrorMsg />;
     }
 
     return (
