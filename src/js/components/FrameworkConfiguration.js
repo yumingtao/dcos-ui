@@ -40,8 +40,7 @@ export default class FrameworkConfiguration extends Component {
   constructor(props) {
     super(props);
 
-    const [activeTab] = Object.keys(props.formData);
-    const [focusField] = Object.keys(props.formData[activeTab]);
+    const { activeTab, focusField } = this.getFirstTabAndField();
 
     this.state = {
       reviewActive: props.isInitialDeploy,
@@ -78,13 +77,14 @@ export default class FrameworkConfiguration extends Component {
 
   onActiveTabChange(activeTab) {
     const { currentActiveTab } = this.state;
-    const { formData } = this.props;
+    const { packageDetails } = this.props;
+    const schema = packageDetails.getConfig();
 
     if (deepEqual(activeTab, currentActiveTab)) {
       return false;
     }
 
-    const [focusField] = Object.keys(formData[activeTab]);
+    const [focusField] = Object.keys(schema.properties[activeTab].properties);
 
     this.setState({ activeTab, focusField });
   }
@@ -105,10 +105,7 @@ export default class FrameworkConfiguration extends Component {
   }
 
   onEditConfigurationButtonClick() {
-    const { formData } = this.props;
-
-    const [activeTab] = Object.keys(formData);
-    const [focusField] = Object.keys(formData[activeTab]);
+    const { activeTab, focusField } = this.getFirstTabAndField();
 
     this.setState({ reviewActive: false, activeTab, focusField });
   }
@@ -128,6 +125,19 @@ export default class FrameworkConfiguration extends Component {
       renderKeys[key] = formattedKey;
       this.getHashMapRenderKeys(formData[key], renderKeys);
     });
+  }
+
+  getFirstTabAndField() {
+    const { packageDetails } = this.props;
+    const schema = packageDetails.getConfig();
+
+    const [activeTab] = Object.keys(schema.properties);
+    const [focusField] = Object.keys(schema.properties[activeTab].properties);
+
+    return {
+      activeTab,
+      focusField
+    };
   }
 
   handleJSONToggle() {
@@ -329,9 +339,9 @@ export default class FrameworkConfiguration extends Component {
         <FullScreenModalHeaderTitle className="modal-full-screen-header-with-sub-title">
           {reviewActive ? "Review Configuration" : "Edit Configuration"}
           <FullScreenModalHeaderSubTitle>
-            {StringUtil.capitalize(packageDetails.name) +
+            {StringUtil.capitalize(packageDetails.getName()) +
               " " +
-              packageDetails.version}
+              packageDetails.getVersion()}
           </FullScreenModalHeaderSubTitle>
         </FullScreenModalHeaderTitle>
         <FullScreenModalHeaderActions

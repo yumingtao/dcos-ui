@@ -66,10 +66,11 @@ export default class FrameworkConfigurationForm extends Component {
   }
 
   getFormTabList() {
-    const { formErrors, formData } = this.props;
+    const { formErrors, packageDetails } = this.props;
+    const schema = packageDetails.getConfig();
 
     // the config will have 2-levels, we will render first level as the tabs
-    return Object.keys(formData).map(tabName => {
+    return Object.keys(schema.properties).map(tabName => {
       return (
         <TabButton
           label={this.getFormattedSectionLabel(tabName)}
@@ -94,9 +95,10 @@ export default class FrameworkConfigurationForm extends Component {
   }
 
   getDropdownNavigationList() {
-    const { formData, activeTab } = this.props;
+    const { packageDetails, activeTab } = this.props;
+    const schema = packageDetails.getConfig();
 
-    return Object.keys(formData).map(tabName => {
+    return Object.keys(schema.properties).map(tabName => {
       return {
         id: tabName,
         isActive: activeTab === tabName,
