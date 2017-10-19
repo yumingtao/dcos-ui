@@ -95,10 +95,9 @@ export default class FrameworkConfigurationForm extends Component {
   }
 
   getDropdownNavigationList() {
-    const { packageDetails, activeTab } = this.props;
-    const schema = packageDetails.getConfig();
+    const { formData, activeTab } = this.props;
 
-    return Object.keys(schema.properties).map(tabName => {
+    return Object.keys(formData).map(tabName => {
       return {
         id: tabName,
         isActive: activeTab === tabName,
