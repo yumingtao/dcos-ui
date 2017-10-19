@@ -5,7 +5,6 @@ import TabButton from "#SRC/js/components/TabButton";
 import TabButtonList from "#SRC/js/components/TabButtonList";
 import Tabs from "#SRC/js/components/Tabs";
 import Util from "#SRC/js/utils/Util";
-import FluidGeminiScrollbar from "#SRC/js/components/FluidGeminiScrollbar";
 import JSONEditor from "#SRC/js/components/JSONEditor";
 import PageHeaderNavigationDropdown
   from "#SRC/js/components/PageHeaderNavigationDropdown";
@@ -292,7 +291,7 @@ export default class FrameworkConfigurationForm extends Component {
                 </div>
               </Tabs>
             </div>
-          </FluidGeminiScrollbar>
+          </div>
         </div>
         <div className={jsonEditorPlaceholderClasses} />
         <div className={jsonEditorClasses}>
