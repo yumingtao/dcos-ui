@@ -96,9 +96,9 @@ class ServiceGroupFormModal extends React.Component {
         open={open}
         definition={this.getNewGroupFormDefinition()}
       >
-        <p className="text-align-center flush-top">
-          {"Enter a path for the new group under "}
-          <span className="emphasize">{parentGroupId}</span>
+        <p>
+          {"Enter a name for the new group under "}
+          <strong>{parentGroupId}</strong>
         </p>
         {this.getErrorMessage()}
       </FormModal>

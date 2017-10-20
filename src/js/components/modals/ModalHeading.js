@@ -2,27 +2,15 @@ import classNames from "classnames";
 import React from "react";
 
 const ModalHeading = props => {
-  const { align, children, className, flush, level } = props;
+  const { children } = props;
 
   return React.createElement(
-    `h${level}`,
+    `h2`,
     {
-      className: classNames(
-        `text-align-${align}`,
-        {
-          flush
-        },
-        className
-      )
+      className: classNames("modal-header-title")
     },
     children
   );
-};
-
-ModalHeading.defaultProps = {
-  align: "center",
-  flush: true,
-  level: 2
 };
 
 ModalHeading.propTypes = {
