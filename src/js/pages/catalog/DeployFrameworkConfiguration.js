@@ -82,6 +82,11 @@ export default class DeployFrameworkConfiguration extends mixin(StoreMixin) {
       return value;
     }
     if (!value.properties) {
+      // handle schemas that don't provided a default value
+      if (value.type === "string") {
+        return value.default || "";
+      }
+
       return value.default;
     }
 
