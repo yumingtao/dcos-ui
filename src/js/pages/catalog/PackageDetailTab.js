@@ -372,7 +372,7 @@ class PackageDetailTab extends mixin(StoreMixin) {
     );
   }
 
-  getInstalledSuccessModal(description) {
+  getInstalledSuccessModal(name) {
     const { location } = this.props;
 
     return (
@@ -389,7 +389,7 @@ class PackageDetailTab extends mixin(StoreMixin) {
               </span>
               <h2 className="short-top short-bottom">Success!</h2>
               <div className="install-package-modal-package-notes text-overflow-break-word">
-                {`${description} is being installed.`}
+                {`${StringUtil.capitalize(name)} is being installed.`}
               </div>
             </div>
           </div>
@@ -510,7 +510,7 @@ class PackageDetailTab extends mixin(StoreMixin) {
             ? this.getLoadingScreen()
             : this.getPackageDescription(definition, cosmosPackage)}
         </div>
-        {this.getInstalledSuccessModal(description)}
+        {this.getInstalledSuccessModal(name)}
       </Page>
     );
   }
