@@ -16,7 +16,7 @@ const METHODS_TO_BIND = [
   "onFormDataChange",
   "onFormErrorChange"
 ];
-export default class DeployFrameworkConfiguration extends mixin(StoreMixin) {
+class DeployFrameworkConfiguration extends mixin(StoreMixin) {
   constructor(props) {
     super(props);
 
@@ -115,7 +115,7 @@ export default class DeployFrameworkConfiguration extends mixin(StoreMixin) {
 
   onFormDataChange(formData) {
     if (deepEqual(formData, this.state.formData, { strict: true })) {
-      return;
+      return false;
     }
 
     this.setState({ formData });
@@ -123,7 +123,7 @@ export default class DeployFrameworkConfiguration extends mixin(StoreMixin) {
 
   onFormErrorChange(formErrors) {
     if (deepEqual(formErrors, this.state.formErrors)) {
-      return;
+      return false;
     }
 
     this.setState({ formErrors });
@@ -169,3 +169,5 @@ DeployFrameworkConfiguration.contextTypes = {
 DeployFrameworkConfiguration.propTypes = {
   params: PropTypes.object.isRequired
 };
+
+module.exports = DeployFrameworkConfiguration;
