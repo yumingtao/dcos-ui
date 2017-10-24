@@ -287,8 +287,7 @@ class TaskTable extends React.Component {
     }
 
     return (
-      <div className="flex-box flex-box-align-vertical-center
-        table-cell-flex-box flex-align-items-center flex-direction-top-to-bottom">
+      <div className="flex-box flex-box-align-vertical-center table-cell-flex-box flex-align-items-center flex-direction-top-to-bottom">
         <Tooltip
           content="View logs"
           wrapperClassName="tooltip-wrapper text-align-center description"
@@ -368,8 +367,7 @@ class TaskTable extends React.Component {
     const statusLabelClasses = `${statusClassName} table-cell-value`;
 
     return (
-      <div className="flex-box flex-box-align-vertical-center
-        table-cell-flex-box">
+      <div className="flex-box flex-box-align-vertical-center table-cell-flex-box">
         <span className={statusLabelClasses}>
           {this.getStatusValue(task)}
         </span>

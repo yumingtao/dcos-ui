@@ -4,28 +4,38 @@ import { Tooltip } from "reactjs-components";
 import React from "react";
 
 import DCOSStore from "#SRC/js/stores/DCOSStore";
+import DSLExpression from "#SRC/js/structs/DSLExpression";
+import DSLFilterList from "#SRC/js/structs/DSLFilterList";
+import DSLFilterField from "#SRC/js/components/DSLFilterField";
 import FilterBar from "#SRC/js/components/FilterBar";
-import FilterButtons from "#SRC/js/components/FilterButtons";
+// import FilterButtons from "#SRC/js/components/FilterButtons";
 import FilterHeadline from "#SRC/js/components/FilterHeadline";
-import FilterInputText from "#SRC/js/components/FilterInputText";
+// import FilterInputText from "#SRC/js/components/FilterInputText";
 import Icon from "#SRC/js/components/Icon";
 import SaveStateMixin from "#SRC/js/mixins/SaveStateMixin";
 import StringUtil from "#SRC/js/utils/StringUtil";
 import { isSDKService } from "#SRC/js/utils/ServiceUtil";
 
+import TasksStatusFilter
+  from "#PLUGINS/services/src/js/filters/TasksStatusFilter";
+import TaskStatusDSLSection from "../../components/dsl/TaskStatusDSLSection";
+import TaskZoneDSLSection from "../../components/dsl/TaskZoneDSLSection";
+
 import ServiceStatusTypes from "../../constants/ServiceStatusTypes";
 import GraphQLTaskUtil from "../../utils/GraphQLTaskUtil";
-import TaskStates from "../../constants/TaskStates";
+// import TaskStates from "../../constants/TaskStates";
 import TaskTable from "./TaskTable";
+import TaskUtil from "../../utils/TaskUtil";
 
 const METHODS_TO_BIND = [
-  "handleItemCheck",
-  "handleSearchStringChange",
-  "handleStatusFilterChange",
-  "resetFilter"
+  "handleItemCheck"
+  // "handleSearchStringChange",
+  // "handleStatusFilterChange",
+  // "resetFilter"
 ];
 
-const STATUS_FILTER_BUTTONS = ["all", "active", "completed"];
+// const STATUS_FILTER_BUTTONS = ["all", "active", "completed"];
+const TASK_FILTERS = new DSLFilterList([new TasksStatusFilter()]);
 
 class TasksView extends mixin(SaveStateMixin) {
   constructor() {
@@ -34,10 +44,12 @@ class TasksView extends mixin(SaveStateMixin) {
     this.state = {
       checkedItems: {},
       searchString: "",
-      filterByStatus: "active"
+      expression: "",
+      filterExpression: new DSLExpression("")
+      // filterByStatus: "active"
     };
 
-    this.saveState_properties = ["filterByStatus"];
+    // this.saveState_properties = ["filterByStatus"];
 
     METHODS_TO_BIND.forEach(function(method) {
       this[method] = this[method].bind(this);
@@ -84,30 +96,30 @@ class TasksView extends mixin(SaveStateMixin) {
     });
   }
 
-  handleSearchStringChange(searchString = "") {
-    this.setState({ searchString });
-  }
+  // handleSearchStringChange(searchString = "") {
+  //   this.setState({ searchString });
+  // }
 
-  handleStatusFilterChange(filterByStatus) {
-    this.setState({ filterByStatus });
-  }
+  // handleStatusFilterChange(filterByStatus) {
+  //   this.setState({ filterByStatus });
+  // }
 
-  getFilteredTasks() {
-    let { tasks } = this.props;
-    const { filterByStatus, searchString } = this.state;
+  // getFilteredTasks() {
+  //   let { tasks } = this.props;
+  //   const { filterByStatus, searchString } = this.state;
 
-    if (searchString !== "") {
-      tasks = StringUtil.filterByString(tasks, "id", searchString);
-    }
+  //   if (searchString !== "") {
+  //     tasks = StringUtil.filterByString(tasks, "id", searchString);
+  //   }
 
-    if (filterByStatus !== "all") {
-      tasks = tasks.filter(function(task) {
-        return TaskStates[task.state].stateTypes.includes(filterByStatus);
-      });
-    }
+  //   if (filterByStatus !== "all") {
+  //     tasks = tasks.filter(function(task) {
+  //       return TaskStates[task.state].stateTypes.includes(filterByStatus);
+  //     });
+  //   }
 
-    return tasks;
-  }
+  //   return tasks;
+  // }
 
   getTaskTable(tasks, checkedItems) {
     const { inverseStyle, params } = this.props;
@@ -129,12 +141,12 @@ class TasksView extends mixin(SaveStateMixin) {
     );
   }
 
-  resetFilter() {
-    this.setState({
-      searchString: "",
-      filterByStatus: "all"
-    });
-  }
+  // resetFilter() {
+  //   this.setState({
+  //     searchString: "",
+  //     filterByStatus: "all"
+  //   });
+  // }
 
   getButtonContent(filterName, count) {
     return (
@@ -225,19 +237,52 @@ class TasksView extends mixin(SaveStateMixin) {
     );
   }
 
+  getFilterBar(props, state) {
+    // const { filters, onFilterExpressionChange } = this.props;
+    const { filters, zones } = props;
+    const { filterExpression } = state;
+    const defaultData = { zones };
+
+    return (
+      <div className="column-12">
+        <DSLFilterField
+          filters={filters}
+          formSections={[TaskStatusDSLSection, TaskZoneDSLSection]}
+          expression={filterExpression}
+          defaultData={defaultData}
+          onChange={function(event) {
+            this.setState({
+              expression: event.value,
+              filterExpression: new DSLExpression(event.value)
+            });
+          }.bind(this)}
+        />
+      </div>
+    );
+  }
+
   render() {
     const { inverseStyle, tasks } = this.props;
-    const { checkedItems, filterByStatus, searchString } = this.state;
-    let filteredTasks = this.getFilteredTasks();
+    const { checkedItems } = this.state;
+
+    const zones = Array.from(
+      new Set(
+        tasks.map(task => {
+          return TaskUtil.getZoneName(task);
+        })
+      )
+    );
+
+    let filteredTasks = tasks;
 
     // Get task states based on TaskStates types
-    const taskStates = tasks.map(function(task) {
-      const { stateTypes } = TaskStates[task.state];
+    // const taskStates = tasks.map(function(task) {
+    //   const { stateTypes } = TaskStates[task.state];
 
-      return stateTypes.find(function(state) {
-        return state === "active" || state === "completed";
-      });
-    });
+    //   return stateTypes.find(function(state) {
+    //     return state === "active" || state === "completed";
+    //   });
+    // });
 
     let rightAlignLastNChildren = 0;
     const hasCheckedTasks = Object.keys(checkedItems).length !== 0;
@@ -253,26 +298,11 @@ class TasksView extends mixin(SaveStateMixin) {
         <FilterHeadline
           currentLength={filteredTasks.length}
           inverseStyle={inverseStyle}
-          isFiltering={filterByStatus !== "all" || searchString !== ""}
-          onReset={this.resetFilter}
           name={"task"}
           totalLength={tasks.length}
         />
         <FilterBar rightAlignLastNChildren={rightAlignLastNChildren}>
-          <FilterInputText
-            className="flush-bottom"
-            searchString={searchString}
-            handleFilterChange={this.handleSearchStringChange}
-            inverseStyle={inverseStyle}
-          />
-          <FilterButtons
-            renderButtonContent={this.getButtonContent}
-            filters={STATUS_FILTER_BUTTONS}
-            onFilterChange={this.handleStatusFilterChange}
-            inverseStyle={inverseStyle}
-            itemList={taskStates}
-            selectedFilter={filterByStatus}
-          />
+          {this.getFilterBar({ filters: TASK_FILTERS, zones }, this.state)}
           {this.getStopButtons()}
         </FilterBar>
         {this.getTaskTable(filteredTasks, checkedItems)}
