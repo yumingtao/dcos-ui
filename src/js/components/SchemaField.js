@@ -32,6 +32,14 @@ class SchemaField extends Component {
     }
   }
 
+  componentDidMount() {
+    // trigger an onChange for the top-most schema field
+    // this will trigger validation in FrameworkConfiguration
+    if (!this.props.name) {
+      this.props.onChange(this.props.formData);
+    }
+  }
+
   renderCheckbox(errorMessage, props) {
     const { required, name, schema, formData, onChange } = props;
 

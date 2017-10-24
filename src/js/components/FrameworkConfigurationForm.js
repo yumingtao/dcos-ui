@@ -149,7 +149,11 @@ export default class FrameworkConfigurationForm extends Component {
     }
 
     if (isRequired && formData === "") {
-      errors.addError(`Expecting a ${schema.type} here, eg: ${schema.default}`);
+      let message = `Expecting a ${schema.type} here`;
+      if (schema.default) {
+        message = `Expecting a ${schema.type} here, eg: ${schema.default}`;
+      }
+      errors.addError(message);
     }
   }
 
