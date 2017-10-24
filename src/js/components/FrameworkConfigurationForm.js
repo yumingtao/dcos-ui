@@ -18,9 +18,9 @@ const METHODS_TO_BIND = [
   "handleDropdownNavigationSelection",
   "handleTabChange",
   "handleFormChange",
-  "validate",
   "handleJSONChange",
-  "handleBadgeClick"
+  "handleBadgeClick",
+  "validate"
 ];
 export default class FrameworkConfigurationForm extends Component {
   constructor(props) {
@@ -63,7 +63,7 @@ export default class FrameworkConfigurationForm extends Component {
       return fieldsWithErrors.includes(field);
     });
 
-    this.props.onFocusFieldChange(activeTab, fieldToFocus);
+    this.props.handleFocusFieldChange(activeTab, fieldToFocus);
   }
 
   getFormTabList() {
@@ -88,11 +88,11 @@ export default class FrameworkConfigurationForm extends Component {
   }
 
   handleTabChange(activeTab) {
-    this.props.onActiveTabChange(activeTab);
+    this.props.handleActiveTabChange(activeTab);
   }
 
   handleDropdownNavigationSelection(item) {
-    this.props.onActiveTabChange(item.id);
+    this.props.handleActiveTabChange(item.id);
   }
 
   getDropdownNavigationList() {
@@ -326,6 +326,6 @@ FrameworkConfigurationForm.propTypes = {
   deployErrors: PropTypes.object,
   onFormDataChange: PropTypes.func.isRequired,
   onFormErrorChange: PropTypes.func.isRequired,
-  onActiveTabChange: PropTypes.func.isRequired,
-  onFocusFieldChange: PropTypes.func.isRequired
+  handleActiveTabChange: PropTypes.func.isRequired,
+  handleFocusFieldChange: PropTypes.func.isRequired
 };

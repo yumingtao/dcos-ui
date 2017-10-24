@@ -1,6 +1,5 @@
 import React, { PropTypes, Component } from "react";
 import { Confirm } from "reactjs-components";
-import deepEqual from "deep-equal";
 
 import FullScreenModal from "#SRC/js/components/modals/FullScreenModal";
 import FullScreenModalHeader
@@ -27,14 +26,13 @@ const METHODS_TO_BIND = [
   "handleJSONToggle",
   "handleGoBack",
   "handleServiceReview",
-  "onEditConfigurationButtonClick",
-  "onReviewConfigurationRowClick",
-  "onFormDataChange",
-  "onFormErrorChange",
-  "onFocusFieldChange",
-  "onActiveTabChange",
+  "handleEditConfigurationButtonClick",
+  "handleActiveTabChange",
+  "handleFocusFieldChange",
   "handleCloseConfirmModal",
-  "handleConfirmGoBack"
+  "handleConfirmGoBack",
+  "onFormDataChange",
+  "onFormErrorChange"
 ];
 export default class FrameworkConfiguration extends Component {
   constructor(props) {
@@ -67,20 +65,20 @@ export default class FrameworkConfiguration extends Component {
     this.props.onFormErrorChange(formErrors);
   }
 
-  onFocusFieldChange(activeTab, focusField) {
-    if (deepEqual(focusField, this.state.focusField)) {
+  handleFocusFieldChange(activeTab, focusField) {
+    if (focusField === this.state.focusField) {
       return false;
     }
 
     this.setState({ focusField, activeTab });
   }
 
-  onActiveTabChange(activeTab) {
+  handleActiveTabChange(activeTab) {
     const { currentActiveTab } = this.state;
     const { packageDetails } = this.props;
     const schema = packageDetails.getConfig();
 
-    if (deepEqual(activeTab, currentActiveTab)) {
+    if (activeTab === currentActiveTab) {
       return false;
     }
 
@@ -89,32 +87,18 @@ export default class FrameworkConfiguration extends Component {
     this.setState({ activeTab, focusField });
   }
 
-  onReviewConfigurationRowClick(rowData) {
-    const { tabViewID = "" } = rowData;
-
-    const keyPath = tabViewID.split(".");
-    if (keyPath.length < 2) {
-      this.onEditConfigurationButtonClick();
-
-      return false;
-    }
-
-    const [activeTab, focusField] = keyPath;
-
-    this.setState({ reviewActive: false, focusField, activeTab });
-  }
-
-  onEditConfigurationButtonClick() {
+  handleEditConfigurationButtonClick() {
     const { activeTab, focusField } = this.getFirstTabAndField();
 
     this.setState({ reviewActive: false, activeTab, focusField });
   }
 
-  getHashMapRenderKeys(formData, renderKeys) {
+  getHashMapRenderKeys(formData) {
     if (!Util.isObject(formData)) {
-      return false;
+      return {};
     }
 
+    let renderKeys = {};
     Object.keys(formData).forEach(key => {
       const formattedKey = key
         .toLowerCase()
@@ -123,8 +107,13 @@ export default class FrameworkConfiguration extends Component {
         .join(" ");
 
       renderKeys[key] = formattedKey;
-      this.getHashMapRenderKeys(formData[key], renderKeys);
+      renderKeys = Object.assign(
+        renderKeys,
+        this.getHashMapRenderKeys(formData[key])
+      );
     });
+
+    return renderKeys;
   }
 
   getFirstTabAndField() {
@@ -249,10 +238,8 @@ export default class FrameworkConfiguration extends Component {
     const fileName = "config.json";
     const configString = JSON.stringify(formData, null, 2);
 
-    const renderKeys = {};
-    this.getHashMapRenderKeys(formData, renderKeys);
+    const renderKeys = this.getHashMapRenderKeys(formData);
 
-    // todo, truncate if over three lines
     const preInstallNotes = packageDetails.getPreInstallNotes();
     let preinstall = null;
     if (preInstallNotes && isInitialDeploy) {
@@ -273,7 +260,6 @@ export default class FrameworkConfiguration extends Component {
       errorsAlert = <CosmosErrorMessage error={deployErrors} />;
     }
 
-    // todo use Michaels empty state component instead of hardcoded u2014
     return (
       <div className="flex-item-grow-1">
         <div className="container container-wide">
@@ -286,7 +272,7 @@ export default class FrameworkConfiguration extends Component {
             <div className="column-8 text-align-right">
               <button
                 className="button button-primary-link button-inline-flex"
-                onClick={this.onEditConfigurationButtonClick}
+                onClick={this.handleEditConfigurationButtonClick}
               >
                 <Icon id="pencil" size="mini" family="system" />
                 <span className="form-group-heading-content">
@@ -317,7 +303,6 @@ export default class FrameworkConfiguration extends Component {
           <HashMapDisplay
             hash={formData}
             renderKeys={renderKeys}
-            onEditClick={this.onReviewConfigurationRowClick}
             headlineClassName={"text-capitalize"}
             emptyValue={"\u2014"}
           />
@@ -378,8 +363,8 @@ export default class FrameworkConfiguration extends Component {
           deployErrors={deployErrors}
           onFormDataChange={this.onFormDataChange}
           onFormErrorChange={this.onFormErrorChange}
-          onActiveTabChange={this.onActiveTabChange}
-          onFocusFieldChange={this.onFocusFieldChange}
+          handleActiveTabChange={this.handleActiveTabChange}
+          handleFocusFieldChange={this.handleFocusFieldChange}
         />
       );
     }
