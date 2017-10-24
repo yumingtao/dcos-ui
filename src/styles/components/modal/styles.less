@@ -6,17 +6,22 @@
     margin-top: 0;
   }
 
-  .modal {
-    // We need the extra specificity here, so we have to nest.
-    .modal-header,
-    .modal-footer {
-      flex: 0 0 auto;
-    }
+  // Remove border from footer
+  .modal-footer {
+    border-top: none;
   }
 
-  .modal-body-wrapper {
-    flex: 1 1 auto;
-  }
+  // .modal {
+  //   // We need the extra specificity here, so we have to nest.
+  //   .modal-header,
+  //   .modal-footer {
+  //     flex: 0 0 auto;
+  //   }
+  // }
+
+  // .modal-body-wrapper {
+  //   flex: 1 1 auto;
+  // }
 
   .modal-body {
 
