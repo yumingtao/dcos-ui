@@ -34,7 +34,7 @@ const METHODS_TO_BIND = [
   "onFormDataChange",
   "onFormErrorChange"
 ];
-export default class FrameworkConfiguration extends Component {
+class FrameworkConfiguration extends Component {
   constructor(props) {
     super(props);
 
@@ -406,3 +406,5 @@ FrameworkConfiguration.propTypes = {
   isInitialDeploy: PropTypes.bool.isRequired,
   deployErrors: PropTypes.object
 };
+
+module.exports = FrameworkConfiguration;

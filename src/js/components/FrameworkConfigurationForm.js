@@ -22,7 +22,7 @@ const METHODS_TO_BIND = [
   "handleBadgeClick",
   "validate"
 ];
-export default class FrameworkConfigurationForm extends Component {
+class FrameworkConfigurationForm extends Component {
   constructor(props) {
     super(props);
 
@@ -333,3 +333,5 @@ FrameworkConfigurationForm.propTypes = {
   handleActiveTabChange: PropTypes.func.isRequired,
   handleFocusFieldChange: PropTypes.func.isRequired
 };
+
+module.exports = FrameworkConfigurationForm;
