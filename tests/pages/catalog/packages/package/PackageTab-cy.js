@@ -142,8 +142,8 @@ describe("Package Detail Tab", function() {
       cy.get(".modal button").contains("Edit Config").click();
 
       cy
-        .get('.modal .menu-tabbed-container input[name="name"]')
-        .type(`{selectall}marathon-1`);
+        .get('.modal .menu-tabbed-container input[name="group"]')
+        .type(`{selectall}group-1`);
 
       cy.get(".modal .modal-header button").contains("Review & Run").click();
 
