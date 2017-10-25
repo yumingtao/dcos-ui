@@ -31,7 +31,6 @@ const METHODS_TO_BIND = [
   "handleFocusFieldChange",
   "handleCloseConfirmModal",
   "handleConfirmGoBack",
-  "onFormDataChange",
   "onFormErrorChange"
 ];
 class FrameworkConfiguration extends Component {
@@ -45,7 +44,6 @@ class FrameworkConfiguration extends Component {
       activeTab,
       focusField,
       jsonEditorActive: false,
-      hasChangesApplied: false,
       isConfirmOpen: false,
       isOpen: true
     };
@@ -53,12 +51,6 @@ class FrameworkConfiguration extends Component {
     METHODS_TO_BIND.forEach(method => {
       this[method] = this[method].bind(this);
     });
-  }
-
-  onFormDataChange(formData) {
-    this.props.onFormDataChange(formData);
-
-    this.setState({ hasChangesApplied: true });
   }
 
   onFormErrorChange(formErrors) {
@@ -152,21 +144,15 @@ class FrameworkConfiguration extends Component {
   }
 
   handleGoBack() {
-    const { reviewActive, hasChangesApplied } = this.state;
+    const { reviewActive } = this.state;
 
-    if (reviewActive && hasChangesApplied) {
+    if (reviewActive) {
       this.setState({ reviewActive: false });
 
       return;
     }
 
-    if (hasChangesApplied) {
-      this.setState({ isConfirmOpen: true });
-
-      return;
-    }
-
-    this.handleConfirmGoBack();
+    this.setState({ isConfirmOpen: true });
   }
 
   handleServiceReview() {
@@ -193,13 +179,13 @@ class FrameworkConfiguration extends Component {
   }
 
   getSecondaryActions() {
-    const { reviewActive, hasChangesApplied } = this.state;
+    const { reviewActive } = this.state;
 
     return [
       {
         className: "button-stroke",
         clickHandler: this.handleGoBack,
-        label: reviewActive && hasChangesApplied ? " Back" : "Cancel"
+        label: reviewActive ? " Back" : "Cancel"
       }
     ];
   }
@@ -360,7 +346,13 @@ class FrameworkConfiguration extends Component {
       focusField,
       activeTab
     } = this.state;
-    const { packageDetails, deployErrors, formErrors, formData } = this.props;
+    const {
+      packageDetails,
+      deployErrors,
+      formErrors,
+      formData,
+      onFormDataChange
+    } = this.props;
 
     let pageContents;
     if (reviewActive) {
@@ -375,7 +367,7 @@ class FrameworkConfiguration extends Component {
           focusField={focusField}
           activeTab={activeTab}
           deployErrors={deployErrors}
-          onFormDataChange={this.onFormDataChange}
+          onFormDataChange={onFormDataChange}
           onFormErrorChange={this.onFormErrorChange}
           handleActiveTabChange={this.handleActiveTabChange}
           handleFocusFieldChange={this.handleFocusFieldChange}
