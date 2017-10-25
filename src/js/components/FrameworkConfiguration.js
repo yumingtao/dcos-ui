@@ -82,7 +82,7 @@ class FrameworkConfiguration extends Component {
       return false;
     }
 
-    const [focusField] = Object.keys(schema.properties[activeTab].properties);
+    const focusField = this.getFirstFieldInTab(schema, activeTab);
 
     this.setState({ activeTab, focusField });
   }
@@ -116,12 +116,26 @@ class FrameworkConfiguration extends Component {
     return renderKeys;
   }
 
+  getFirstFieldInTab(schema, tab) {
+    // don't assume schema has two-levels of fields with properties
+    // for autofocus we return a field id name, if no fields return string "no-op"
+    if (
+      schema.properties[tab] &&
+      schema.properties[tab].properties &&
+      Object.keys(schema.properties[tab].properties).length >= 1
+    ) {
+      return Object.keys(schema.properties[tab].properties)[0];
+    }
+
+    return "NO-OP";
+  }
+
   getFirstTabAndField() {
     const { packageDetails } = this.props;
     const schema = packageDetails.getConfig();
 
     const [activeTab] = Object.keys(schema.properties);
-    const [focusField] = Object.keys(schema.properties[activeTab].properties);
+    const focusField = this.getFirstFieldInTab(schema, activeTab);
 
     return {
       activeTab,
