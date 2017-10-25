@@ -30,8 +30,7 @@ const METHODS_TO_BIND = [
   "handleActiveTabChange",
   "handleFocusFieldChange",
   "handleCloseConfirmModal",
-  "handleConfirmGoBack",
-  "onFormErrorChange"
+  "handleConfirmGoBack"
 ];
 class FrameworkConfiguration extends Component {
   constructor(props) {
@@ -53,26 +52,13 @@ class FrameworkConfiguration extends Component {
     });
   }
 
-  onFormErrorChange(formErrors) {
-    this.props.onFormErrorChange(formErrors);
-  }
-
   handleFocusFieldChange(activeTab, focusField) {
-    if (focusField === this.state.focusField) {
-      return false;
-    }
-
     this.setState({ focusField, activeTab });
   }
 
   handleActiveTabChange(activeTab) {
-    const { currentActiveTab } = this.state;
     const { packageDetails } = this.props;
     const schema = packageDetails.getConfig();
-
-    if (activeTab === currentActiveTab) {
-      return false;
-    }
 
     const focusField = this.getFirstFieldInTab(schema, activeTab);
 
@@ -351,7 +337,8 @@ class FrameworkConfiguration extends Component {
       deployErrors,
       formErrors,
       formData,
-      onFormDataChange
+      onFormDataChange,
+      onFormErrorChange
     } = this.props;
 
     let pageContents;
@@ -368,7 +355,7 @@ class FrameworkConfiguration extends Component {
           activeTab={activeTab}
           deployErrors={deployErrors}
           onFormDataChange={onFormDataChange}
-          onFormErrorChange={this.onFormErrorChange}
+          onFormErrorChange={onFormErrorChange}
           handleActiveTabChange={this.handleActiveTabChange}
           handleFocusFieldChange={this.handleFocusFieldChange}
         />
