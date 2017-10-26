@@ -23,7 +23,7 @@ class CosmosErrorMessage extends React.Component {
 
     // Append reference to repository page, since repository related errors
     // can occur at any request to Cosmos
-    const { type, message } = error;
+    let { type, message } = error;
 
     if (REPOSITORY_ERRORS.includes(type)) {
       return this.appendRepositoryLink(message);
@@ -32,6 +32,15 @@ class CosmosErrorMessage extends React.Component {
     // make "Package is already installed error" better
     if (error.type === "PackageAlreadyInstalled") {
       return "A service with the same name already exists. Try a different name.";
+    }
+
+    // better error for "Options JSON failed validation"
+    // something like this, but somehow make this a list of errors
+    if (error.type === "JsonSchemaMismatch") {
+      // top level message
+      error.data.errors.forEach(error => {
+        message += `${error.instance.pointer}: ${error.message}`;
+      });
     }
 
     return message;
