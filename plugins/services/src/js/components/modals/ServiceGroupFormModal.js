@@ -71,7 +71,7 @@ class ServiceGroupFormModal extends React.Component {
     const buttonDefinition = [
       {
         text: "Cancel",
-        className: "button button-primary-link",
+        className: "button button-primary-link flush-left",
         isClose: true
       },
       {
