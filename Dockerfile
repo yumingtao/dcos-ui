@@ -1,8 +1,7 @@
 FROM mesosphere/dcos-system-test-driver:latest
 
 # Specify the component versions to use
-ENV CYPRESS_VERSION="0.19.1" \
-    NODE_VERSION="8.8.1" \
+ENV NODE_VERSION="8.8.1" \
     NPM_VERSION="5.4.2" \
     JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"
 
@@ -32,9 +31,7 @@ RUN set -x \
   /var/lib/dpkg/info/ca-certificates-java.postinst configure \
   # Install npm dependencies
   && cd /dcos-ui \
-  && npm install -g cypress-cli git://github.com/johntron/http-server.git#proxy-secure-flag \
-  # Install cypress
-  && cypress install --cypress-version ${CYPRESS_VERSION} \
+  && npm install -g  git://github.com/johntron/http-server.git#proxy-secure-flag \
   # Install dcos-launch
   && curl 'https://downloads.dcos.io/dcos-test-utils/bin/linux/dcos-launch' > /usr/local/bin/dcos-launch \
   && chmod +x /usr/local/bin/dcos-launch \
