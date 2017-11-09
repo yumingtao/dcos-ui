@@ -3,6 +3,8 @@ import deepEqual from "deep-equal";
 import { Tooltip } from "reactjs-components";
 import DefaultSchemaField
   from "react-jsonschema-form/lib/components/fields/SchemaField";
+import AceEditor from "react-ace";
+import "brace/mode/yaml";
 
 import Icon from "#SRC/js/components/Icon";
 import FieldInput from "#SRC/js/components/form/FieldInput";
@@ -231,6 +233,12 @@ class SchemaField extends Component {
     );
   }
 
+  renderYamlEditor(errorMessage, props) {
+    const { formData } = props;
+
+    return <AceEditor mode="yaml" value={formData} theme="monokai" />;
+  }
+
   getFieldHeading(required, name = "", description) {
     let requiredSymbol = null;
     if (required) {
@@ -269,6 +277,10 @@ class SchemaField extends Component {
       case "boolean":
         return this.renderCheckbox(errorMessage, this.props);
       case "string":
+        if (schema.media && schema.media.type === "application/x-yaml") {
+          return this.renderYamlEditor(errorMessage, this.props);
+        }
+
         if (schema.enum && schema.enum.length <= RADIO_SELECT_THRESHOLD) {
           return this.renderRadioButtons(errorMessage, this.props);
         }
