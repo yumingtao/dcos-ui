@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React from "react";
 
 import { findNestedPropertyInObject } from "#SRC/js/utils/Util";
@@ -188,7 +189,7 @@ const PodGeneralConfigSection = ({ appConfig, onEditClick }) => {
 };
 
 PodGeneralConfigSection.propTypes = {
-  onEditClick: React.PropTypes.func
+  onEditClick: PropTypes.func
 };
 
 module.exports = PodGeneralConfigSection;

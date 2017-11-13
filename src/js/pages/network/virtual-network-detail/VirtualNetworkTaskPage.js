@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React from "react";
 import { Link } from "react-router";
 
@@ -119,8 +120,8 @@ class VirtualNetworkTaskPage extends React.Component {
 }
 
 VirtualNetworkTaskPage.propTypes = {
-  params: React.PropTypes.object,
-  routes: React.PropTypes.array
+  params: PropTypes.object,
+  routes: PropTypes.array
 };
 
 module.exports = VirtualNetworkTaskPage;

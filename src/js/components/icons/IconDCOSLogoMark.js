@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React from "react";
 
 class IconDCOSLogoMark extends React.Component {
@@ -22,7 +23,7 @@ IconDCOSLogoMark.defaultProps = {
 };
 
 IconDCOSLogoMark.propTypes = {
-  className: React.PropTypes.string
+  className: PropTypes.string
 };
 
 module.exports = IconDCOSLogoMark;

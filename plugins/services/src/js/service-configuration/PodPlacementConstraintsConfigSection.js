@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React from "react";
 
 import { findNestedPropertyInObject } from "#SRC/js/utils/Util";
@@ -74,8 +75,8 @@ PodPlacementConstraintsConfigSection.defaultProps = {
 };
 
 PodPlacementConstraintsConfigSection.propTypes = {
-  appConfig: React.PropTypes.object,
-  onEditClick: React.PropTypes.func
+  appConfig: PropTypes.object,
+  onEditClick: PropTypes.func
 };
 
 module.exports = PodPlacementConstraintsConfigSection;

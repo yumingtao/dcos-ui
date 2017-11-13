@@ -1,4 +1,5 @@
 import { Tooltip } from "reactjs-components";
+import PropTypes from "prop-types";
 import React, { Component } from "react";
 import Objektiv from "objektiv";
 
@@ -458,10 +459,10 @@ VolumesFormSection.defaultProps = {
 };
 
 VolumesFormSection.propTypes = {
-  data: React.PropTypes.object,
-  errors: React.PropTypes.object,
-  onAddItem: React.PropTypes.func,
-  onRemoveItem: React.PropTypes.func
+  data: PropTypes.object,
+  errors: PropTypes.object,
+  onAddItem: PropTypes.func,
+  onRemoveItem: PropTypes.func
 };
 
 VolumesFormSection.configReducers = {

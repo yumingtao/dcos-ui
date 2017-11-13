@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import deepEqual from "deep-equal";
 import { List, Tooltip } from "reactjs-components";
+import PropTypes from "prop-types";
 import React from "react";
 import { Link, routerShape } from "react-router";
 
@@ -14,8 +15,8 @@ const ServiceList = React.createClass({
   displayName: "ServiceList",
 
   propTypes: {
-    services: React.PropTypes.array.isRequired,
-    healthProcessed: React.PropTypes.bool.isRequired
+    services: PropTypes.array.isRequired,
+    healthProcessed: PropTypes.bool.isRequired
   },
 
   contextTypes: {

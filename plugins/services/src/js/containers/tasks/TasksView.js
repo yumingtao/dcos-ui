@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import mixin from "reactjs-mixin";
 import { Tooltip } from "reactjs-components";
+import PropTypes from "prop-types";
 import React from "react";
 
 import DCOSStore from "#SRC/js/stores/DCOSStore";
@@ -282,8 +283,8 @@ class TasksView extends mixin(SaveStateMixin) {
 }
 
 TasksView.contextTypes = {
-  modalHandlers: React.PropTypes.shape({
-    killTasks: React.PropTypes.func.isRequired
+  modalHandlers: PropTypes.shape({
+    killTasks: PropTypes.func.isRequired
   }).isRequired
 };
 
@@ -294,10 +295,10 @@ TasksView.defaultProps = {
 };
 
 TasksView.propTypes = {
-  params: React.PropTypes.object.isRequired,
-  inverseStyle: React.PropTypes.bool,
-  itemID: React.PropTypes.string,
-  tasks: React.PropTypes.array
+  params: PropTypes.object.isRequired,
+  inverseStyle: PropTypes.bool,
+  itemID: PropTypes.string,
+  tasks: PropTypes.array
 };
 
 module.exports = TasksView;

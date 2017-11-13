@@ -1,4 +1,7 @@
+import PropTypes from "prop-types";
+/* eslint-disable no-unused-vars */
 import React from "react";
+/* eslint-enable no-unused-vars */
 
 import FormUtil from "../utils/FormUtil";
 import SchemaForm from "./SchemaForm";
@@ -153,13 +156,13 @@ JobForm.defaultProps = {
 };
 
 JobForm.propTypes = {
-  className: React.PropTypes.string,
-  defaultTab: React.PropTypes.string,
-  isEdit: React.PropTypes.bool,
-  getTriggerSubmit: React.PropTypes.func,
-  onChange: React.PropTypes.func,
-  onTabChange: React.PropTypes.func,
-  schema: React.PropTypes.object
+  className: PropTypes.string,
+  defaultTab: PropTypes.string,
+  isEdit: PropTypes.bool,
+  getTriggerSubmit: PropTypes.func,
+  onChange: PropTypes.func,
+  onTabChange: PropTypes.func,
+  schema: PropTypes.object
 };
 
 module.exports = JobForm;

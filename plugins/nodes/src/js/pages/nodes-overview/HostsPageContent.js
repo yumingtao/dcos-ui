@@ -1,4 +1,5 @@
 import PureRender from "react-addons-pure-render-mixin";
+import PropTypes from "prop-types";
 import React from "react";
 
 import FilterBar from "#SRC/js/components/FilterBar";
@@ -105,26 +106,26 @@ class HostsPageContent extends React.Component {
 }
 
 HostsPageContent.propTypes = {
-  byServiceFilter: React.PropTypes.string,
-  filterButtonContent: React.PropTypes.func,
-  filterInputText: React.PropTypes.node,
-  filterItemList: React.PropTypes.array.isRequired,
-  filteredNodeCount: React.PropTypes.number.isRequired,
-  handleFilterChange: React.PropTypes.func.isRequired,
-  hosts: React.PropTypes.array.isRequired,
-  isFiltering: React.PropTypes.bool,
-  nodeCount: React.PropTypes.number.isRequired,
-  onFilterChange: React.PropTypes.func,
-  onResetFilter: React.PropTypes.func.isRequired,
-  onResourceSelectionChange: React.PropTypes.func.isRequired,
-  refreshRate: React.PropTypes.number.isRequired,
-  selectedFilter: React.PropTypes.string,
-  selectedResource: React.PropTypes.string.isRequired,
-  services: React.PropTypes.array.isRequired,
-  totalHostsResources: React.PropTypes.object.isRequired,
-  totalNodeCount: React.PropTypes.number.isRequired,
-  totalResources: React.PropTypes.object.isRequired,
-  viewTypeRadioButtons: React.PropTypes.node.isRequired
+  byServiceFilter: PropTypes.string,
+  filterButtonContent: PropTypes.func,
+  filterInputText: PropTypes.node,
+  filterItemList: PropTypes.array.isRequired,
+  filteredNodeCount: PropTypes.number.isRequired,
+  handleFilterChange: PropTypes.func.isRequired,
+  hosts: PropTypes.array.isRequired,
+  isFiltering: PropTypes.bool,
+  nodeCount: PropTypes.number.isRequired,
+  onFilterChange: PropTypes.func,
+  onResetFilter: PropTypes.func.isRequired,
+  onResourceSelectionChange: PropTypes.func.isRequired,
+  refreshRate: PropTypes.number.isRequired,
+  selectedFilter: PropTypes.string,
+  selectedResource: PropTypes.string.isRequired,
+  services: PropTypes.array.isRequired,
+  totalHostsResources: PropTypes.object.isRequired,
+  totalNodeCount: PropTypes.number.isRequired,
+  totalResources: PropTypes.object.isRequired,
+  viewTypeRadioButtons: PropTypes.node.isRequired
 };
 
 module.exports = HostsPageContent;

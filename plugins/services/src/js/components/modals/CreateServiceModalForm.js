@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import deepEqual from "deep-equal";
-import React, { PropTypes, Component } from "react";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
 
 import { deepCopy, findNestedPropertyInObject } from "#SRC/js/utils/Util";
 import { pluralize } from "#SRC/js/utils/StringUtil";

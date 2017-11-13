@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React from "react";
 
 import { findNestedPropertyInObject } from "#SRC/js/utils/Util";
@@ -137,8 +138,8 @@ const PodContainerConfigSection = ({
 };
 
 PodContainerConfigSection.propTypes = {
-  index: React.PropTypes.number,
-  onEditClick: React.PropTypes.func
+  index: PropTypes.number,
+  onEditClick: PropTypes.func
 };
 
 module.exports = PodContainerConfigSection;

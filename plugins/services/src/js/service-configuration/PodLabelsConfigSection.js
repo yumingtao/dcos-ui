@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React from "react";
 
 import ConfigurationMapHeading
@@ -91,8 +92,8 @@ PodLabelsConfigSection.defaultProps = {
 };
 
 PodLabelsConfigSection.propTypes = {
-  appConfig: React.PropTypes.object,
-  onEditClick: React.PropTypes.func
+  appConfig: PropTypes.object,
+  onEditClick: PropTypes.func
 };
 
 module.exports = PodLabelsConfigSection;

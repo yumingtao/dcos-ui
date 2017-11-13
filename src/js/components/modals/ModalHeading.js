@@ -1,4 +1,5 @@
 import classNames from "classnames";
+import PropTypes from "prop-types";
 import React from "react";
 
 const ModalHeading = props => {
@@ -26,15 +27,15 @@ ModalHeading.defaultProps = {
 };
 
 ModalHeading.propTypes = {
-  align: React.PropTypes.oneOf(["left", "right", "center"]),
-  children: React.PropTypes.node.isRequired,
-  className: React.PropTypes.oneOfType([
-    React.PropTypes.array,
-    React.PropTypes.object,
-    React.PropTypes.string
+  align: PropTypes.oneOf(["left", "right", "center"]),
+  children: PropTypes.node.isRequired,
+  className: PropTypes.oneOfType([
+    PropTypes.array,
+    PropTypes.object,
+    PropTypes.string
   ]),
-  flush: React.PropTypes.bool,
-  level: React.PropTypes.oneOf([1, 2, 3, 4, 5, 6])
+  flush: PropTypes.bool,
+  level: PropTypes.oneOf([1, 2, 3, 4, 5, 6])
 };
 
 module.exports = ModalHeading;

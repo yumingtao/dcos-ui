@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React from "react";
 
 import ConfigurationMapHeading
@@ -84,7 +85,7 @@ const PodEnvironmentVariablesConfigSection = ({ appConfig, onEditClick }) => {
 };
 
 PodEnvironmentVariablesConfigSection.propTypes = {
-  onEditClick: React.PropTypes.func
+  onEditClick: PropTypes.func
 };
 
 module.exports = PodEnvironmentVariablesConfigSection;

@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React from "react";
 import { Hooks } from "PluginSDK";
 import { MountService } from "foundation-ui";
@@ -16,8 +17,8 @@ var Modals = React.createClass({
   mixins: [InternalStorageMixin],
 
   propTypes: {
-    showErrorModal: React.PropTypes.bool,
-    modalErrorMsg: React.PropTypes.node
+    showErrorModal: PropTypes.bool,
+    modalErrorMsg: PropTypes.node
   },
 
   getDefaultProps() {

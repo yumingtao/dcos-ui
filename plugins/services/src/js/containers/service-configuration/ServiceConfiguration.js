@@ -1,5 +1,6 @@
 import { Dropdown, Tooltip } from "reactjs-components";
 import mixin from "reactjs-mixin";
+import PropTypes from "prop-types";
 import React from "react";
 import { routerShape } from "react-router";
 import { StoreMixin } from "mesosphere-shared-reactjs";
@@ -233,9 +234,9 @@ ServiceConfiguration.defaultProps = {
 };
 
 ServiceConfiguration.propTypes = {
-  onEditClick: React.PropTypes.func.isRequired,
-  errors: React.PropTypes.array,
-  service: React.PropTypes.instanceOf(Service).isRequired
+  onEditClick: PropTypes.func.isRequired,
+  errors: PropTypes.array,
+  service: PropTypes.instanceOf(Service).isRequired
 };
 
 module.exports = ServiceConfiguration;
