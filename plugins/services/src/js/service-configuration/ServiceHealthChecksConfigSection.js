@@ -45,6 +45,13 @@ class ServiceHealthChecksConfigSection extends ServiceConfigBaseSectionDisplay {
   /**
    * @override
    */
+  getMountPointName() {
+    return "CreateService:ServiceConfigDisplay:App:HealthChecks";
+  }
+
+  /**
+   * @override
+   */
   getDefinition() {
     const { onEditClick } = this.props;
 

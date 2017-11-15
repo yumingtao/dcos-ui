@@ -1,4 +1,5 @@
 import React from "react";
+import { MountService } from "foundation-ui";
 
 import ConfigurationMapHeading
   from "#SRC/js/components/ConfigurationMapHeading";
@@ -105,28 +106,30 @@ class PodNetworkConfigSection extends React.Component {
       <div>
         <ConfigurationMapHeading level={1}>Network</ConfigurationMapHeading>
         <ConfigurationMapSection key="pod-general-section">
+          <MountService.Mount type="CreateService:ServiceConfigDisplay:Pod:Labels">
+            <div>
+              {/* General section */}
+              <ConfigurationMapRow>
+                <ConfigurationMapLabel>Network Type</ConfigurationMapLabel>
+                <ConfigurationMapValueWithDefault
+                  value={getNetworkTypes(appConfig.networks)}
+                />
+                {action}
+              </ConfigurationMapRow>
 
-          {/* General section */}
-          <ConfigurationMapRow>
-            <ConfigurationMapLabel>Network Type</ConfigurationMapLabel>
-            <ConfigurationMapValueWithDefault
-              value={getNetworkTypes(appConfig.networks)}
-            />
-            {action}
-          </ConfigurationMapRow>
-
-          {/* Service endpoints */}
-          <ConfigurationMapHeading level={3}>
-            Service Endpoints
-          </ConfigurationMapHeading>
-          <ConfigurationMapTable
-            columnDefaults={{ hideIfEmpty: true }}
-            columns={this.getColumns()}
-            data={endpoints}
-            onEditClick={onEditClick}
-            tabViewID="networking"
-          />
-
+              {/* Service endpoints */}
+              <ConfigurationMapHeading level={3}>
+                Service Endpoints
+              </ConfigurationMapHeading>
+              <ConfigurationMapTable
+                columnDefaults={{ hideIfEmpty: true }}
+                columns={this.getColumns()}
+                data={endpoints}
+                onEditClick={onEditClick}
+                tabViewID="networking"
+              />
+            </div>
+          </MountService.Mount>
         </ConfigurationMapSection>
       </div>
     );

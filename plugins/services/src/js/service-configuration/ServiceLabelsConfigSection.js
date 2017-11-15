@@ -17,6 +17,13 @@ class ServiceLabelsConfigSection extends ServiceConfigBaseSectionDisplay {
   /**
    * @override
    */
+  getMountPointName() {
+    return "CreateService:ServiceConfigDisplay:App:Labels";
+  }
+
+  /**
+   * @override
+   */
   getDefinition() {
     const { onEditClick } = this.props;
 

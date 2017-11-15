@@ -1,4 +1,5 @@
 import React from "react";
+import { MountService } from "foundation-ui";
 
 import ConfigurationMapHeading
   from "#SRC/js/components/ConfigurationMapHeading";
@@ -54,12 +55,14 @@ class ServicePlacementConstraintsConfigSection extends React.Component {
           Placement Constraints
         </ConfigurationMapHeading>
         <ConfigurationMapSection>
-          <ConfigurationMapTable
-            columns={this.getColumns()}
-            data={constraints}
-            onEditClick={onEditClick}
-            tabViewID="services"
-          />
+          <MountService.Mount type="CreateService:ServiceConfigDisplay:App:PlacementContraints">
+            <ConfigurationMapTable
+              columns={this.getColumns()}
+              data={constraints}
+              onEditClick={onEditClick}
+              tabViewID="services"
+            />
+          </MountService.Mount>
         </ConfigurationMapSection>
       </div>
     );

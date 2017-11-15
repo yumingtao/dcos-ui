@@ -59,6 +59,12 @@ class ServiceGeneralConfigSection extends ServiceConfigBaseSectionDisplay {
   /**
    * @override
    */
+  getMountPointName() {
+    return "CreateService:ServiceConfigDisplay:App:General";
+  }
+  /**
+   * @override
+   */
   getDefinition() {
     const { onEditClick } = this.props;
 
