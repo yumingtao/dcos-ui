@@ -59,7 +59,7 @@ class ServiceGeneralConfigSection extends ServiceConfigBaseSectionDisplay {
   /**
    * @override
    */
-  getMountPointName() {
+  getMountPointType() {
     return "CreateService:ServiceConfigDisplay:App:General";
   }
   /**

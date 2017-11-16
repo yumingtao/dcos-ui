@@ -30,7 +30,7 @@ class ServiceConfigBaseSectionDisplay extends React.Component {
     return { values: [] };
   }
 
-  getMountPointName() {
+  getMountPointType() {
     throw Error(
       "You have to implement this method in your class providing a unique MountPointName, Namespace: CreateService:ServiceConfigDisplay:App:"
     );
@@ -101,7 +101,7 @@ class ServiceConfigBaseSectionDisplay extends React.Component {
         <MountService.Mount
           appConfig={this.props.appConfig}
           onEditClick={onEditClick}
-          type={this.getMountPointName()}
+          type={this.getMountPointType()}
         >
           <div>{configurationMapRows}</div>
         </MountService.Mount>
