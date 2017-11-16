@@ -22,7 +22,7 @@ class ServiceEnvironmentVariablesConfigSection
   /**
    * @override
    */
-  getMountPointType() {
+  getMountType() {
     return "CreateService:ServiceConfigDisplay:App:EnvironmentVariables";
   }
 

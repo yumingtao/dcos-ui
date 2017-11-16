@@ -17,7 +17,7 @@ class ServiceLabelsConfigSection extends ServiceConfigBaseSectionDisplay {
   /**
    * @override
    */
-  getMountPointType() {
+  getMountType() {
     return "CreateService:ServiceConfigDisplay:App:Labels";
   }
 

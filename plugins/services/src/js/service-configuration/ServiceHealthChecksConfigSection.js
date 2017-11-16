@@ -45,7 +45,7 @@ class ServiceHealthChecksConfigSection extends ServiceConfigBaseSectionDisplay {
   /**
    * @override
    */
-  getMountPointType() {
+  getMountType() {
     return "CreateService:ServiceConfigDisplay:App:HealthChecks";
   }
 

@@ -27,7 +27,7 @@ class ServiceStorageConfigSection extends ServiceConfigBaseSectionDisplay {
   /**
    * @override
    */
-  getMountPointType() {
+  getMountType() {
     return "CreateService:ServiceConfigDisplay:App:Storage";
   }
 
