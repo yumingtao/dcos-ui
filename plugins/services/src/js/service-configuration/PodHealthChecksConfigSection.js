@@ -146,7 +146,11 @@ class PodHealthChecksConfigSection extends React.Component {
               Service Endpoint Health Checks
             </ConfigurationMapHeading>
             <ConfigurationMapSection key="pod-general-section">
-              <MountService.Mount type="CreateService:ServiceConfigDisplay:Pod:HealthChecks:Endpoint">
+              <MountService.Mount
+                type="CreateService:ServiceConfigDisplay:Pod:HealthChecks:Endpoint"
+                appConfig={this.props.appConfig}
+                onEditClick={onEditClick}
+              >
                 <ConfigurationMapTable
                   columnDefaults={this.getDefaultEndpointsColumns()}
                   columns={this.getEndpointsColumns()}
@@ -164,7 +168,11 @@ class PodHealthChecksConfigSection extends React.Component {
               Command Health Checks
             </ConfigurationMapHeading>
             <ConfigurationMapSection key="pod-general-section">
-              <MountService.Mount type="CreateService:ServiceConfigDisplay:Pod:HealthChecks:Command">
+              <MountService.Mount
+                type="CreateService:ServiceConfigDisplay:Pod:HealthChecks:Command"
+                appConfig={this.props.appConfig}
+                onEditClick={onEditClick}
+              >
                 <ConfigurationMapTable
                   columnDefaults={{ hideIfEmpty: true }}
                   columns={this.getCommandColumns()}

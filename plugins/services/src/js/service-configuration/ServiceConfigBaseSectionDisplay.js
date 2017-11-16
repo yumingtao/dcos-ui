@@ -100,9 +100,10 @@ class ServiceConfigBaseSectionDisplay extends React.Component {
       <ConfigurationMapSection>
         <MountService.Mount
           appConfig={this.props.appConfig}
+          onEditClick={onEditClick}
           type={this.getMountPointName()}
         >
-          {configurationMapRows}
+          <div>{configurationMapRows}</div>
         </MountService.Mount>
       </ConfigurationMapSection>
     );

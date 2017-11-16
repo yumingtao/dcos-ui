@@ -58,7 +58,11 @@ class PodPlacementConstraintsConfigSection extends React.Component {
           Placement Constraints
         </ConfigurationMapHeading>
         <ConfigurationMapSection>
-          <MountService.Mount type="CreateService:ServiceConfigDisplay:Pod:Labels">
+          <MountService.Mount
+            type="CreateService:ServiceConfigDisplay:Pod:Labels"
+            appConfig={this.props.appConfig}
+            onEditClick={onEditClick}
+          >
             <ConfigurationMapTable
               columns={this.getColumns()}
               data={constraints}

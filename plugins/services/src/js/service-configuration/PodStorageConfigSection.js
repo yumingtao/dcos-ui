@@ -114,7 +114,11 @@ class PodStorageConfigSection extends React.Component {
       <div>
         <ConfigurationMapHeading level={1}>Storage</ConfigurationMapHeading>
         <ConfigurationMapSection key="pod-general-section">
-          <MountService.Mount type="CreateService:ServiceConfigDisplay:Pod:Storage">
+          <MountService.Mount
+            type="CreateService:ServiceConfigDisplay:Pod:Storage"
+            appConfig={this.props.appConfig}
+            onEditClick={onEditClick}
+          >
             <ConfigurationMapTable
               columnDefaults={{ hideIfEmpty: true }}
               columns={this.getColumns()}

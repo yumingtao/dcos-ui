@@ -55,7 +55,11 @@ class ServicePlacementConstraintsConfigSection extends React.Component {
           Placement Constraints
         </ConfigurationMapHeading>
         <ConfigurationMapSection>
-          <MountService.Mount type="CreateService:ServiceConfigDisplay:App:PlacementContraints">
+          <MountService.Mount
+            type="CreateService:ServiceConfigDisplay:App:PlacementContraints"
+            appConfig={this.props.appConfig}
+            onEditClick={onEditClick}
+          >
             <ConfigurationMapTable
               columns={this.getColumns()}
               data={constraints}
