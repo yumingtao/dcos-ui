@@ -59,7 +59,7 @@ class PodPlacementConstraintsConfigSection extends React.Component {
         </ConfigurationMapHeading>
         <ConfigurationMapSection>
           <MountService.Mount
-            type="CreateService:ServiceConfigDisplay:Pod:Labels"
+            type="CreateService:ServiceConfigDisplay:Pod:PlacementConstraints"
             appConfig={this.props.appConfig}
             onEditClick={onEditClick}
           >

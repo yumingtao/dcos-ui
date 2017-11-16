@@ -56,7 +56,7 @@ class ServicePlacementConstraintsConfigSection extends React.Component {
         </ConfigurationMapHeading>
         <ConfigurationMapSection>
           <MountService.Mount
-            type="CreateService:ServiceConfigDisplay:App:PlacementContraints"
+            type="CreateService:ServiceConfigDisplay:App:PlacementConstraints"
             appConfig={this.props.appConfig}
             onEditClick={onEditClick}
           >
