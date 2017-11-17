@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import { Tooltip } from "reactjs-components";
 
 import { findNestedPropertyInObject } from "#SRC/js/utils/Util";
@@ -17,8 +17,9 @@ import FormGroupHeadingContent
 import FormRow from "#SRC/js/components/form/FormRow";
 import Icon from "#SRC/js/components/Icon";
 
-import OperatorTypes from "../../constants/OperatorTypes";
-import PlacementConstraintsUtil from "../../utils/PlacementConstraintsUtil";
+import OperatorTypes from "#PLUGINS/services/src/js/constants/OperatorTypes";
+import PlacementConstraintsUtil
+  from "#PLUGINS/services/src/js/utils/PlacementConstraintsUtil";
 
 function placementConstraintLabel(name, tooltipText, options = {}) {
   const { isRequired = false, linkText = "More information" } = options;
@@ -63,32 +64,19 @@ class PlacementSection extends Component {
     });
   }
 
-  onAddClicked() {
-    const { constraints } = this.props;
-    // maybe don't concat an empty array
-    const newConstraints = constraints.concat([]);
-    this.props.onConstraintsChange(newConstraints);
-  }
-
-  onRemoveClicked(index) {
-    const { constraints } = this.props;
-
-    const newConstraints = constraints.splice(index, 1);
-    this.props.onConstraintsChange(newConstraints);
-  }
-
-  getPlacementConstraintsFields() {
-    const { constraints, errors } = this.props;
-
-    const constraintsErrors = findNestedPropertyInObject(errors, "constraints");
-    const hasOneRequiredValue = constraints.some(function(constraint) {
+  getPlacementConstraintsFields(data = []) {
+    const constraintsErrors = findNestedPropertyInObject(
+      this.props.errors,
+      "constraints"
+    );
+    const hasOneRequiredValue = data.some(function(constraint) {
       return PlacementConstraintsUtil.requiresValue(constraint.operator);
     });
-    const hideValueColumn = constraints.every(function(constraint) {
+    const hideValueColumn = data.every(function(constraint) {
       return PlacementConstraintsUtil.requiresEmptyValue(constraint.operator);
     });
 
-    return constraints.map((constraint, index) => {
+    return data.map((constraint, index) => {
       let fieldLabel = null;
       let operatorLabel = null;
       let valueLabel = null;
@@ -200,7 +188,6 @@ class PlacementSection extends Component {
                 value: index,
                 path: "constraints"
               })}
-              onClick
             />
           </FormGroup>
         </FormRow>
@@ -209,14 +196,15 @@ class PlacementSection extends Component {
   }
 
   render() {
+    const { data = {} } = this.props;
     const constraintsErrors = findNestedPropertyInObject(
       this.props.errors,
       "constraints"
     );
+    let errorNode = null;
     const hasErrors =
       constraintsErrors != null && !Array.isArray(constraintsErrors);
 
-    let errorNode = null;
     if (hasErrors) {
       errorNode = (
         <FormGroup showError={hasErrors}>
@@ -229,11 +217,15 @@ class PlacementSection extends Component {
 
     return (
       <div>
-        {this.getPlacementConstraintsFields()}
+        {this.getPlacementConstraintsFields(data.constraints)}
         {errorNode}
         <FormRow>
           <FormGroup className="column-12">
-            <AddButton onClick={this.onAddClicked.bind(this)}>
+            <AddButton
+              onClick={this.props.onAddItem.bind(this, {
+                path: "constraints"
+              })}
+            >
               Add Placement Constraint
             </AddButton>
           </FormGroup>
@@ -242,12 +234,5 @@ class PlacementSection extends Component {
     );
   }
 }
-
-// probably add back error prop
-// onConstraints changed for every type in the inputs
-PlacementSection.propTypes = {
-  constraints: PropTypes.array.isRequired,
-  onConstraintsChange: PropTypes.func.isRequired
-};
 
 export default PlacementSection;
