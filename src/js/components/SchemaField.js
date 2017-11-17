@@ -14,6 +14,8 @@ import FormGroupHeading from "#SRC/js/components/form/FormGroupHeading";
 import FieldError from "#SRC/js/components/form/FieldError";
 import FieldSelect from "#SRC/js/components/form/FieldSelect";
 import FieldAutofocus from "#SRC/js/components/form/FieldAutofocus";
+import PlacementConstraintsWidget
+  from "#SRC/js/components/PlacementConstraintsWidget";
 
 class SchemaField extends Component {
   shouldComponentUpdate(nextProps) {
@@ -231,6 +233,61 @@ class SchemaField extends Component {
     );
   }
 
+  renderPlacement(errorMessage, autoFocus, props) {
+    const {
+      required,
+      name,
+      schema,
+      formData,
+      onChange,
+      onBlur,
+      onFocus
+    } = props;
+
+    // example formData: [[“@zone”,“GROUP_BY”,“3”],[“@zone”,“MAX_PER”,“2"],[“hostname “,”UNIQUE”]]”
+
+    // questions:
+    // 1. when parsing and reducing the formData, can we exactly re-use the constraints marathon JSON parser/reducer?
+    // 2. do we want to render PlacementConstraintsWidget directly here, or build a higher component (ex: SpecialFormField)?
+    // 3. call the onChange() from mozilla library (the local variable defined above) with the reduced value from 1)
+    // 4. the errors prop...figure out later
+    // 5. PlacementConstraintsFrameworkAdapter can hold all the logic above?
+
+    // replace this implementation (copied from CreateServiceFormModal) with our own
+    // will be also use Batch and Transaction or can we be less generic and manually push/splice the constraints?
+    const onAddItem = (event) => {
+      const { value, path } = event;
+      let { batch } = this.state;
+
+      batch = batch.add(
+        new Transaction(path.split("."), value, TransactionTypes.ADD_ITEM)
+      );
+
+      this.setState({ batch, appConfig: this.getAppConfig(batch) });
+    };
+
+    // same comment as onAddItem
+    const onRemoveItem = (event) => {
+      const { value, path } = event;
+      let { batch } = this.state;
+
+      batch = batch.add(
+        new Transaction(path.split("."), value, TransactionTypes.REMOVE_ITEM)
+      );
+
+      this.setState({ batch, appConfig: this.getAppConfig(batch) });
+    };
+
+    return (
+      <PlacementConstraintsWidget
+        data={this.props.data}
+        onAddItem={this.props.onAddItem}
+        onRemoveItem={this.props.onRemoveItem}
+        errors={this.props.errors}
+      />
+    );
+  }
+
   getFieldHeading(required, name = "", description) {
     let requiredSymbol = null;
     if (required) {
@@ -275,6 +332,10 @@ class SchemaField extends Component {
 
         if (schema.enum && schema.enum.length > RADIO_SELECT_THRESHOLD) {
           return this.renderSelect(errorMessage, autofocus, this.props);
+        }
+
+        if (schema.media && schema.media.type === "placement") {
+          return this.renderPlacement(errorMessage, autofocus, this.props);
         }
 
         return this.renderTextInput(errorMessage, autofocus, this.props);
