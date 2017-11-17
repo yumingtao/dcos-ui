@@ -139,7 +139,7 @@ class PackagesTab extends mixin(StoreMixin) {
           label={this.getPackageOptionBadge(cosmosPackage)}
           onOptionSelect={this.handleDetailOpen.bind(this, cosmosPackage)}
         >
-          <div className="h6 flush-top short">
+          <div className="h3 flush">
             {cosmosPackage.getName()}
           </div>
           <small className="flush">
@@ -167,7 +167,7 @@ class PackagesTab extends mixin(StoreMixin) {
 
     return (
       <div className="pod flush-top flush-horizontal clearfix">
-        <h4 className="short flush-top">Certified</h4>
+        <h1 className="short flush-top">Certified</h1>
         <p className="tall flush-top">
           Certified packages are verified by Mesosphere for interoperability with DC/OS.
         </p>
@@ -205,7 +205,7 @@ class PackagesTab extends mixin(StoreMixin) {
 
     return (
       <div className="clearfix">
-        <h4 className={titleClasses}>{title}</h4>
+        <h1 className={titleClasses}>{title}</h1>
         {subtitle}
         <div className="panel-grid row">
           {this.getPackageGrid(packages)}
