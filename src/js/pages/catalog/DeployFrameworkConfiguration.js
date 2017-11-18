@@ -52,7 +52,22 @@ class DeployFrameworkConfiguration extends mixin(StoreMixin) {
 
   onCosmosPackagesStorePackageDescriptionSuccess() {
     const packageDetails = CosmosPackagesStore.getPackageDetails();
+
+    packageDetails.config.properties.nodes.properties.placement_constraint.media = { type: "placement" };
+    packageDetails.config.properties.nodes.properties.placement_constraint.default = `[
+      [
+        "hostname",
+        "UNIQUE"
+      ],
+      [
+        "andrew",
+        "GROUP_BY",
+        "1"
+      ]
+    ]`;
+
     const formData = this.initializeFormDataFromSchema(packageDetails.config);
+
     this.setState({ packageDetails, formData });
   }
 

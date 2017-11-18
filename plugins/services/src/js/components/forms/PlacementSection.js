@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Tooltip } from "reactjs-components";
 
-import PlacementConstraintsWidget
-  from "#SRC/js/components/PlacementConstraintsWidget";
+import PlacementConstraintsPartial
+  from "#SRC/js/components/PlacementConstraintsPartial";
 import FormGroupHeading from "#SRC/js/components/form/FormGroupHeading";
 import FormGroupHeadingContent
   from "#SRC/js/components/form/FormGroupHeadingContent";
@@ -54,7 +54,7 @@ class PlacementSection extends Component {
         <p>
           Constraints control where apps run to allow optimization for either fault tolerance or locality.
         </p>
-        <PlacementConstraintsWidget
+        <PlacementConstraintsPartial
           data={this.props.data}
           onAddItem={this.props.onAddItem}
           onRemoveItem={this.props.onRemoveItem}
