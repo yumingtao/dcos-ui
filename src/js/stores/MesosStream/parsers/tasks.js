@@ -13,6 +13,8 @@ function convertResource(resource) {
       return resource.ranges.range;
     case "SET":
       return resource.set;
+    default:
+      return resource;
   }
 }
 
