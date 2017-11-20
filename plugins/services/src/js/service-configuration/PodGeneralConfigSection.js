@@ -114,82 +114,80 @@ const PodGeneralConfigSection = ({ appConfig, onEditClick }) => {
           appConfig={appConfig}
           onEditClick={onEditClick}
         >
-          <div>
+          <ConfigurationMapRow>
+            <ConfigurationMapLabel>Service ID</ConfigurationMapLabel>
+            <ConfigurationMapValue value={appConfig.id} />
+            {action}
+          </ConfigurationMapRow>
+          <ConfigurationMapRow>
+            <ConfigurationMapLabel>Instances</ConfigurationMapLabel>
+            <ConfigurationMapValueWithDefault value={fields.instances} />
+            {action}
+          </ConfigurationMapRow>
+          <ConfigurationMapRow>
+            <ConfigurationMapLabel>CPU</ConfigurationMapLabel>
+            <ConfigurationMapValue>
+              {getContainerResourceSummary("cpus", appConfig)}
+            </ConfigurationMapValue>
+            {action}
+          </ConfigurationMapRow>
+          <ConfigurationMapRow>
+            <ConfigurationMapLabel>Memory</ConfigurationMapLabel>
+            <ConfigurationMapValue>
+              {getContainerResourceSummary("mem", appConfig)}
+            </ConfigurationMapValue>
+            {action}
+          </ConfigurationMapRow>
+          <ConfigurationMapRow>
+            <ConfigurationMapLabel>Disk</ConfigurationMapLabel>
+            <ConfigurationMapValue>
+              {getContainerResourceSummary("disk", appConfig)}
+            </ConfigurationMapValue>
+            {action}
+          </ConfigurationMapRow>
+          <ConfigurationMapRow>
+            <ConfigurationMapLabel>GPU</ConfigurationMapLabel>
+            <ConfigurationMapValue>
+              {getContainerResourceSummary("gpu", appConfig)}
+            </ConfigurationMapValue>
+            {action}
+          </ConfigurationMapRow>
+          {Boolean(fields.backoff) &&
             <ConfigurationMapRow>
-              <ConfigurationMapLabel>Service ID</ConfigurationMapLabel>
-              <ConfigurationMapValue value={appConfig.id} />
+              <ConfigurationMapLabel>Backoff</ConfigurationMapLabel>
+              <DurationValue units="sec" value={fields.backoff} />
               {action}
-            </ConfigurationMapRow>
+            </ConfigurationMapRow>}
+          {Boolean(fields.backoffFactor) &&
             <ConfigurationMapRow>
-              <ConfigurationMapLabel>Instances</ConfigurationMapLabel>
-              <ConfigurationMapValueWithDefault value={fields.instances} />
+              <ConfigurationMapLabel>Backoff Factor</ConfigurationMapLabel>
+              <ConfigurationMapValue value={fields.backoffFactor} />
               {action}
-            </ConfigurationMapRow>
+            </ConfigurationMapRow>}
+          {Boolean(fields.maxLaunchDelay) &&
             <ConfigurationMapRow>
-              <ConfigurationMapLabel>CPU</ConfigurationMapLabel>
-              <ConfigurationMapValue>
-                {getContainerResourceSummary("cpus", appConfig)}
-              </ConfigurationMapValue>
+              <ConfigurationMapLabel>
+                Backoff Max Launch Delay
+              </ConfigurationMapLabel>
+              <DurationValue units="sec" value={fields.maxLaunchDelay} />
               {action}
-            </ConfigurationMapRow>
+            </ConfigurationMapRow>}
+          {Boolean(fields.minimumHealthCapacity) &&
             <ConfigurationMapRow>
-              <ConfigurationMapLabel>Memory</ConfigurationMapLabel>
-              <ConfigurationMapValue>
-                {getContainerResourceSummary("mem", appConfig)}
-              </ConfigurationMapValue>
+              <ConfigurationMapLabel>
+                Upgrade Min Health Capacity
+              </ConfigurationMapLabel>
+              <ConfigurationMapValue value={fields.minimumHealthCapacity} />
               {action}
-            </ConfigurationMapRow>
+            </ConfigurationMapRow>}
+          {Boolean(fields.maximumOverCapacity) &&
             <ConfigurationMapRow>
-              <ConfigurationMapLabel>Disk</ConfigurationMapLabel>
-              <ConfigurationMapValue>
-                {getContainerResourceSummary("disk", appConfig)}
-              </ConfigurationMapValue>
+              <ConfigurationMapLabel>
+                Upgrade Max Overcapacity
+              </ConfigurationMapLabel>
+              <ConfigurationMapValue value={fields.maximumOverCapacity} />
               {action}
-            </ConfigurationMapRow>
-            <ConfigurationMapRow>
-              <ConfigurationMapLabel>GPU</ConfigurationMapLabel>
-              <ConfigurationMapValue>
-                {getContainerResourceSummary("gpu", appConfig)}
-              </ConfigurationMapValue>
-              {action}
-            </ConfigurationMapRow>
-            {Boolean(fields.backoff) &&
-              <ConfigurationMapRow>
-                <ConfigurationMapLabel>Backoff</ConfigurationMapLabel>
-                <DurationValue units="sec" value={fields.backoff} />
-                {action}
-              </ConfigurationMapRow>}
-            {Boolean(fields.backoffFactor) &&
-              <ConfigurationMapRow>
-                <ConfigurationMapLabel>Backoff Factor</ConfigurationMapLabel>
-                <ConfigurationMapValue value={fields.backoffFactor} />
-                {action}
-              </ConfigurationMapRow>}
-            {Boolean(fields.maxLaunchDelay) &&
-              <ConfigurationMapRow>
-                <ConfigurationMapLabel>
-                  Backoff Max Launch Delay
-                </ConfigurationMapLabel>
-                <DurationValue units="sec" value={fields.maxLaunchDelay} />
-                {action}
-              </ConfigurationMapRow>}
-            {Boolean(fields.minimumHealthCapacity) &&
-              <ConfigurationMapRow>
-                <ConfigurationMapLabel>
-                  Upgrade Min Health Capacity
-                </ConfigurationMapLabel>
-                <ConfigurationMapValue value={fields.minimumHealthCapacity} />
-                {action}
-              </ConfigurationMapRow>}
-            {Boolean(fields.maximumOverCapacity) &&
-              <ConfigurationMapRow>
-                <ConfigurationMapLabel>
-                  Upgrade Max Overcapacity
-                </ConfigurationMapLabel>
-                <ConfigurationMapValue value={fields.maximumOverCapacity} />
-                {action}
-              </ConfigurationMapRow>}
-          </div>
+            </ConfigurationMapRow>}
         </MountService.Mount>
       </ConfigurationMapSection>
     </div>

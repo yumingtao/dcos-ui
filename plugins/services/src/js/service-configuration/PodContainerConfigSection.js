@@ -69,78 +69,76 @@ const PodContainerConfigSection = ({
         containerConfig={containerConfig}
         onEditClick={onEditClick}
       >
-        <div>
-          {/* Heading with Icon */}
-          <ConfigurationMapHeading level={3}>
-            {getContainerNameWithIcon(containerConfig)}
-          </ConfigurationMapHeading>
+        {/* Heading with Icon */}
+        <ConfigurationMapHeading level={3}>
+          {getContainerNameWithIcon(containerConfig)}
+        </ConfigurationMapHeading>
 
-          {/* Container image goes to top */}
-          <ConfigurationMapRow>
-            <ConfigurationMapLabel>Container Image</ConfigurationMapLabel>
-            <ConfigurationMapValueWithDefault
-              value={findNestedPropertyInObject(containerConfig, "image.id")}
-            />
-            {action}
-          </ConfigurationMapRow>
-          <ConfigurationMapRow>
-            <ConfigurationMapLabel>Force pull on launch</ConfigurationMapLabel>
-            <ConfigurationMapBooleanValue
-              value={findNestedPropertyInObject(
-                containerConfig,
-                "image.forcePull"
-              )}
-            />
-            {action}
-          </ConfigurationMapRow>
-
-          {/* Resources */}
-          {Boolean(fields.resources.cpus) &&
-            <ConfigurationMapRow>
-              <ConfigurationMapLabel>CPUs</ConfigurationMapLabel>
-              <ConfigurationMapValue value={fields.resources.cpus} />
-              {action}
-            </ConfigurationMapRow>}
-          {Boolean(fields.resources.mem) &&
-            <ConfigurationMapRow>
-              <ConfigurationMapLabel>Memory</ConfigurationMapLabel>
-              <ConfigurationMapSizeValue value={fields.resources.mem} />
-              {action}
-            </ConfigurationMapRow>}
-          {Boolean(fields.resources.disk) &&
-            <ConfigurationMapRow>
-              <ConfigurationMapLabel>Disk</ConfigurationMapLabel>
-              <ConfigurationMapSizeValue value={fields.resources.disk} />
-              {action}
-            </ConfigurationMapRow>}
-          {Boolean(fields.resources.gpus) &&
-            <ConfigurationMapRow>
-              <ConfigurationMapLabel>GPUs</ConfigurationMapLabel>
-              <ConfigurationMapValue value={fields.resources.gpus} />
-              {action}
-            </ConfigurationMapRow>}
-
-          {/* Global Properties */}
-          {Boolean(fields.user) &&
-            <ConfigurationMapRow>
-              <ConfigurationMapLabel>Run as User</ConfigurationMapLabel>
-              <ConfigurationMapValue value={fields.user} />
-              {action}
-            </ConfigurationMapRow>}
-          {Boolean(fields.command) &&
-            <ConfigurationMapRow>
-              <ConfigurationMapLabel>Command</ConfigurationMapLabel>
-              <ConfigurationMapMultilineValue value={fields.command} />
-              {action}
-            </ConfigurationMapRow>}
-
-          {/* Container artifacts */}
-          <PodContainerArtifactsConfigSection
-            artifacts={containerConfig.artifacts}
-            onEditClick={onEditClick}
-            index={index}
+        {/* Container image goes to top */}
+        <ConfigurationMapRow>
+          <ConfigurationMapLabel>Container Image</ConfigurationMapLabel>
+          <ConfigurationMapValueWithDefault
+            value={findNestedPropertyInObject(containerConfig, "image.id")}
           />
-        </div>
+          {action}
+        </ConfigurationMapRow>
+        <ConfigurationMapRow>
+          <ConfigurationMapLabel>Force pull on launch</ConfigurationMapLabel>
+          <ConfigurationMapBooleanValue
+            value={findNestedPropertyInObject(
+              containerConfig,
+              "image.forcePull"
+            )}
+          />
+          {action}
+        </ConfigurationMapRow>
+
+        {/* Resources */}
+        {Boolean(fields.resources.cpus) &&
+          <ConfigurationMapRow>
+            <ConfigurationMapLabel>CPUs</ConfigurationMapLabel>
+            <ConfigurationMapValue value={fields.resources.cpus} />
+            {action}
+          </ConfigurationMapRow>}
+        {Boolean(fields.resources.mem) &&
+          <ConfigurationMapRow>
+            <ConfigurationMapLabel>Memory</ConfigurationMapLabel>
+            <ConfigurationMapSizeValue value={fields.resources.mem} />
+            {action}
+          </ConfigurationMapRow>}
+        {Boolean(fields.resources.disk) &&
+          <ConfigurationMapRow>
+            <ConfigurationMapLabel>Disk</ConfigurationMapLabel>
+            <ConfigurationMapSizeValue value={fields.resources.disk} />
+            {action}
+          </ConfigurationMapRow>}
+        {Boolean(fields.resources.gpus) &&
+          <ConfigurationMapRow>
+            <ConfigurationMapLabel>GPUs</ConfigurationMapLabel>
+            <ConfigurationMapValue value={fields.resources.gpus} />
+            {action}
+          </ConfigurationMapRow>}
+
+        {/* Global Properties */}
+        {Boolean(fields.user) &&
+          <ConfigurationMapRow>
+            <ConfigurationMapLabel>Run as User</ConfigurationMapLabel>
+            <ConfigurationMapValue value={fields.user} />
+            {action}
+          </ConfigurationMapRow>}
+        {Boolean(fields.command) &&
+          <ConfigurationMapRow>
+            <ConfigurationMapLabel>Command</ConfigurationMapLabel>
+            <ConfigurationMapMultilineValue value={fields.command} />
+            {action}
+          </ConfigurationMapRow>}
+
+        {/* Container artifacts */}
+        <PodContainerArtifactsConfigSection
+          artifacts={containerConfig.artifacts}
+          onEditClick={onEditClick}
+          index={index}
+        />
       </MountService.Mount>
     </ConfigurationMapSection>
   );
