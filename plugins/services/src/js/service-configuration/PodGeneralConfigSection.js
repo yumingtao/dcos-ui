@@ -111,7 +111,7 @@ const PodGeneralConfigSection = ({ appConfig, onEditClick }) => {
       <ConfigurationMapSection key="pod-general-section">
         <MountService.Mount
           type="CreateService:ServiceConfigDisplay:Pod:General"
-          appConfig={this.props.appConfig}
+          appConfig={appConfig}
           onEditClick={onEditClick}
         >
           <div>

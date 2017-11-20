@@ -107,7 +107,7 @@ class PodNetworkConfigSection extends React.Component {
         <ConfigurationMapHeading level={1}>Network</ConfigurationMapHeading>
         <ConfigurationMapSection key="pod-general-section">
           <MountService.Mount
-            type="CreateService:ServiceConfigDisplay:Pod:Labels"
+            type="CreateService:ServiceConfigDisplay:Pod:Network"
             appConfig={this.props.appConfig}
             onEditClick={onEditClick}
           >
