@@ -103,7 +103,7 @@ class ServiceConfigBaseSectionDisplay extends React.Component {
           onEditClick={onEditClick}
           type={this.getMountType()}
         >
-          <div>{configurationMapRows}</div>
+          {configurationMapRows}
         </MountService.Mount>
       </ConfigurationMapSection>
     );
