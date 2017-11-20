@@ -23,6 +23,7 @@ const METHODS_TO_BIND = ["setState", "onStreamData", "onStreamError"];
 // MESOS_STATE_CHANGE events but since we're switching to the stream there will
 // be no events comming. To avoid a bigger refactoring I decided to go with
 // a fake emitter that starts emitting evens once the initial state came through
+// TODO: https://jira.mesosphere.com/browse/DCOS-18277
 let legacyUpdateTimer;
 
 class MesosStateStore extends GetSetBaseStore {
