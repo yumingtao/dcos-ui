@@ -28,11 +28,11 @@ export default function getStateAction(state, message) {
   };
   const tasksPartial = getTasksAction({}, getTasksMessage);
 
-  const getExecutorssMessage = {
+  const getExecutorsMessage = {
     type: GET_EXECUTORS,
     get_executors: message.get_state.get_executors
   };
-  const executorsPartial = getExecutorsAction({}, getExecutorssMessage);
+  const executorsPartial = getExecutorsAction({}, getExecutorsMessage);
 
   let agentsPartial = {};
   if (message.get_state.get_agents) {
