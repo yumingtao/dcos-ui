@@ -82,7 +82,7 @@ class MesosStateStore extends GetSetBaseStore {
     this.stream = mesosStream
       .merge(request({ type: "GET_MASTER" }))
       .map(message => JSON.parse(message))
-      .map(message => parsers.run(this.get("lastMesosState"), message))
+      .map(message => parsers.call(this.get("lastMesosState"), message))
       .map(MesosStateUtil.flagMarathonTasks)
       .do(state => CompositeState.addState(state))
       .do(this.setState)

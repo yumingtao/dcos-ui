@@ -9,7 +9,7 @@ export default class Pipeline {
     this.callables = callables;
   }
 
-  run(state, ...rest) {
+  call(state, ...rest) {
     return this.callables.reduce(function(acc, callable) {
       return callable.call(callable, acc, ...rest);
     }, state);
