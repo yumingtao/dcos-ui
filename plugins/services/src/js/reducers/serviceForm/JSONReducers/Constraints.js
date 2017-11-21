@@ -4,6 +4,7 @@ import { JSONParser, JSONReducer } from "../common/Constraints";
 
 module.exports = {
   JSONReducer(state, transaction) {
+    // this binding is messing me up because I'm calling it directly without binding
     const constraints = JSONReducer.bind(this)(state, transaction);
 
     return constraints.map(function({ fieldName, operator, value }) {

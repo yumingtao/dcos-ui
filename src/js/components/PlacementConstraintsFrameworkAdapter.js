@@ -5,8 +5,10 @@ import { deepCopy } from "#SRC/js/utils/Util";
 import TransactionTypes from "#SRC/js/constants/TransactionTypes";
 import PlacementConstraintsPartial
   from "#SRC/js/components/PlacementConstraintsPartial";
-import JSONSingleContainerParser
-  from "#PLUGINS/services/src/js/reducers/JSONSingleContainerParser";
+import { JSONReducer, JSONParser }
+  from "#PLUGINS/services/src/js/reducers/serviceForm/JSONReducers/Constraints";
+import { FormReducer }
+  from "#PLUGINS/services/src/js/reducers/serviceForm/FormReducers/Constraints";
 import CreateServiceModalFormUtil
   from "#PLUGINS/services/src/js/utils/CreateServiceModalFormUtil";
 
@@ -16,84 +18,100 @@ export default class PlacementConstriantsFrameworkAdapter extends Component {
 
     this.state = {
       batch: new Batch(),
-      appConfig: this.getInitialAppConfig()
+      appConfig: [],
+      ready: false
     };
   }
 
-  getInitialAppConfig() {
-    // parse
-    const arrayified = JSON.parse(this.props.data);
-
-    // add a transaction for each in the array of given constraints
-    const batch = new Batch();
-
-    return this.getAppConfig(batch);
+  componentDidMount() {
+    this.getInitialAppConfig();
   }
 
-  getAppConfig(batch = this.state.batch, baseConfig = {}) {
-    const baseConfigCopy = deepCopy(baseConfig);
-    const newConfig = batch.reduce(JSONSingleContainerParser, baseConfigCopy);
+  // todo call this every time the JSON changes!
+  getInitialAppConfig() {
+    const arrayified = { constraints: JSON.parse(this.props.data)};
+
+    // Regenerate batch
+    // I'm not sure if I should be calling this Constriants parser directly of calling the big parser like JSONSingleContainerParser
+    const batch = JSONParser(deepCopy(arrayified))
+      .reduce((batch, item) => {
+        return batch.add(item);
+      }, new Batch());
+
+    const appConfig = this.getAppConfig(batch, arrayified);
+
+    this.setState({ batch, appConfig, ready: true });
+  }
+
+  // this is the value for the JSON editor...use reducer to convert to JSON
+  getAppConfig(batch, baseConfig) {
+    const newConfig = batch.reduce(JSONReducer, deepCopy(baseConfig));
 
     return CreateServiceModalFormUtil.stripEmptyProperties(newConfig);
   }
 
-  // direct copy paste
-  handleFormChange(event) {
-    const fieldName = event.target.getAttribute("name");
-    if (!fieldName) {
-      return;
-    }
+  // direct copy paste, todo change
+  // handleFormChange(event) {
+  //   const fieldName = event.target.getAttribute("name");
+  //   if (!fieldName) {
+  //     return;
+  //   }
 
-    let { batch } = this.state;
-    let value = event.target.value;
-    if (event.target.type === "checkbox") {
-      value = event.target.checked;
-    }
-    const path = fieldName.split(".");
-    batch = batch.add(new Transaction(path, value));
+  //   let { batch } = this.state;
+  //   let value = event.target.value;
+  //   if (event.target.type === "checkbox") {
+  //     value = event.target.checked;
+  //   }
+  //   const path = fieldName.split(".");
+  //   batch = batch.add(new Transaction(path, value));
 
-    const newState = {
-      appConfig: this.getAppConfig(batch),
-      batch,
-      editingFieldPath: fieldName
-    };
+  //   const newState = {
+  //     appConfig: this.getAppConfig(batch),
+  //     batch,
+  //     editingFieldPath: fieldName
+  //   };
 
-    this.setState(newState);
-  }
+  //   this.setState(newState);
+  // }
 
-  // direct copy paste
-  handleAddItem(event) {
-    const { value, path } = event;
-    let { batch } = this.state;
+  // // direct copy paste, todo change
+  // handleAddItem(event) {
+  //   const { value, path } = event;
+  //   let { batch } = this.state;
 
-    batch = batch.add(
-      new Transaction(path.split("."), value, TransactionTypes.ADD_ITEM)
-    );
+  //   batch = batch.add(
+  //     new Transaction(path.split("."), value, TransactionTypes.ADD_ITEM)
+  //   );
 
-    this.setState({ batch, appConfig: this.getAppConfig(batch) });
-  }
+  //   this.setState({ batch, appConfig: this.getAppConfig(batch) });
+  // }
 
-  // direct copy paste
-  handleRemoveItem(event) {
-    const { value, path } = event;
-    let { batch } = this.state;
+  // // direct copy paste, todo change
+  // handleRemoveItem(event) {
+  //   const { value, path } = event;
+  //   let { batch } = this.state;
 
-    batch = batch.add(
-      new Transaction(path.split("."), value, TransactionTypes.REMOVE_ITEM)
-    );
+  //   batch = batch.add(
+  //     new Transaction(path.split("."), value, TransactionTypes.REMOVE_ITEM)
+  //   );
 
-    this.setState({ batch, appConfig: this.getAppConfig(batch) });
-  }
+  //   this.setState({ batch, appConfig: this.getAppConfig(batch) });
+  // }
 
   render() {
-    const { batch } = this.state;
+    const { batch, ready } = this.state;
 
-    const data = batch.reduce(JSONSingleContainerParser, {});
+    if (!ready) {
+      return null;
+    }
+
+    // same as for marathon form
+    const data = batch.reduce(FormReducer, {});
 
     // todo what to do about errors
     return (
       <PlacementConstraintsPartial
-        data={{ constraints: data }}
+        data={data}
         onAddItem={this.handleAddItem}
         onRemoveItem={this.handleAddItem}
       />
